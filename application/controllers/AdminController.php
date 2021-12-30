@@ -1,32 +1,39 @@
 <?php
+
 class AdminController extends Zend_Controller_Action
 {
     public function init()
     {
-        $layout = Zend_Layout::resetMvcInstance();
-        $layout = Zend_Layout::startMvc(
-            array(
-                'layoutPath'     => APPLICATION_PATH . '/smarty/templates/admin',
-                'layout'         => 'login',
-                'contentKey'     => 'content'
-            )
-        );
-        $layout->setViewSuffix('tpl');
-        /*var_dump($layout);
-        die;
-        $this->_helper->layout->setLayout('layout_admin');*/
         $this->_helper->viewRenderer->setNoRender();
+        $front_request = $this->_request->getParams();
+        if (isset($this->_helper->viewRenderer)) {
+            $this->_helper->viewRenderer->setNoRender();
+        }else{
+            $action = $this->_request->getActionName();
+            $this->_helper->viewRenderer->setScriptAction($action);
+        }
+        $front = Zend_Controller_Front::getInstance();
+
+        $front::setRequest($front_request);
+        $front->dispatch();
     }
 
     public function indexAction()
     {
-        $this->view->content = 'hdwghw';
+        $action = $this->_request->getActionName();
+        //$this->_helper->viewRenderer->setScriptAction($action);
+        //var_dump($this->_helper->viewRenderer->getViewScript());
+        $this_section = 'ADMIN INDEX ACTIONS';
+        $this->view = $this->_helper->viewRenderer->render($action, 'content', true);
+        var_dump($this->_helper->viewRenderer->render($action, 'content', true));
+        die;
+        $this->view->assign('content', $this_section);
+
     }
 
     public function productAction()
     {
         $this_section = 'ADMIN PRODUCT ACTIONS';
-        //$this->view->assign('content',$this_section);
-        $this->view->content = $this_section;
+        $this->view->assign('content', $this_section);
     }
 }

@@ -31,7 +31,22 @@ class Ext_View_Smarty extends Zend_View_Abstract
      */
     public function __construct($smartyConfig, $config = array())
     {
-        $this->_config = $smartyConfig;
+        if ($smartyConfig != null) {
+            $this->_config = $smartyConfig;
+        }
+        /*else {
+            $this->_config = array(
+                'caching' => '0',
+                'cache_lifetime' => '5',
+                'template_dir' => APPLICATION_PATH."/smarty/templates/",
+                'compile_dir' => APPLICATION_PATH."/smarty/templates_c",
+                'config_dir' => APPLICATION_PATH."/configs",
+                'cache_dir' => APPLICATION_PATH."/smarty/cache"
+                //'left_delimiter' => '',
+                //'right_delimiter' => ''
+            );
+        }*/
+
         parent::__construct($config);
         $this->_loadSmarty();
     }
@@ -64,7 +79,9 @@ class Ext_View_Smarty extends Zend_View_Abstract
 
             $this->_smarty->display($template);
         } else {
-            throw new Zend_View_Exception('Cannot render view without any template being assigned or file does not exist');
+            throw new Zend_View_Exception(
+                'Cannot render view without any template being assigned or file does not exist'
+            );
         }
     }
 
@@ -198,8 +215,8 @@ class Ext_View_Smarty extends Zend_View_Abstract
     /**
      * Magic getter for Zend_View compatibility. Removes template var
      *
-     * @see View/Zend_View_Abstract::__unset()
      * @param string $key
+     * @see View/Zend_View_Abstract::__unset()
      */
     public function __unset($key)
     {
@@ -221,8 +238,8 @@ class Ext_View_Smarty extends Zend_View_Abstract
     /**
      * Zend_View compatibility. Retrieves all template vars
      *
-     * @see Zend_View_Abstract::getVars()
      * @return array
+     * @see Zend_View_Abstract::getVars()
      */
     public function getVars()
     {
@@ -268,8 +285,8 @@ class Ext_View_Smarty extends Zend_View_Abstract
     /**
      * Zend_View compatibility. Removes all template vars
      *
-     * @see View/Zend_View_Abstract::clearVars()
      * @return Ext_View_Smarty
+     * @see View/Zend_View_Abstract::clearVars()
      */
     public function clearVars()
     {
@@ -281,8 +298,8 @@ class Ext_View_Smarty extends Zend_View_Abstract
     /**
      * Zend_View compatibility. Add the templates dir
      *
-     * @see View/Zend_View_Abstract::addBasePath()
      * @return Ext_View_Smarty
+     * @see View/Zend_View_Abstract::addBasePath()
      */
     public function addBasePath($path, $classPrefix = 'Zend_View')
     {
@@ -295,8 +312,8 @@ class Ext_View_Smarty extends Zend_View_Abstract
     /**
      * Zend_View compatibility. Set the templates dir instead of scripts
      *
-     * @see View/Zend_View_Abstract::setBasePath()
      * @return Ext_View_Smarty
+     * @see View/Zend_View_Abstract::setBasePath()
      */
     public function setBasePath($path, $classPrefix = 'Zend_View')
     {
@@ -317,8 +334,8 @@ class Ext_View_Smarty extends Zend_View_Abstract
     /**
      * Initializes the smarty and populates config params
      *
-     * @throws Zend_View_Exception
      * @return void
+     * @throws Zend_View_Exception
      */
     private function _loadSmarty()
     {
@@ -338,9 +355,9 @@ class Ext_View_Smarty extends Zend_View_Abstract
         $this->_smarty->compile_dir = $this->_config['compile_dir'];
         $this->_smarty->config_dir = $this->_config['config_dir'];
         $this->_smarty->cache_dir = $this->_config['cache_dir'];
-        $this->_smarty->left_delimiter = $this->_config['left_delimiter'];
-        $this->_smarty->right_delimiter = $this->_config['right_delimiter'];
-        //var_dump($this->_smarty->template_dir);
+        //$this->_smarty->left_delimiter = $this->_config['left_delimiter'];
+        //$this->_smarty->right_delimiter = $this->_config['right_delimiter'];
+
         $this->assign('this', $this);
     }
 }

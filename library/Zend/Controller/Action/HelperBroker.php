@@ -122,6 +122,7 @@ class Zend_Controller_Action_HelperBroker
     static public function addHelper(Zend_Controller_Action_Helper_Abstract $helper)
     {
         self::getStack()->push($helper);
+        //var_dump(self::getStack()->push($helper));
         return;
     }
 

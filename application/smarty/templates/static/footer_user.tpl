@@ -1,1 +1,1 @@
-this is footer user
+<h4 style="text-align: center">this is footer user</h4>
