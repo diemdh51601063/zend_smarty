@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.0.0, created on 2021-12-30 11:30:24
+/* Smarty version 4.0.0, created on 2021-12-31 05:12:01
   from 'C:\laragon\www\zend_smarty\application\smarty\templates\layout_admin.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.0.0',
-  'unifunc' => 'content_61cd35e057ca55_72806513',
+  'unifunc' => 'content_61ce2eb1e37bc5_44834265',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'd59ff3f14675b19a687fa77626454a475cdf3f98' => 
     array (
       0 => 'C:\\laragon\\www\\zend_smarty\\application\\smarty\\templates\\layout_admin.tpl',
-      1 => 1640838617,
+      1 => 1640902308,
       2 => 'file',
     ),
   ),
@@ -22,7 +22,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:footer_admin.tpl' => 1,
   ),
 ),false)) {
-function content_61cd35e057ca55_72806513 (Smarty_Internal_Template $_smarty_tpl) {
+function content_61ce2eb1e37bc5_44834265 (Smarty_Internal_Template $_smarty_tpl) {
 ?><html>
 <head>
     <title>Index page</title>

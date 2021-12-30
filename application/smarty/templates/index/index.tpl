@@ -1,5 +1,7 @@
 <p>
   {$hello}
+  <a href="{$this->url(['controller' => 'index', 'action' => 'view'])}">view</a>
+  <a href="{$this->url(['controller' => 'admin', 'action' => 'index'])}">admin</a>
 </p>
 <h1>LOGIN ADMIN</h1>
 

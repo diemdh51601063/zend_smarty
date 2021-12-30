@@ -12,21 +12,22 @@ require_once 'Zend/Controller/Request/http.php';
 $front = Zend_Controller_Front::getInstance();
 //$front_request = new Zend_Controller_Request_Http();
 //$front::setRequest($front_request);
-$front->setControllerDirectory('../application/controllers');
+//$front->setControllerDirectory('../application/controllers');
 
-$router = $front->getRouter();
+/*$router = $front->getRouter();
 $route = new Zend_Controller_Router_Route(
     ':controller/:action',
     array(
         'controller' => 'admin'
     )
 );
-$router->addRoute('admin', $route);
+$router->addRoute('admin', $route);*/
 
 $application = new Zend_Application(
     APPLICATION_ENV,
     APPLICATION_PATH . '/configs/application.ini'
 );
+
 $config_app = $application->bootstrap()->getOptions();
 
 $view = new Ext_View_Smarty($config_app['smarty']);

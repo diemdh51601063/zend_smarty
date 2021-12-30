@@ -1,5 +1,6 @@
 <p>
     {$content}
+    <a href="{$this->url(['controller' => 'index', 'action' => 'index'])}">home</a>
 </p>
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Launch demo modal
