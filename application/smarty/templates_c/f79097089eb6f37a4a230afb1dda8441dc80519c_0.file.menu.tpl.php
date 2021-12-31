@@ -1,18 +1,18 @@
 <?php
 /* Smarty version 4.0.0, created on 2021-12-31 17:04:02
-  from 'C:\laragon\www\zend_smarty\application\smarty\templates\static\footer_admin.tpl' */
+  from 'C:\laragon\www\zend_smarty\application\smarty\templates\static\menu.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.0.0',
-  'unifunc' => 'content_61ced592251ff2_17055523',
+  'unifunc' => 'content_61ced59223c191_79519325',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    'f76696182a575dbe134c70dd7bafcb7e8d0d5479' => 
+    'f79097089eb6f37a4a230afb1dda8441dc80519c' => 
     array (
-      0 => 'C:\\laragon\\www\\zend_smarty\\application\\smarty\\templates\\static\\footer_admin.tpl',
-      1 => 1640926913,
+      0 => 'C:\\laragon\\www\\zend_smarty\\application\\smarty\\templates\\static\\menu.tpl',
+      1 => 1640926191,
       2 => 'file',
     ),
   ),
@@ -20,9 +20,8 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_61ced592251ff2_17055523 (Smarty_Internal_Template $_smarty_tpl) {
-?>
-<style>
+function content_61ced59223c191_79519325 (Smarty_Internal_Template $_smarty_tpl) {
+?><style>
     ul {
         list-style-type: none;
         margin: 0;
@@ -42,13 +41,18 @@ function content_61ced592251ff2_17055523 (Smarty_Internal_Template $_smarty_tpl)
         padding: 16px;
         text-decoration: none;
     }
-
 </style>
 
 <div>
     <ul>
         <li>
             <a href="#">Home</a>
+        </li>
+        <li>
+            <a href="#">Features</a>
+        </li>
+        <li>
+            <a href="#">Pricing</a>
         </li>
     </ul>
 </div>

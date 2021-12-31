@@ -7,7 +7,7 @@ require_once 'Zend/Controller/Front.php';
 require_once 'Zend/Controller/Action/Helper/ViewRenderer.php';
 require_once 'Zend/Controller/Router/Route.php';
 require_once 'Zend/Controller/Router/Rewrite.php';
-require_once 'Zend/Controller/Request/http.php';
+
 
 $front = Zend_Controller_Front::getInstance();
 //$front_request = new Zend_Controller_Request_Http();
@@ -45,11 +45,16 @@ Zend_Controller_Action_HelperBroker::addHelper($render);
 $layout = Zend_Layout::startMvc(
     array(
         'layoutPath' => APPLICATION_PATH . '/smarty',
-        'layout' => 'layout_admin',
+        'layout' => 'layout_user',
         'contentKey' => 'content'
     )
 );
-
 $layout->setViewSuffix('tpl');
+
 $front->dispatch();
+
+
+
+
+
 

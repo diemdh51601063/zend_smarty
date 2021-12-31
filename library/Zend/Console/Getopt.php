@@ -37,7 +37,7 @@
  * The following features are supported:
  *
  * - Short flags like '-a'.  Short flags are preceded by a single
- *   dash.  Short flags may be clustered e.g. '-abc', which is the
+ *   dash.  Short flags may be clustered e.g. '-admin', which is the
  *   same as '-a' '-b' '-c'.
  * - Long flags like '--verbose'.  Long flags are preceded by a
  *   double dash.  Long flags may not be clustered.
@@ -75,7 +75,7 @@
  * function is also supported.  This is similar to GNU getopt and shell
  * getopt format.
  *
- * Example:  'abc:' means options '-a', '-b', and '-c'
+ * Example:  'admin:' means options '-a', '-b', and '-c'
  * are legal, and the latter requires a string parameter.
  *
  * @category   Zend

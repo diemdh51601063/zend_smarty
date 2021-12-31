@@ -156,7 +156,6 @@ class Zend_Db_Adapter_Pdo_Pgsql extends Zend_Db_Adapter_Pdo_Abstract
                 t.typname AS type,
                 a.atttypmod,
                 FORMAT_TYPE(a.atttypid, a.atttypmod) AS complete_type,
-                d.adsrc AS default_value,
                 a.attnotnull AS notnull,
                 a.attlen AS length,
                 co.contype,
