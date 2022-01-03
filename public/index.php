@@ -10,6 +10,7 @@ require_once 'Zend/Controller/Router/Rewrite.php';
 
 
 $front = Zend_Controller_Front::getInstance();
+
 //$front_request = new Zend_Controller_Request_Http();
 //$front::setRequest($front_request);
 //$front->setControllerDirectory('../application/controllers');
@@ -52,6 +53,7 @@ $layout = Zend_Layout::startMvc(
 $layout->setViewSuffix('tpl');
 
 $front->dispatch();
+
 
 
 

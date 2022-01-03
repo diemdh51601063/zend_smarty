@@ -352,7 +352,7 @@ class Ext_View_Smarty extends Zend_View_Abstract
         $this->_smarty->caching = $this->_config['caching'];
         $this->_smarty->cache_lifetime = $this->_config['cache_lifetime'];
         $this->_smarty->template_dir = $this->_config['template_dir'];
-        $this->_smarty->compile_dir = $this->_config['compile_dir'];
+        //$this->_smarty->compile_dir = $this->_config['compile_dir'];
         $this->_smarty->config_dir = $this->_config['config_dir'];
         $this->_smarty->cache_dir = $this->_config['cache_dir'];
         //$this->_smarty->left_delimiter = $this->_config['left_delimiter'];

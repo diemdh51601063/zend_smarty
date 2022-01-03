@@ -5,7 +5,7 @@ class IndexController extends Zend_Controller_Action
 
     public function init()
     {
-        $this->_helper->layout->setLayout('layout_admin');
+       
     }
 
     public function indexAction()
@@ -25,6 +25,18 @@ class IndexController extends Zend_Controller_Action
     public function viewAction()
     {
         $this_section = 'VIEW ACTIONS';
+        $this->view->assign('content', $this_section);
+    }
+
+    public function detailAction()
+    {
+        $this_section = 'detail ACTIONS';
+        $this->view->assign('content', $this_section);
+    }
+
+    public function checkoutAction()
+    {
+        $this_section = 'checkout ACTIONS';
         $this->view->assign('content', $this_section);
     }
 }

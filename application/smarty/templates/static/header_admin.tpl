@@ -1,3 +1,9 @@
 
-<h4 style="text-align: center">NAVIGATION BAR</h4>
-<p>this is admin header</p>
+<div class="header_admin">
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand">QUẢN TRỊ WEBSITE</a>
+        <div>
+        <h5> hello admin</h5>
+        </div>
+    </nav>
+</div>

@@ -1,32 +1,13 @@
-
-<style>
-    ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background-color: #609a98;
-    }
-
-    li {
-        float: left;
-    }
-
-    li a {
-        display: block;
-        color: white;
+{*<style>
+    .footer_admin {
         text-align: center;
-        padding: 16px;
-        text-decoration: none;
+        background-color: #4e73df;
+        padding: 10px;
+        color: #fff;
     }
-
 </style>
 
-<div>
-    <ul>
-        <li>
-            <a href="#">Home</a>
-        </li>
-    </ul>
-</div>
 
+<div class="footer_admin">
+    <h3>TRANG QUẢN TRỊ WEBSITE</h3>
+</div>*}
