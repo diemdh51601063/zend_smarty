@@ -20,6 +20,9 @@ class ProductController extends Zend_Controller_Action
     }
 
 
+    
+
+
     public function addAction()
     {
         $title = 'Thêm Sản Phẩm';
@@ -33,45 +36,12 @@ class ProductController extends Zend_Controller_Action
         if ($this->_request->isPost()) {
             try {
                 $this->_arrParam['admin_id'] = '1';
-                $this->_arrParam['id'] = '1';
-
-                // if ($_FILES["product_image"]["name"][0] != "") {
-                //     $file_adapter = new Zend_File_Transfer_Adapter_Http();
-                //     $path = PRODUCT_IMAGE_PATH;
-                //     $file_adapter->setDestination($path);
-                //     $list_photo = $file_adapter->getFileInfo();
-                //     foreach ($list_photo as $key => $fileInfo) {
-                //         $path_info = pathinfo($fileInfo['name']);
-                //         $file_name = $path_info['filename'];
-                //         $ext = $path_info['extension'];
-                //         try {
-                //             $file_adapter->addValidator('Extension', false, array('extension' => 'jpg,gif,png', 'case' => true));
-                //             //overwriting file name
-                //             $new_name = md5(rand()) . '-' . $file_name . '.' . $ext;
-                //             //Add rename filter
-                //             $file_adapter->addFilter('Rename', $path . '/' . $new_name);
-                //             $product_images[] = $new_name;
-                //         } catch (Zend_File_Transfer_Exception $e) {
-                //             die($e->getMessage());
-                //         }
-                //         try {
-                //             //Store
-                //             if ($file_adapter->receive($fileInfo['name'])) {
-                //                 //var_dump($fileInfo['name']);
-                //             }
-                //         } catch (Zend_File_Transfer_Exception $e) {
-                //             //die($e->getMessage());
-                //         }
-                //     }
-                //     var_dump($product_images);
-                // }
-
                 $product_model = new Model_Product();
                 $new_product = $product_model->addItem($this->_arrParam);
                 if ($_FILES["product_image"]["name"][0] != "") {
                     $product_image_model = new Model_ProductImage();
                     $list_image = $this->getUploadImages();
-                    $this->_arrParam['product_id'] = $new_product->id;
+                    $this->_arrParam['product_id'] = $new_product['id'];
                     foreach($list_image as $image){
                         $this->_arrParam['image'] = $image;
                         $product_image_model->addItem($this->_arrParam);

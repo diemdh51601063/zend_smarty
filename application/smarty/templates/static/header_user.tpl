@@ -38,12 +38,12 @@
 		                    <div class="header-search">
 		                        <form>
 		                            <select class="input-select">
-		                                <option value="0">All Categories</option>
-		                                <option value="1">Category 01</option>
-		                                <option value="1">Category 02</option>
+									{foreach $listCategory as $category}
+										<option value="{$category.id}">{$category.category_name}</option>
+									{/foreach}
 		                            </select>
 		                            <input class="input" placeholder="Search here">
-		                            <button class="search-btn">Search</button>
+		                            <button class="search-btn"><i class="fa fa-search"></i></button>
 		                        </form>
 		                    </div>
 		                </div>

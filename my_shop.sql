@@ -25,8 +25,8 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public.admins (
-    first_name character varying(255) NOT NULL,
     id integer NOT NULL,
+    first_name character varying(255) NOT NULL,
     last_name character varying(255) NOT NULL,
     login_name character varying(255) NOT NULL,
     password character varying(255) NOT NULL,
@@ -37,6 +37,28 @@ CREATE TABLE public.admins (
 
 
 ALTER TABLE public.admins OWNER TO postgres;
+
+--
+-- Name: admins_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.admins_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.admins_id_seq OWNER TO postgres;
+
+--
+-- Name: admins_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.admins_id_seq OWNED BY public.admins.id;
+
 
 --
 -- Name: brands; Type: TABLE; Schema: public; Owner: postgres
@@ -57,6 +79,28 @@ CREATE TABLE public.brands (
 ALTER TABLE public.brands OWNER TO postgres;
 
 --
+-- Name: brands_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.brands_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.brands_id_seq OWNER TO postgres;
+
+--
+-- Name: brands_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.brands_id_seq OWNED BY public.brands.id;
+
+
+--
 -- Name: cart_products; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -74,6 +118,28 @@ CREATE TABLE public.cart_products (
 ALTER TABLE public.cart_products OWNER TO postgres;
 
 --
+-- Name: cart_products_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.cart_products_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cart_products_id_seq OWNER TO postgres;
+
+--
+-- Name: cart_products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.cart_products_id_seq OWNED BY public.cart_products.id;
+
+
+--
 -- Name: categories; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -88,6 +154,28 @@ CREATE TABLE public.categories (
 
 
 ALTER TABLE public.categories OWNER TO postgres;
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.categories_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.categories_id_seq OWNER TO postgres;
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.categories_id_seq OWNED BY public.categories.id;
+
 
 --
 -- Name: customers; Type: TABLE; Schema: public; Owner: postgres
@@ -126,6 +214,50 @@ CREATE TABLE public.customers_cart (
 ALTER TABLE public.customers_cart OWNER TO postgres;
 
 --
+-- Name: customers_cart_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.customers_cart_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.customers_cart_id_seq OWNER TO postgres;
+
+--
+-- Name: customers_cart_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.customers_cart_id_seq OWNED BY public.customers_cart.id;
+
+
+--
+-- Name: customers_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.customers_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.customers_id_seq OWNER TO postgres;
+
+--
+-- Name: customers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.customers_id_seq OWNED BY public.customers.id;
+
+
+--
 -- Name: order_details; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -143,6 +275,28 @@ CREATE TABLE public.order_details (
 
 
 ALTER TABLE public.order_details OWNER TO postgres;
+
+--
+-- Name: order_details_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.order_details_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.order_details_id_seq OWNER TO postgres;
+
+--
+-- Name: order_details_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.order_details_id_seq OWNED BY public.order_details.id;
+
 
 --
 -- Name: orders; Type: TABLE; Schema: public; Owner: postgres
@@ -174,6 +328,28 @@ CREATE TABLE public.orders (
 ALTER TABLE public.orders OWNER TO postgres;
 
 --
+-- Name: orders_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.orders_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.orders_id_seq OWNER TO postgres;
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.orders_id_seq OWNED BY public.orders.id;
+
+
+--
 -- Name: product_images; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -188,6 +364,28 @@ CREATE TABLE public.product_images (
 
 
 ALTER TABLE public.product_images OWNER TO postgres;
+
+--
+-- Name: product_images_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.product_images_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.product_images_id_seq OWNER TO postgres;
+
+--
+-- Name: product_images_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.product_images_id_seq OWNED BY public.product_images.id;
+
 
 --
 -- Name: product_type_warranties; Type: TABLE; Schema: public; Owner: postgres
@@ -206,6 +404,28 @@ CREATE TABLE public.product_type_warranties (
 ALTER TABLE public.product_type_warranties OWNER TO postgres;
 
 --
+-- Name: product_type_warranties_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.product_type_warranties_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.product_type_warranties_id_seq OWNER TO postgres;
+
+--
+-- Name: product_type_warranties_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.product_type_warranties_id_seq OWNED BY public.product_type_warranties.id;
+
+
+--
 -- Name: products; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -222,18 +442,117 @@ CREATE TABLE public.products (
     status integer DEFAULT 1 NOT NULL,
     quantily integer NOT NULL,
     admin_id integer NOT NULL,
-    warranty_id integer NOT NULL
+    warranty_id integer
 );
 
 
 ALTER TABLE public.products OWNER TO postgres;
 
 --
+-- Name: products_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.products_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.products_id_seq OWNER TO postgres;
+
+--
+-- Name: products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.products_id_seq OWNED BY public.products.id;
+
+
+--
+-- Name: admins id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.admins ALTER COLUMN id SET DEFAULT nextval('public.admins_id_seq'::regclass);
+
+
+--
+-- Name: brands id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.brands ALTER COLUMN id SET DEFAULT nextval('public.brands_id_seq'::regclass);
+
+
+--
+-- Name: cart_products id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cart_products ALTER COLUMN id SET DEFAULT nextval('public.cart_products_id_seq'::regclass);
+
+
+--
+-- Name: categories id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.categories ALTER COLUMN id SET DEFAULT nextval('public.categories_id_seq'::regclass);
+
+
+--
+-- Name: customers id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.customers ALTER COLUMN id SET DEFAULT nextval('public.customers_id_seq'::regclass);
+
+
+--
+-- Name: customers_cart id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.customers_cart ALTER COLUMN id SET DEFAULT nextval('public.customers_cart_id_seq'::regclass);
+
+
+--
+-- Name: order_details id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.order_details ALTER COLUMN id SET DEFAULT nextval('public.order_details_id_seq'::regclass);
+
+
+--
+-- Name: orders id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders ALTER COLUMN id SET DEFAULT nextval('public.orders_id_seq'::regclass);
+
+
+--
+-- Name: product_images id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product_images ALTER COLUMN id SET DEFAULT nextval('public.product_images_id_seq'::regclass);
+
+
+--
+-- Name: product_type_warranties id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product_type_warranties ALTER COLUMN id SET DEFAULT nextval('public.product_type_warranties_id_seq'::regclass);
+
+
+--
+-- Name: products id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.products ALTER COLUMN id SET DEFAULT nextval('public.products_id_seq'::regclass);
+
+
+--
 -- Data for Name: admins; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.admins (first_name, id, last_name, login_name, password, regist_date, status, update_date) FROM stdin;
-admin1	1	admin1	admin1	827ccb0eea8a706c4c34a16891f84e7b	2022-01-02 11:13:30.910118+07	1	\N
+COPY public.admins (id, first_name, last_name, login_name, password, regist_date, status, update_date) FROM stdin;
+1	qtv01	qtv01	qtv01	827ccb0eea8a706c4c34a16891f84e7b	2022-01-05 00:44:08.175123+07	1	\N
 \.
 
 
@@ -242,7 +561,9 @@ admin1	1	admin1	admin1	827ccb0eea8a706c4c34a16891f84e7b	2022-01-02 11:13:30.9101
 --
 
 COPY public.brands (id, brand_name, image, status, admin_id, regist_date, update_date, description) FROM stdin;
-1	Brand1	\N	1	1	2022-01-02 11:22:37.866381+07	\N	\N
+1	Sony	\N	1	1	2022-01-05 00:54:06.426556+07	\N	Sony
+2	Xiaomi	050a1a6431190e4941423f8c88d227b9-Xiaomi_logo.png	1	1	2022-01-05 01:01:25.195919+07	\N	 Xiaomi
+3	SamSung	5239ebdddf8bd9ae7a732a99f564b2da-samsung-logo.png	1	1	2022-01-05 01:01:51.747372+07	\N	 SamSung
 \.
 
 
@@ -259,7 +580,8 @@ COPY public.cart_products (id, cart_id, product_id, quantily, regist_date, updat
 --
 
 COPY public.categories (id, category_name, regist_date, update_date, admin_id, status) FROM stdin;
-1	Category 1	2022-01-02 11:14:24.322866+07	\N	1	1
+1	Tai nghe không dây	2022-01-05 04:45:47.572779+07	\N	1	1
+2	Tai nghe có dây	2022-01-05 04:46:12.690241+07	\N	1	1
 \.
 
 
@@ -300,6 +622,12 @@ COPY public.orders (id, customer_id, order_name, order_email, order_phone, regis
 --
 
 COPY public.product_images (id, product_id, status, regist_date, update_date, image) FROM stdin;
+1	3	1	2022-01-05 04:54:03.542816+07	\N	0e4a2361fef6565911e435fe3f57d7e7-sp1.jpg
+2	4	1	2022-01-05 04:58:16.216038+07	\N	d813ff15c98717cf58bce9f0d587beb9-sp2.jpg
+3	4	1	2022-01-05 04:58:16.221896+07	\N	96150453e68cfd107da402c3e540c114-sp3.jpg
+4	5	1	2022-01-05 05:00:35.029259+07	\N	70e5564d0e4ee5ea8e042dca070feb63-sp04.jpg
+5	5	1	2022-01-05 05:00:35.035145+07	\N	8dc76009f502ebc4d3b0ac5a671843bb-sp05.jpg
+6	2	1	2022-01-05 06:24:39.501491+07	\N	8dc76009f502ebc4d3b0ac5a671843bb-sp05.jpg
 \.
 
 
@@ -308,7 +636,6 @@ COPY public.product_images (id, product_id, status, regist_date, update_date, im
 --
 
 COPY public.product_type_warranties (id, name_warranty, description_warranty, regist_date, update_date, status) FROM stdin;
-1	warranty1	abc	2022-01-02 11:15:54.799022+07	\N	1
 \.
 
 
@@ -317,8 +644,88 @@ COPY public.product_type_warranties (id, name_warranty, description_warranty, re
 --
 
 COPY public.products (id, product_code, name, brand_id, category_id, price, description, regist_date, update_date, status, quantily, admin_id, warranty_id) FROM stdin;
-1	SP01	Sản phẩm 1	1	1	110000	abc	2022-01-02 11:16:42.195892+07	\N	1	10	1	1
+2	MDR-EX15AP 	Tai nghe dây nhét tai Sony Extra Bass MDR-EX15AP	1	1	199000	mô tả	2022-01-05 04:52:44.520906+07	\N	1	100	1	\N
+3	MDR-EX15AP 	Tai nghe dây nhét tai Sony Extra Bass MDR-EX15AP	1	1	199000	aaaaaaaa	2022-01-05 04:54:03.484992+07	\N	1	1000	1	\N
+4	WH-1000XM4	TAI NGHE SONY WH-1000XM4 WIRELESS NOISE-CANCELLING - BLACK	1	2	5439000	TAI NGHE SONY WH-1000XM4 WIRELESS NOISE-CANCELLING - BLACK	2022-01-05 04:58:16.178939+07	\N	1	10	1	\N
+5	SP01	Tai nghe Xiaomi Mi Earphone Basic	2	2	20000	Tai nghe Xiaomi Mi Earphone Basic	2022-01-05 05:00:34.979801+07	\N	1	105	1	\N
 \.
+
+
+--
+-- Name: admins_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.admins_id_seq', 1, true);
+
+
+--
+-- Name: brands_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.brands_id_seq', 3, true);
+
+
+--
+-- Name: cart_products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.cart_products_id_seq', 1, false);
+
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.categories_id_seq', 2, true);
+
+
+--
+-- Name: customers_cart_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.customers_cart_id_seq', 1, false);
+
+
+--
+-- Name: customers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.customers_id_seq', 1, false);
+
+
+--
+-- Name: order_details_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.order_details_id_seq', 1, false);
+
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.orders_id_seq', 1, false);
+
+
+--
+-- Name: product_images_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.product_images_id_seq', 6, true);
+
+
+--
+-- Name: product_type_warranties_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.product_type_warranties_id_seq', 1, false);
+
+
+--
+-- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.products_id_seq', 5, true);
 
 
 --
@@ -410,115 +817,11 @@ ALTER TABLE ONLY public.products
 
 
 --
--- Name: brands brands_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: brands brands_admin_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.brands
-    ADD CONSTRAINT brands_id_fkey FOREIGN KEY (id) REFERENCES public.admins(id);
-
-
---
--- Name: cart_products cart_products_cart_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.cart_products
-    ADD CONSTRAINT cart_products_cart_id_fkey FOREIGN KEY (cart_id) REFERENCES public.customers_cart(id);
-
-
---
--- Name: cart_products cart_products_product_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.cart_products
-    ADD CONSTRAINT cart_products_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id);
-
-
---
--- Name: categories categories_admin_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.categories
-    ADD CONSTRAINT categories_admin_id_fkey FOREIGN KEY (admin_id) REFERENCES public.admins(id);
-
-
---
--- Name: customers_cart customers_cart_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.customers_cart
-    ADD CONSTRAINT customers_cart_customer_id_fkey FOREIGN KEY (customer_id) REFERENCES public.customers(id);
-
-
---
--- Name: order_details order_details_order_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.order_details
-    ADD CONSTRAINT order_details_order_id_fkey FOREIGN KEY (order_id) REFERENCES public.orders(id);
-
-
---
--- Name: order_details order_details_product_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.order_details
-    ADD CONSTRAINT order_details_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id);
-
-
---
--- Name: orders orders_confirm_admin_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.orders
-    ADD CONSTRAINT orders_confirm_admin_id_fkey FOREIGN KEY (confirm_admin_id) REFERENCES public.admins(id);
-
-
---
--- Name: orders orders_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.orders
-    ADD CONSTRAINT orders_customer_id_fkey FOREIGN KEY (customer_id) REFERENCES public.customers(id) NOT VALID;
-
-
---
--- Name: product_images product_images_product_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.product_images
-    ADD CONSTRAINT product_images_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id);
-
-
---
--- Name: products products_admin_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.products
-    ADD CONSTRAINT products_admin_id_fkey FOREIGN KEY (admin_id) REFERENCES public.admins(id);
-
-
---
--- Name: products products_brand_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.products
-    ADD CONSTRAINT products_brand_id_fkey FOREIGN KEY (brand_id) REFERENCES public.brands(id);
-
-
---
--- Name: products products_category_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.products
-    ADD CONSTRAINT products_category_id_fkey FOREIGN KEY (category_id) REFERENCES public.categories(id);
-
-
---
--- Name: products products_warranty_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.products
-    ADD CONSTRAINT products_warranty_id_fkey FOREIGN KEY (warranty_id) REFERENCES public.product_type_warranties(id) NOT VALID;
+    ADD CONSTRAINT brands_admin_id_fkey FOREIGN KEY (admin_id) REFERENCES public.admins(id) NOT VALID;
 
 
 --

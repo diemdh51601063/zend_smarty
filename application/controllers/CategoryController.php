@@ -26,7 +26,6 @@ class CategoryController extends Zend_Controller_Action
         $this->view->assign('title', $title);
         if ($this->_request->isPost()) {
             try {
-                $this->_arrParam['id'] = '1';
                 $this->_arrParam['admin_id'] = '1';
                 $model = new Model_Category();
                 $add = $model->addItem($this->_arrParam);

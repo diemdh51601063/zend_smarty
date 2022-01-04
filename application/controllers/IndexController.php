@@ -5,7 +5,9 @@ class IndexController extends Zend_Controller_Action
 
     public function init()
     {
-       
+        $category_model = new Model_Category();
+        $list_category = $category_model->getListItem();
+        $this->view->assign('listCategory', $list_category);
     }
 
     public function indexAction()
@@ -14,6 +16,10 @@ class IndexController extends Zend_Controller_Action
         try{
             $product_model = new Model_Product();
             $list_product = $product_model->getListItem();
+            foreach($list_product as $key => $product){
+                $product_image_model = new Model_ProductImage();
+                $list_product[$key]['list_image'] = $product_image_model->getListImageOfProduct($product['id']);
+            }
         }catch (Exception $e){
             ($e);
         }

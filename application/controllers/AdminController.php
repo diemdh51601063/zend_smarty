@@ -62,6 +62,10 @@ class AdminController extends Zend_Controller_Action
         try {
             $product_model = new Model_Product();
             $list_product = $product_model->getListItem();
+            foreach($list_product as $key => $product){
+                $product_image_model = new Model_ProductImage();
+                $list_product[$key]['list_image'] = $product_image_model->getListImageOfProduct($product['id']);
+            }
         } catch (Exception $e) {
             ($e);
         }
@@ -80,7 +84,6 @@ class AdminController extends Zend_Controller_Action
 
     public function brandAction()
     {
-        var_dump($this->_request->getParams());
         $public_link= BRAND_IMAGE_PATH;
         $this_title = 'Danh Sách Thương Hiệu';
         $brand_model = new Model_Brand();

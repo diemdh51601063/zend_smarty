@@ -25,4 +25,10 @@ class Model_ProductImage extends Zend_Db_Table{
         $where = 'id = '.$arrParam['id'];
         $this->delete($where);
     }
+
+    public function getListImageOfProduct($product_id){
+        $where = 'product_id = '.$product_id;
+        $list = $this->fetchAll($where)->toArray();
+        return $list;
+    }
 }

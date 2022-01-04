@@ -16,7 +16,6 @@ class Model_Product extends Zend_Db_Table{
 
     public function addItem($arrParam){
         $row = $this->fetchNew();
-        $row->id = $arrParam['id'];
         $row->product_code = $arrParam['product_code'];
         $row->name = $arrParam['product_name'];
         $row->brand_id = $arrParam['brand_id'];

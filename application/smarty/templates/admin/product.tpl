@@ -11,6 +11,7 @@
     </thead>
     <tbody>
         {foreach $listItem as $item}
+            {* {$item.list_image|@var_dump} *}
             <tr style="text-align: center">
                 <td>{$item.id}</td>
                 <td>{$item.name}</td>
