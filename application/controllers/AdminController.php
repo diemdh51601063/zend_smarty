@@ -29,26 +29,35 @@ class AdminController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $this_section = 'INDEX LOGIN';
-        $this->view->assign('content', $this_section);
+        $this->redirect('/' . $this->_arrParam['controller'] . '/order');
     }
 
     public function loginAction()
     {
-        try {
-            $this_section = 'ADMIN LOGIN';
-            $this->view->assign('content', $this_section);
-
-            $linkLogIn = '/' . $this->_arrParam['module'] . '/' . $this->_arrParam['controller'] . '/get';
-            $this->view->assign('linkLogIn', $linkLogIn);
-        } catch (Exception $e) {
-            var_dump($e);
+        if ($this->_request->isPost()) {
+            $login_name = $this->_arrParam['login_name'];
+            $encode = new Ext_Encode();
+            $password = $encode->encode_md5($this->_arrParam['password']);
+            try {
+                $model = new Model_Admin();
+                $login = $model->logIn($login_name, $password);
+                if ($login != '') {
+                    $this->_admin = $login;
+                    $this->redirect($this->_actionMain);
+                } else {
+                    var_dump($login);
+                    //die;
+                }
+            } catch (Exception $e) {
+                var_dump($e->getMessage());
+                //die;
+            }
         }
     }
 
     public function productAction()
     {
-        $this_section = 'ADMIN PRODUCT ACTIONS';
+        $this_section = 'Danh Sách Sản Phẩm';
         $list_product = [];
         try {
             $product_model = new Model_Product();
@@ -56,8 +65,7 @@ class AdminController extends Zend_Controller_Action
         } catch (Exception $e) {
             ($e);
         }
-        $this_section = 'content indexActions';
-        $this->view->assign('hello', $this_section);
+        $this->view->assign('title', $this_section);
         $this->view->assign('listItem', $list_product);
     }
 
@@ -87,35 +95,10 @@ class AdminController extends Zend_Controller_Action
 
     public function orderAction()
     {
-        var_dump($this->_arrParam);
-        //$type_list = $this->_arrParam['type_list'];
         $this_section = 'Danh sách đơn hàng';
         $order_model = new Model_Order();
         $list_order = $order_model->getListItem();
         $this->view->assign('title', $this_section);
         $this->view->assign('listOrder', $list_order);
-    }
-
-    public function getAction()
-    {
-        if ($this->_request->isPost()) {
-            $login_name = $this->_arrParam['login_name'];
-            $encode = new Ext_Encode();
-            $password = $encode->encode_md5($this->_arrParam['password']);
-            try {
-                $model = new Model_Admin();
-                $login = $model->logIn($login_name, $password);
-                if ($login != '') {
-                    $this->_admin = $login;
-                    $this->redirect($this->_actionMain);
-                } else {
-                    var_dump($login);
-                    //die;
-                }
-            } catch (Exception $e) {
-                var_dump($e->getMessage());
-                //die;
-            }
-        }
     }
 }

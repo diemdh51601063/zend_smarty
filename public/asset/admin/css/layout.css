@@ -79,7 +79,7 @@ ul ul {
 #sidebar {
     min-width: 250px;
     max-width: 250px;
-    min-height: 90vh;
+    min-height: 92vh;
 }
 
 a[data-toggle="collapse"] {
@@ -115,4 +115,9 @@ a[data-toggle="collapse"] {
 }
 .header_admin h5 {
     margin: 0;
+}
+
+.content_load{
+    width: 100%;
+    margin-bottom: 40px;
 }

@@ -1,10 +1,10 @@
-
+<h3 style="text-align: center;">{$this->title}</h3>
 <table id="table_example" style="width: 100%">
     <thead>
         <tr style="text-align: center">
             <th>ID</th>
-            <th style="width: 30%">First Name</th>
-            <th style="width: 30%">Last Name</th>
+            <th>First Name</th>
+            <th>Last Name</th>
             <th>Last Update</th>
             <th></th>
         </tr>

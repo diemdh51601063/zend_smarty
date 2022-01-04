@@ -9,38 +9,37 @@ class Model_Product extends Zend_Db_Table{
     }
 
     public function getItemDetail($arrParam){
-        $where = 'actor_id = '.$arrParam['id'];
+        $where = 'id = '.$arrParam['id'];
         $detail = $this->fetchRow($where);
         return $detail;
     }
 
     public function addItem($arrParam){
         $row = $this->fetchNew();
+        $row->id = $arrParam['id'];
         $row->product_code = $arrParam['product_code'];
-        $row->name = $arrParam['name'];
+        $row->name = $arrParam['product_name'];
         $row->brand_id = $arrParam['brand_id'];
         $row->category_id = $arrParam['category_id'];
         $row->price = $arrParam['price'];
-        $row->description = $arrParam['description'];
+        $row->description = $arrParam['product_description'];
         $row->quantily = $arrParam['quantily'];
-        $row->admin_id = $arrParam['name'];
-        $row->warranty_id = $arrParam['warranty_id'];
-        $row->status = $arrParam['status'];
+        //$row->warranty_id = $arrParam['warranty_id'];
+        //$row->status = $arrParam['status'];
         $row->admin_id = $arrParam['admin_id'];
         $row->save();
     }
 
     public function editItem($arrParam){
-        $where = 'actor_id = '.$arrParam['id'];
+        $where = 'id = '.$arrParam['id'];
         $row = $this->fetchRow($where);
         $row->product_code = $arrParam['product_code'];
         $row->name = $arrParam['name'];
         $row->brand_id = $arrParam['brand_id'];
         $row->category_id = $arrParam['category_id'];
         $row->price = $arrParam['price'];
-        $row->description = $arrParam['description'];
+        $row->description = $arrParam['product_description'];
         $row->quantily = $arrParam['quantily'];
-        $row->admin_id = $arrParam['name'];
         $row->warranty_id = $arrParam['warranty_id'];
         $row->admin_id = $arrParam['admin_id'];
         $row->status = $arrParam['status'];

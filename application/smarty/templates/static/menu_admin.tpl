@@ -7,16 +7,20 @@
             <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Đơn Hàng</a>
             <ul class="collapse list-unstyled" id="homeSubmenu">
                 <li>
-                    <a href="{$this->url(['controller' => 'admin', 'action' => 'order'])}">Chưa xác nhận</a>
+                    <a onclick="listOrder(1)" href="{$this->url(['controller' => 'admin', 'action' => 'order'])}">Chưa
+                        xác nhận</a>
                 </li>
                 <li>
-                    <a href="{$this->url(['controller' => 'admin', 'action' => 'order'])}">Đã xác nhận</a>
+                    <a onclick="listOrder(2)" href="{$this->url(['controller' => 'admin', 'action' => 'order'])}">Đã xác
+                        nhận</a>
                 </li>
                 <li>
-                    <a href="{$this->url(['controller' => 'admin', 'action' => 'order'])}">Đã hủy</a>
+                    <a onclick="listOrder(3)" href="{$this->url(['controller' => 'admin', 'action' => 'order'])}">Đã
+                        hủy</a>
                 </li>
                 <li>
-                    <a href="{$this->url(['controller' => 'admin', 'action' => 'order'])}">Hoàn tất</a>
+                    <a onclick="listOrder(4)" href="{$this->url(['controller' => 'admin', 'action' => 'order'])}">Hoàn
+                        tất</a>
                 </li>
             </ul>
         </li>
@@ -61,3 +65,21 @@
     </ul>
 
 </nav>
+
+<script>
+    function listOrder(type) {
+        switch (type) {
+            case 1:
+                {assign var="type_list" value=1 };
+                break;
+            case 2:
+                {assign var="type_list" value=2 };
+                break;
+            case 3:
+                {assign var="type_list" value=3 };
+                break;
+            default:
+                {assign var="type_list" value=4 };
+        }
+    }
+</script>

@@ -17,36 +17,31 @@
 </head>
 
 <body>
-    <!-- Custom scripts for all pages-->
-
     <script type="text/javascript" charset="UTF-8" src="../../asset/admin/jquery/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="../../asset/admin/js/script.js"></script>
 
-    {* {if $this->admin != '' } *}
+    {if $this->arrParam['action'] != 'login' }
         <div id="header">
             {include file="header_admin.tpl"}
         </div>
 
         <div id="includetpl">
             <div class="wrapper">
-
                 {include file="menu_admin.tpl"}
+                <div class="content_load">
+                    <div class="container-fluid">
 
-                <div id="content"  style="width: 100%;">
-                    <div class="container-fluid" style="margin-bottom: 40px;">
-                        <div class="d-flex justify-content-start mt-3">
-                            <div>
-                                <button type="button" id="sidebarCollapse" class="btn btn-info my-1">
-                                    <i class="fas fa-align-left"></i>
-                                    <span>
-                                        <- </span>
-                                </button>
-                            </div>
+                        <button type="button" id="sidebarCollapse" class="btn btn-info mt-3">
+                            <i class="fas fa-align-left"></i>
+                            <span>
+                                <->
+                            </span>
+                        </button>
 
-                            <div  style="width: 100%;">
-                                {($this->layout()->content)}
-                            </div>
-
+                        <div>
+                            {($this->layout()->content)}
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -55,16 +50,14 @@
         <div id="footer">
             {include file="footer_admin.tpl"}
         </div>
-    {* {else}
-                {($this->layout()->content)}
-
-
-    {/if} *}
+    {else}
+            {($this->layout()->content)}
+    {/if}
 
 
     <script type="text/javascript" charset="UTF-8" src="../../asset/admin/bootstrap/js/bootstrap.bundle.js"></script>
     <script type="text/javascript" charset="UTF-8" src="../../asset/admin/dataTable/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" charset="UTF-8" src="../../asset/admin/js/index.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="../../asset/admin/js/menu.js"></script>
 </body>
 
 </html>

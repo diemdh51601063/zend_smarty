@@ -20,6 +20,7 @@ class Model_Category extends Zend_Db_Table
     public function addItem($arrParam)
     {
         $row = $this->fetchNew();
+        $row->id = $arrParam['id'] + 1;
         $row->category_name = $arrParam['category_name'];
         $row->admin_id = $arrParam['admin_id'];
         $row->save();

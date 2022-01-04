@@ -13,17 +13,29 @@ class CategoryController extends Zend_Controller_Action
         $this->_arrParam = $this->_request->getParams();
         $this->_currentController = '/' . $this->_arrParam['controller'];
         $this->_actionMain = '/' . $this->_arrParam['controller'] . '/index';
+
+        $this->view->arrParam = $this->_arrParam;
+        $this->view->currentController = $this->_currentController;
+        $this->view->actionMain = $this->_actionMain;
     }
 
 
     public function addAction()
     {
-
         $title = 'Thêm Danh Mục';
         $this->view->assign('title', $title);
-        // $model = new Model_Category();
-        // $add = $model->addItem($this->_arrParam);
-        // return $add;
+        if ($this->_request->isPost()) {
+            try {
+                $this->_arrParam['id'] = '1';
+                $this->_arrParam['admin_id'] = '1';
+                $model = new Model_Category();
+                $add = $model->addItem($this->_arrParam);
+                $this->redirect('/admin/category');
+            } catch (Exception $e) {
+                var_dump($e->getMessage());
+                //die;
+            }
+        }
     }
 
     public function updateAction()
@@ -31,5 +43,5 @@ class CategoryController extends Zend_Controller_Action
         $model = new Model_Category();
         $update = $model->addItem($this->_arrParam);
         return $update;
-    } 
+    }
 }

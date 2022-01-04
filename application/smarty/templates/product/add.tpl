@@ -1,10 +1,28 @@
-<h3 style="text-align: center;">{$this->title}</h3>
-<div class="mr-4 ml-2" style="background-color: white; padding: 10px; border-radius: 10px;">
-    <form class="mx-5 my-5">
+<style>
+    .title_content {
+        text-align: center;
+    }
+
+    .form_product {
+        background-color: white;
+        padding: 10px;
+        border-radius: 10px;
+    }
+</style>
+
+<h3 class="title_content">{$this->title}</h3>
+<div class="mx-5 form_product">
+    <form class="mx-5 my-5" onsubmit="onSubmitForm('{{$this->url(['controller' => 'product', 'action' => 'add'])}}')" method="post" id="formAdd">
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Tên Sản Phẩm</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="product_name" name="product_name">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Mã Sản Phẩm</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="product_code" name="product_code">
             </div>
         </div>
         <div class="form-group row">
@@ -13,7 +31,9 @@
                     <label class="col-sm-4 col-form-label">Danh Mục</label>
                     <div class="col-sm-8">
                         <select class="form-control" id="category_id" name="category_id">
-                            <option>Default select</option>
+                            {foreach $listCategory as $category}
+                                <option value="{$category.id}">{$category.category_name}</option>
+                            {/foreach}
                         </select>
                     </div>
                 </div>
@@ -23,13 +43,15 @@
                     <label class="col-sm-3 col-form-label">Thương Hiệu</label>
                     <div class="col-sm-9">
                         <select class="form-control" id="brand_id" name="brand_id">
-                            <option>Default select</option>
+                        {foreach $listBrand as $brand}
+                            <option value="{$brand.id}">{$brand.brand_name}</option>
+                        {/foreach}
                         </select>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Mô tả</label>
             <div class="col-sm-10">
@@ -54,11 +76,11 @@
                 <input type="text" class="form-control" id="inputtext3">
             </div>
         </div> *}
-        
+
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Hình ảnh</label>
             <div class="col-sm-10">
-                <input type="file" class="form-control-file" multiple id="exampleFormControlFile1">
+                <input type="file" class="form-control-file" multiple id="product_image" name="product_image">
             </div>
         </div>
         <div class="form-group row">

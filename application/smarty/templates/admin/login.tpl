@@ -13,7 +13,7 @@
         padding: 20px;
         margin: 0;
         position: absolute;
-        top: 50%;
+        top: 40%;
         left: 50%;
         -ms-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
@@ -32,8 +32,8 @@
 </style>
 <div class="container-fluid">
     <div class="vertical-center">
-        <h3>{$content}</h3>
-        <form  onsubmit="onSubmitForm('{{$this->url(['controller' => 'admin', 'action' => 'get'])}}')" method="post" id="formAdd">
+        <h3>Đăng Nhập</h3>
+        <form  onsubmit="onSubmitForm('{{$this->url(['controller' => 'admin', 'action' => 'login'])}}')" method="post" id="formAdd">
             <div class="form-group">
                 <label class="font-weight-bold">Admin name</label>
                 <input type="text" class="form-control" id="login_name" name="login_name" placeholder="Admin name">
