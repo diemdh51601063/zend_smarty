@@ -12,7 +12,7 @@
 
 <h3 class="title_content">{$this->title}</h3>
 <div class="mx-5 form_product">
-    <form class="mx-5 my-5" onsubmit="onSubmitForm('{{$this->url(['controller' => 'product', 'action' => 'add'])}}')" method="post" id="formAdd">
+    <form class="mx-5 my-5" onsubmit="onSubmitForm('{{$this->url(['controller' => 'product', 'action' => 'add'])}}')" method="post" id="formAdd" enctype="multipart/form-data">
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Tên Sản Phẩm</label>
             <div class="col-sm-10">
@@ -80,7 +80,7 @@
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Hình ảnh</label>
             <div class="col-sm-10">
-                <input type="file" class="form-control-file" multiple id="product_image" name="product_image">
+                <input type="file" class="form-control-file" id="product_image" name="product_image[]" multiple>
             </div>
         </div>
         <div class="form-group row">

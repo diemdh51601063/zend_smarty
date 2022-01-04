@@ -80,11 +80,14 @@ class AdminController extends Zend_Controller_Action
 
     public function brandAction()
     {
+        var_dump($this->_request->getParams());
+        $public_link= BRAND_IMAGE_PATH;
         $this_title = 'Danh Sách Thương Hiệu';
         $brand_model = new Model_Brand();
         $list_brand = $brand_model->getListItem();
         $this->view->assign('title', $this_title);
         $this->view->assign('listBrand', $list_brand);
+        $this->view->assign('public_link', $public_link);
     }
 
     public function customerAction()

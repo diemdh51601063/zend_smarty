@@ -17,5 +17,7 @@ set_include_path(implode(PATH_SEPARATOR, array(
 //duong dan den thu muc public
 define('PUBLIC_PATH', realpath(dirname(__FILE__) . '/public'));
 
-//duong dan den thu muc template
-//define('TEMPLATE_PATH', PUBLIC_PATH . '/templates/default');
+//duong dan den thu muc hinh anh
+define('PRODUCT_IMAGE_PATH', PUBLIC_PATH . '/asset/images/products');
+
+define('BRAND_IMAGE_PATH', PUBLIC_PATH . '/asset/images/brands');

@@ -12,7 +12,7 @@
     {foreach $listBrand as $brand}
         <tr style="text-align: center">
             <td>{$brand.id}</td>
-            <td>{$brand.image}</td>
+            <td><img src="{{BRAND_IMAGE_PATH/$brand.image}}" alt="Girl in a jacket" width="50px" height="40px"></td>
             <td>{$brand.brand_name}</td>
             <td><button style="padding-right: 10px">Edit</button> <button>Delete</button></td>
         </tr>

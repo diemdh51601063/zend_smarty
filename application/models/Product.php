@@ -25,9 +25,9 @@ class Model_Product extends Zend_Db_Table{
         $row->description = $arrParam['product_description'];
         $row->quantily = $arrParam['quantily'];
         //$row->warranty_id = $arrParam['warranty_id'];
-        //$row->status = $arrParam['status'];
         $row->admin_id = $arrParam['admin_id'];
         $row->save();
+        return $row;
     }
 
     public function editItem($arrParam){

@@ -16,7 +16,6 @@ class Model_Brand extends Zend_Db_Table{
 
     public function addItem($arrParam){
         $row = $this->fetchNew();
-        $row->id = $arrParam['id'];
         $row->brand_name = $arrParam['brand_name'];
         $row->image = $arrParam['brand_image'];
         $row->description = $arrParam['brand_description'];
