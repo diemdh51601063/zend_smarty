@@ -1,13 +1,15 @@
 <?php
 
-class IndexController extends Zend_Controller_Action
+class CustomerController extends Zend_Controller_Action
 {
 
     protected $_arrParam;
     protected $_currentController;
     protected $_actionMain;
+    protected $_userSessionNamespace;
+ 
 
-    public function __contruct()
+    public function init()
     {
         $this->_arrParam = $this->_request->getParams();
         $this->_currentController = '/' . $this->_arrParam['controller'];
@@ -17,9 +19,7 @@ class IndexController extends Zend_Controller_Action
         $this->view->currentController = $this->_currentController;
         $this->view->actionMain = $this->_actionMain;
 
-        $category_model = new Model_Category();
-        $list_category = $category_model->getListItem();
-        $this->view->assign('listCategory', $list_category);
+        $this->_userSessionNamespace = new Zend_Session_Namespace('userSessionNamespace');
     }
 
     public function indexAction()
@@ -40,10 +40,13 @@ class IndexController extends Zend_Controller_Action
         $this->view->assign('listItem', $list_product);
     }
 
-    public function viewAction()
+    public function loginAction()
     {
         $this_section = 'VIEW ACTIONS';
         $this->view->assign('content', $this_section);
+        if (!isset($userSessionNamespace->bar)) {
+            echo "\$namespace->bar not set\n";
+        }
     }
 
     public function detailAction()

@@ -20,7 +20,7 @@
     <script type="text/javascript" charset="UTF-8" src="../../asset/admin/jquery/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" charset="UTF-8" src="../../asset/admin/js/script.js"></script>
 
-    {if $this->arrParam['action'] != 'login' }
+    {if $this->arrParam['action'] != 'login'}
         <div id="header">
             {include file="header_admin.tpl"}
         </div>
@@ -51,6 +51,7 @@
             {include file="footer_admin.tpl"}
         </div>
     {else}
+        
             {($this->layout()->content)}
     {/if}
 

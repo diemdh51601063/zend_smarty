@@ -192,7 +192,14 @@ CREATE TABLE public.customers (
     is_register integer DEFAULT 1 NOT NULL,
     regist_date timestamp with time zone DEFAULT now() NOT NULL,
     update_date timestamp with time zone,
-    status integer DEFAULT 1 NOT NULL
+    status integer DEFAULT 1 NOT NULL,
+    address character varying,
+    city_code integer,
+    district_code integer,
+    ward_code integer,
+    city_name character varying,
+    district_name character varying,
+    ward_name character varying
 );
 
 
@@ -304,24 +311,27 @@ ALTER SEQUENCE public.order_details_id_seq OWNED BY public.order_details.id;
 
 CREATE TABLE public.orders (
     id integer NOT NULL,
-    customer_id integer,
+    customer_id integer NOT NULL,
     order_name character varying NOT NULL,
     order_email character varying NOT NULL,
     order_phone character varying NOT NULL,
     regist_date timestamp with time zone DEFAULT now() NOT NULL,
     update_date timestamp with time zone,
     status integer DEFAULT 1 NOT NULL,
-    confirm_admin_id integer NOT NULL,
+    confirm_admin_id integer,
     confirm_date timestamp with time zone,
-    province_code integer NOT NULL,
-    district_code integer NOT NULL,
-    ward_code integer NOT NULL,
-    address character varying NOT NULL,
-    address_full character varying NOT NULL,
-    " delivery_cost" double precision DEFAULT 0 NOT NULL,
-    discount double precision DEFAULT 0 NOT NULL,
+    city_code integer,
+    district_code integer,
+    ward_code integer,
+    address character varying,
+    " delivery_cost" double precision DEFAULT 0,
+    discount double precision DEFAULT 0,
     total double precision NOT NULL,
-    order_note character varying
+    order_note character varying,
+    city_name character varying,
+    district_name character varying,
+    ward_name character varying,
+    payment_method character varying
 );
 
 
@@ -442,7 +452,14 @@ CREATE TABLE public.products (
     status integer DEFAULT 1 NOT NULL,
     quantily integer NOT NULL,
     admin_id integer NOT NULL,
-    warranty_id integer
+    warranty_id integer,
+    charging_port character varying,
+    size character varying,
+    weight character varying,
+    jack character varying,
+    length character varying,
+    control character varying,
+    compatible character varying
 );
 
 
@@ -589,7 +606,7 @@ COPY public.categories (id, category_name, regist_date, update_date, admin_id, s
 -- Data for Name: customers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.customers (id, first_name, last_name, birthday, email, phone, password, is_register, regist_date, update_date, status) FROM stdin;
+COPY public.customers (id, first_name, last_name, birthday, email, phone, password, is_register, regist_date, update_date, status, address, city_code, district_code, ward_code, city_name, district_name, ward_name) FROM stdin;
 \.
 
 
@@ -613,7 +630,7 @@ COPY public.order_details (id, order_id, product_id, quantily, regist_date, upda
 -- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.orders (id, customer_id, order_name, order_email, order_phone, regist_date, update_date, status, confirm_admin_id, confirm_date, province_code, district_code, ward_code, address, address_full, " delivery_cost", discount, total, order_note) FROM stdin;
+COPY public.orders (id, customer_id, order_name, order_email, order_phone, regist_date, update_date, status, confirm_admin_id, confirm_date, city_code, district_code, ward_code, address, " delivery_cost", discount, total, order_note, city_name, district_name, ward_name, payment_method) FROM stdin;
 \.
 
 
@@ -643,11 +660,11 @@ COPY public.product_type_warranties (id, name_warranty, description_warranty, re
 -- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.products (id, product_code, name, brand_id, category_id, price, description, regist_date, update_date, status, quantily, admin_id, warranty_id) FROM stdin;
-2	MDR-EX15AP 	Tai nghe dây nhét tai Sony Extra Bass MDR-EX15AP	1	1	199000	mô tả	2022-01-05 04:52:44.520906+07	\N	1	100	1	\N
-3	MDR-EX15AP 	Tai nghe dây nhét tai Sony Extra Bass MDR-EX15AP	1	1	199000	aaaaaaaa	2022-01-05 04:54:03.484992+07	\N	1	1000	1	\N
-4	WH-1000XM4	TAI NGHE SONY WH-1000XM4 WIRELESS NOISE-CANCELLING - BLACK	1	2	5439000	TAI NGHE SONY WH-1000XM4 WIRELESS NOISE-CANCELLING - BLACK	2022-01-05 04:58:16.178939+07	\N	1	10	1	\N
-5	SP01	Tai nghe Xiaomi Mi Earphone Basic	2	2	20000	Tai nghe Xiaomi Mi Earphone Basic	2022-01-05 05:00:34.979801+07	\N	1	105	1	\N
+COPY public.products (id, product_code, name, brand_id, category_id, price, description, regist_date, update_date, status, quantily, admin_id, warranty_id, charging_port, size, weight, jack, length, control, compatible) FROM stdin;
+2	MDR-EX15AP 	Tai nghe dây nhét tai Sony Extra Bass MDR-EX15AP	1	1	199000	mô tả	2022-01-05 04:52:44.520906+07	\N	1	100	1	\N	\N	\N	\N	\N	\N	\N	\N
+3	MDR-EX15AP 	Tai nghe dây nhét tai Sony Extra Bass MDR-EX15AP	1	1	199000	aaaaaaaa	2022-01-05 04:54:03.484992+07	\N	1	1000	1	\N	\N	\N	\N	\N	\N	\N	\N
+4	WH-1000XM4	TAI NGHE SONY WH-1000XM4 WIRELESS NOISE-CANCELLING - BLACK	1	2	5439000	TAI NGHE SONY WH-1000XM4 WIRELESS NOISE-CANCELLING - BLACK	2022-01-05 04:58:16.178939+07	\N	1	10	1	\N	\N	\N	\N	\N	\N	\N	\N
+5	SP01	Tai nghe Xiaomi Mi Earphone Basic	2	2	20000	Tai nghe Xiaomi Mi Earphone Basic	2022-01-05 05:00:34.979801+07	\N	1	105	1	\N	\N	\N	\N	\N	\N	\N	\N
 \.
 
 
@@ -822,6 +839,94 @@ ALTER TABLE ONLY public.products
 
 ALTER TABLE ONLY public.brands
     ADD CONSTRAINT brands_admin_id_fkey FOREIGN KEY (admin_id) REFERENCES public.admins(id) NOT VALID;
+
+
+--
+-- Name: cart_products cart_products_cart_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cart_products
+    ADD CONSTRAINT cart_products_cart_id_fkey FOREIGN KEY (cart_id) REFERENCES public.customers_cart(id) NOT VALID;
+
+
+--
+-- Name: cart_products cart_products_product_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cart_products
+    ADD CONSTRAINT cart_products_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id) NOT VALID;
+
+
+--
+-- Name: customers_cart customers_cart_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.customers_cart
+    ADD CONSTRAINT customers_cart_customer_id_fkey FOREIGN KEY (customer_id) REFERENCES public.customers(id) NOT VALID;
+
+
+--
+-- Name: order_details order_details_order_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.order_details
+    ADD CONSTRAINT order_details_order_id_fkey FOREIGN KEY (order_id) REFERENCES public.orders(id) NOT VALID;
+
+
+--
+-- Name: order_details order_details_product_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.order_details
+    ADD CONSTRAINT order_details_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id) NOT VALID;
+
+
+--
+-- Name: orders orders_confirm_admin_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_confirm_admin_id_fkey FOREIGN KEY (confirm_admin_id) REFERENCES public.admins(id) NOT VALID;
+
+
+--
+-- Name: orders orders_customer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_customer_id_fkey FOREIGN KEY (customer_id) REFERENCES public.customers(id) NOT VALID;
+
+
+--
+-- Name: products products_admin_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_admin_id_fkey FOREIGN KEY (admin_id) REFERENCES public.admins(id) NOT VALID;
+
+
+--
+-- Name: products products_brand_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_brand_id_fkey FOREIGN KEY (brand_id) REFERENCES public.brands(id) NOT VALID;
+
+
+--
+-- Name: products products_category_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_category_id_fkey FOREIGN KEY (category_id) REFERENCES public.categories(id) NOT VALID;
+
+
+--
+-- Name: products products_warranty_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_warranty_id_fkey FOREIGN KEY (warranty_id) REFERENCES public.product_type_warranties(id) NOT VALID;
 
 
 --

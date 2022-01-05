@@ -5,13 +5,13 @@ class AdminController extends Zend_Controller_Action
     protected $_arrParam;
     protected $_currentController;
     protected $_actionMain;
-    protected $_admin;
+    protected $_adminSessionNamespace;
 
     public function init()
     {
         $this->_helper->layout->setLayout('layout_admin');
-        $this->_admin = 'bbbb';
 
+        $this->_adminSessionNamespace = new Zend_Session_Namespace('adminSessionNamespace');
         $this->_arrParam = $this->_request->getParams();
         $this->_currentController = '/' . $this->_arrParam['controller'];
         $this->_actionMain = '/' . $this->_arrParam['controller'] . '/index';
@@ -20,10 +20,11 @@ class AdminController extends Zend_Controller_Action
         $this->view->currentController = $this->_currentController;
         $this->view->actionMain = $this->_actionMain;
 
-        if ($this->_admin == '') {
-            //$this->_request->setActionName('login');
+        if (empty($this->_adminSessionNamespace->admin)) {
+            $this->_request->setActionName('login');
+            var_dump($this->_request->getParams());
         } else {
-            $this->view->admin = $this->_admin;
+            $this->view->admin = $this->_adminSessionNamespace->admin;
         }
     }
 
@@ -62,7 +63,7 @@ class AdminController extends Zend_Controller_Action
         try {
             $product_model = new Model_Product();
             $list_product = $product_model->getListItem();
-            foreach($list_product as $key => $product){
+            foreach ($list_product as $key => $product) {
                 $product_image_model = new Model_ProductImage();
                 $list_product[$key]['list_image'] = $product_image_model->getListImageOfProduct($product['id']);
             }
@@ -84,7 +85,7 @@ class AdminController extends Zend_Controller_Action
 
     public function brandAction()
     {
-        $public_link= BRAND_IMAGE_PATH;
+        $public_link = BRAND_IMAGE_PATH;
         $this_title = 'Danh Sách Thương Hiệu';
         $brand_model = new Model_Brand();
         $list_brand = $brand_model->getListItem();

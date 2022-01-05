@@ -23,6 +23,13 @@ class Model_Product extends Zend_Db_Table{
         $row->price = $arrParam['price'];
         $row->description = $arrParam['product_description'];
         $row->quantily = $arrParam['quantily'];
+        $row->charging_port = $arrParam['charging_port'];
+        $row->size = $arrParam['size'];
+        $row->weight = $arrParam['weight'];
+        $row->jack = $arrParam['jack'];
+        $row->length = $arrParam['length'];
+        $row->control = $arrParam['control'];
+        $row->compatible = $arrParam['compatible'];
         //$row->warranty_id = $arrParam['warranty_id'];
         $row->admin_id = $arrParam['admin_id'];
         $row->save();

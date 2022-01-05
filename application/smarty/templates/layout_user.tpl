@@ -82,6 +82,7 @@
         {include file="header_user.tpl"}
     </div>
 
+    <script src="../../asset/user/js/jquery.min.js"></script>
     <div id="content">
         {$this->layout()->content}
     </div>
@@ -91,7 +92,7 @@
     </div>
 
     <!-- jQuery Plugins -->
-    <script src="../../asset/user/js/jquery.min.js"></script>
+   
     <script src="../../asset/user/js/bootstrap.min.js"></script>
     <script src="../../asset/user/js/slick.min.js"></script>
     <script src="../../asset/user/js/nouislider.min.js"></script>

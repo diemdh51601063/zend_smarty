@@ -7,6 +7,7 @@ require_once 'Zend/Controller/Front.php';
 require_once 'Zend/Controller/Action/Helper/ViewRenderer.php';
 require_once 'Zend/Controller/Router/Route.php';
 require_once 'Zend/Controller/Router/Rewrite.php';
+require_once 'Zend/Session.php';
 
 
 $front = Zend_Controller_Front::getInstance();
@@ -54,6 +55,13 @@ $layout->setViewSuffix('tpl');
 
 $front->dispatch();
 
+Zend_Session::start();
+
+$userSessionNamespace = new Zend_Session_Namespace('userSessionNamespace');
+$userSessionNamespace->setExpirationSeconds(3600);
+
+$adminSessionNamespace = new Zend_Session_Namespace('adminSessionNamespace');
+$adminSessionNamespace->setExpirationSeconds(3600);
 
 
 

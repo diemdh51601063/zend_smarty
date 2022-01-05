@@ -12,7 +12,7 @@
                     </div>
                     <div class="shop-body">
                         <h3>Laptop<br>Collection</h3>
-                        <a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="{$this->url(['controller' => 'index', 'action' => 'view'])}" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -97,7 +97,7 @@
                                         </div>
                                         <div class="product-body">
                                             {* <p class="product-category">Category</p> *}
-                                            <h3 class="product-name" style="height: 50px;"><a href="#">{$item.name}</a></h3>
+                                            <h3 class="product-name" style="height: 50px;"><a href="{{$this->url(['controller' => 'index', 'action' => 'detail'])}}?id={$item.id}">{$item.name}</a></h3>
                                             <h4 class="product-price">${$item.price} <del
                                                     class="product-old-price">$990.00</del>
                                             </h4>

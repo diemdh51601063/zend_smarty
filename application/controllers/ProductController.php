@@ -34,7 +34,7 @@ class ProductController extends Zend_Controller_Action
         $this->view->assign('listCategory', $list_category);
         $this->view->assign('listBrand', $list_brand);
         if ($this->_request->isPost()) {
-            try {
+            /*try {
                 $this->_arrParam['admin_id'] = '1';
                 $product_model = new Model_Product();
                 $new_product = $product_model->addItem($this->_arrParam);
@@ -50,7 +50,7 @@ class ProductController extends Zend_Controller_Action
                 $this->redirect('/admin/product');
             } catch (Exception $e) {
                 var_dump($e->getMessage());
-            }
+            }*/
         }
     }
 
@@ -58,6 +58,13 @@ class ProductController extends Zend_Controller_Action
     {
         $title = 'Cập Nhật Thông Tin Sản Phẩm';
         $this->view->assign('title', $title);
+        $category_model = new Model_Category();
+        $list_category = $category_model->getListItem();
+        $brand_model = new Model_Brand();
+        $list_brand = $brand_model->getListItem();
+        
+        $this->view->assign('listCategory', $list_category);
+        $this->view->assign('listBrand', $list_brand);
     }
     public function detailAction()
     {

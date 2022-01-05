@@ -1,21 +1,20 @@
-
 <!-- BREADCRUMB -->
 <div id="breadcrumb" class="section">
-<!-- container -->
-<div class="container">
-    <!-- row -->
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="breadcrumb-header">Checkout</h3>
-            <ul class="breadcrumb-tree">
-                <li><a href="#">Home</a></li>
-                <li class="active">Checkout</li>
-            </ul>
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="breadcrumb-header">Checkout</h3>
+                <ul class="breadcrumb-tree">
+                    <li><a href="#">Home</a></li>
+                    <li class="active">Checkout</li>
+                </ul>
+            </div>
         </div>
+        <!-- /row -->
     </div>
-    <!-- /row -->
-</div>
-<!-- /container -->
+    <!-- /container -->
 </div>
 <!-- /BREADCRUMB -->
 <!-- SECTION -->
@@ -24,7 +23,6 @@
     <div class="container">
         <!-- row -->
         <div class="row">
-
             <div class="col-md-7">
                 <!-- Billing Details -->
                 <div class="billing-details">
@@ -35,16 +33,25 @@
                         <input class="input" type="text" name="first-name" placeholder="First Name">
                     </div>
                     <div class="form-group">
-                        <input class="input" type="text" name="last-name" placeholder="Last Name">
-                    </div>
-                    <div class="form-group">
                         <input class="input" type="email" name="email" placeholder="Email">
                     </div>
                     <div class="form-group">
                         <input class="input" type="text" name="address" placeholder="Address">
                     </div>
                     <div class="form-group">
-                        <input class="input" type="text" name="city" placeholder="City">
+                        <select class="form-control" id="city_id" name="city_id">
+                            <option value="">Chọn thành phố</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" id="province_id" name="province_id">
+                            <option value="">Chọn quận/huyện</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control" id="ward_id" name="ward_id">
+
+                        </select>
                     </div>
                     <div class="form-group">
                         <input class="input" type="text" name="country" placeholder="Country">
@@ -55,69 +62,12 @@
                     <div class="form-group">
                         <input class="input" type="tel" name="tel" placeholder="Telephone">
                     </div>
-                    <div class="form-group">
-                        <div class="input-checkbox">
-                            <input type="checkbox" id="create-account">
-                            <label for="create-account">
-                                <span></span>
-                                Create Account?
-                            </label>
-                            <div class="caption">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                    incididunt.</p>
-                                <input class="input" type="password" name="password" placeholder="Enter Your Password">
-                            </div>
-                        </div>
+                    <div class="order-notes">
+                        <textarea class="input" placeholder="Order Notes"></textarea>
                     </div>
+
                 </div>
                 <!-- /Billing Details -->
-
-                <!-- Shiping Details -->
-                <div class="shiping-details">
-                    <div class="section-title">
-                        <h3 class="title">Shiping address</h3>
-                    </div>
-                    <div class="input-checkbox">
-                        <input type="checkbox" id="shiping-address">
-                        <label for="shiping-address">
-                            <span></span>
-                            Ship to a diffrent address?
-                        </label>
-                        <div class="caption">
-                            <div class="form-group">
-                                <input class="input" type="text" name="first-name" placeholder="First Name">
-                            </div>
-                            <div class="form-group">
-                                <input class="input" type="text" name="last-name" placeholder="Last Name">
-                            </div>
-                            <div class="form-group">
-                                <input class="input" type="email" name="email" placeholder="Email">
-                            </div>
-                            <div class="form-group">
-                                <input class="input" type="text" name="address" placeholder="Address">
-                            </div>
-                            <div class="form-group">
-                                <input class="input" type="text" name="city" placeholder="City">
-                            </div>
-                            <div class="form-group">
-                                <input class="input" type="text" name="country" placeholder="Country">
-                            </div>
-                            <div class="form-group">
-                                <input class="input" type="text" name="zip-code" placeholder="ZIP Code">
-                            </div>
-                            <div class="form-group">
-                                <input class="input" type="tel" name="tel" placeholder="Telephone">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- /Shiping Details -->
-
-                <!-- Order notes -->
-                <div class="order-notes">
-                    <textarea class="input" placeholder="Order Notes"></textarea>
-                </div>
-                <!-- /Order notes -->
             </div>
 
             <!-- Order Details -->
@@ -200,3 +150,36 @@
     <!-- /container -->
 </div>
 <!-- /SECTION -->
+
+<script>
+    $(document).ready(function() {
+        var link_city = 'https://api.mysupership.vn/v1/partner/areas/province';
+        $.getJSON(link_city, function(data) {
+            $.each(data.results, function(key, val) {
+                $('#city_id').append(new Option(val.name, val.code))
+            });
+        });
+    });
+
+    $('#city_id').change(function() {
+        var city_code = $(this).children("option:selected").val();
+        var link_district = 'https://api.mysupership.vn/v1/partner/areas/district?province=' + city_code;
+
+        $.getJSON(link_district, function(data) {
+            $.each(data.results, function(key, val) {
+                $('#province_id').append(new Option(val.name, val.code))
+            });
+        });
+    });
+
+    $('#province_id').change(function() {
+        var district_code = $(this).children("option:selected").val();
+        var link_ward = 'https://api.mysupership.vn/v1/partner/areas/commune?district=' + district_code;
+
+        $.getJSON(link_ward, function(data) {
+            $.each(data.results, function(key, val) {
+                $('#ward_id').append(new Option(val.name, val.code))
+            });
+        });
+    })
+</script>

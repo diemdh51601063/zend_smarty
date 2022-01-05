@@ -11,7 +11,7 @@
 		            <ul class="header-links pull-right">
 		                <li><a href="#"><i class="fa fa-user-plus"></i> Sign Up</a></li>
 		                <li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
-						<li><a href="#"><i class="fa fa-sign-out"></i> Sign Out</a></li>
+		                <li><a href="#"><i class="fa fa-sign-out"></i> Sign Out</a></li>
 		            </ul>
 		        </div>
 		    </div>
@@ -38,9 +38,9 @@
 		                    <div class="header-search">
 		                        <form>
 		                            <select class="input-select">
-									{foreach $listCategory as $category}
-										<option value="{$category.id}">{$category.category_name}</option>
-									{/foreach}
+		                                {foreach $listCategory as $category}
+    		                                <option value="{$category.id}">{$category.category_name}</option>
+		                                {/foreach}
 		                            </select>
 		                            <input class="input" placeholder="Search here">
 		                            <button class="search-btn"><i class="fa fa-search"></i></button>
@@ -89,7 +89,8 @@
 		                                </div>
 		                                <div class="cart-btns">
 		                                    <a href="#">View Cart</a>
-		                                    <a href="#">Checkout <i class="fa fa-arrow-circle-right"></i></a>
+		                                    <a href="{$this->url(['controller' => 'index', 'action' => 'checkout'])}">Checkout
+		                                        <i class="fa fa-arrow-circle-right"></i></a>
 		                                </div>
 		                            </div>
 		                        </div>
