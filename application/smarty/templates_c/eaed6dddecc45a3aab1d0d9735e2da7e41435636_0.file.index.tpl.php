@@ -1,4 +1,27 @@
-<!-- SECTION navbar -->
+<?php
+/* Smarty version 4.0.0, created on 2022-01-05 17:00:12
+  from 'C:\laragon\www\zend_smarty\application\smarty\templates\index\index.tpl' */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '4.0.0',
+  'unifunc' => 'content_61d56c2c8c5ec3_69659827',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    'eaed6dddecc45a3aab1d0d9735e2da7e41435636' => 
+    array (
+      0 => 'C:\\laragon\\www\\zend_smarty\\application\\smarty\\templates\\index\\index.tpl',
+      1 => 1641376780,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_61d56c2c8c5ec3_69659827 (Smarty_Internal_Template $_smarty_tpl) {
+?><!-- SECTION navbar -->
 <div class="section">
     <!-- container -->
     <div class="container">
@@ -12,7 +35,8 @@
                     </div>
                     <div class="shop-body">
                         <h3>Laptop<br>Collection</h3>
-                        <a href="{$this->url(['controller' => 'index', 'action' => 'view'])}" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="<?php echo $_smarty_tpl->tpl_vars['this']->value->url(array('controller'=>'index','action'=>'view'));?>
+" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -26,7 +50,8 @@
                     </div>
                     <div class="shop-body">
                         <h3>Accessories<br>Collection</h3>
-                        <a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="<?php echo $_smarty_tpl->tpl_vars['this']->value->url(array('controller'=>'index','action'=>'view'));?>
+" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -40,7 +65,8 @@
                     </div>
                     <div class="shop-body">
                         <h3>Cameras<br>Collection</h3>
-                        <a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="<?php echo $_smarty_tpl->tpl_vars['this']->value->url(array('controller'=>'index','action'=>'view'));?>
+" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -63,7 +89,7 @@
             <div class="col-md-12">
                 <div class="section-title">
                     <h3 class="title">New Products</h3>
-                </div>
+                                    </div>
             </div>
             <!-- /section title -->
 
@@ -75,22 +101,33 @@
                         <div id="tab1" class="tab-pane active">
                             <div class="products-slick" data-nav="#slick-nav-1">
                                 <!-- product -->
-                                {foreach $listItem as $item}
+                                <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['listItem']->value, 'item');
+$_smarty_tpl->tpl_vars['item']->do_else = true;
+if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['item']->value) {
+$_smarty_tpl->tpl_vars['item']->do_else = false;
+?>
                                     <div class="product">
                                         <div class="product-img">
 
-                                            {if $item.list_image|@count != 0 }
-                                                <img src="../../asset/images/products/{{$item.list_image[0].image}}" alt="" style="max-height: 263px; !important;">
-                                            {/if}
+                                            <?php if (count($_smarty_tpl->tpl_vars['item']->value['list_image']) != 0) {?>
+                                                <img src="../../asset/images/products/<?php ob_start();
+echo $_smarty_tpl->tpl_vars['item']->value['list_image'][0]['image'];
+$_prefixVariable1 = ob_get_clean();
+echo $_prefixVariable1;?>
+" alt="">
+                                            <?php }?>
                                             <div class="product-label">
 
                                                 <span class="new">NEW</span>
                                             </div>
                                         </div>
                                         <div class="product-body">
-                                            {* <p class="product-category">Category</p> *}
-                                            <h3 class="product-name" style="height: 50px;"><a href="{{$this->url(['controller' => 'index', 'action' => 'detail'])}}?id={$item.id}">{$item.name}</a></h3>
-                                            <h4 class="product-price">${$item.price} <del
+                                                                                        <h3 class="product-name" style="height: 50px;"><a href="<?php echo $_smarty_tpl->tpl_vars['this']->value->url(array('controller'=>'index','action'=>'detail'));?>
+"><?php echo $_smarty_tpl->tpl_vars['item']->value['name'];?>
+</a></h3>
+                                            <h4 class="product-price">$<?php echo $_smarty_tpl->tpl_vars['item']->value['price'];?>
+ <del
                                                     class="product-old-price">$990.00</del>
                                             </h4>
                                             <div class="product-rating">
@@ -100,25 +137,18 @@
                                                 <i class="fa fa-star"></i>
                                                 <i class="fa fa-star"></i>
                                             </div>
-                                            {* <div class="product-btns">
-                                                <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span
-                                                        class="tooltipp">add to wishlist</span></button>
-                                                <button class="add-to-compare"><i class="fa fa-exchange"></i><span
-                                                        class="tooltipp">add to compare</span></button>
-                                                <button class="quick-view"><i class="fa fa-eye"></i><span
-                                                        class="tooltipp">quick view</span></button>
-                                            </div> *}
-                                        </div>
+                                                                                    </div>
                                         <div class="add-to-cart">
                                             <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to
                                                 cart</button>
                                         </div>
                                     </div>
                                     <!-- /product -->
-                                {/foreach}
+                                <?php
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 
-
-                            </div>
+                                                            </div>
                             <div id="slick-nav-1" class="products-slick-nav"></div>
                         </div>
                         <!-- /tab -->
@@ -144,15 +174,7 @@
             <div class="col-md-12">
                 <div class="section-title">
                     <h3 class="title">Top selling</h3>
-                    {* <div class="section-nav">
-                        <ul class="section-tab-nav tab-nav">
-                            <li class="active"><a data-toggle="tab" href="#tab2">Laptops</a></li>
-                            <li><a data-toggle="tab" href="#tab2">Smartphones</a></li>
-                            <li><a data-toggle="tab" href="#tab2">Cameras</a></li>
-                            <li><a data-toggle="tab" href="#tab2">Accessories</a></li>
-                        </ul>
-                    </div> *}
-                </div>
+                                    </div>
             </div>
             <!-- /section title -->
 
@@ -164,20 +186,31 @@
                         <div id="tab2" class="tab-pane fade in active">
                             <div class="products-slick" data-nav="#slick-nav-2">
                                 <!-- product -->
-                                {foreach $listItem as $item}
+                                <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['listItem']->value, 'item');
+$_smarty_tpl->tpl_vars['item']->do_else = true;
+if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['item']->value) {
+$_smarty_tpl->tpl_vars['item']->do_else = false;
+?>
                                     <div class="product">
                                         <div class="product-img">
-                                            {if $item.list_image|@count != 0 }
-                                                <img src="../../asset/images/products/{{$item.list_image[0].image}}" alt="" style="max-height: 263px; !important;">
-                                            {/if}
+                                            <?php if (count($_smarty_tpl->tpl_vars['item']->value['list_image']) != 0) {?>
+                                                <img src="../../asset/images/products/<?php ob_start();
+echo $_smarty_tpl->tpl_vars['item']->value['list_image'][0]['image'];
+$_prefixVariable2 = ob_get_clean();
+echo $_prefixVariable2;?>
+" alt="">
+                                            <?php }?>
                                             <div class="product-label">
 
                                                 <span class="new">NEW</span>
                                             </div>
                                         </div>
                                         <div class="product-body">
-                                            <h3 class="product-name" style="height: 50px;"><a href="#">{$item.name}</a></h3>
-                                            <h4 class="product-price">${$item.price} <del
+                                            <h3 class="product-name" style="height: 50px;"><a href="#"><?php echo $_smarty_tpl->tpl_vars['item']->value['name'];?>
+</a></h3>
+                                            <h4 class="product-price">$<?php echo $_smarty_tpl->tpl_vars['item']->value['price'];?>
+ <del
                                                     class="product-old-price">$990.00</del>
                                             </h4>
                                             <div class="product-rating">
@@ -187,156 +220,18 @@
                                                 <i class="fa fa-star"></i>
                                                 <i class="fa fa-star"></i>
                                             </div>
-                                            {* <div class="product-btns">
-                                                <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span
-                                                        class="tooltipp">add to wishlist</span></button>
-                                                <button class="add-to-compare"><i class="fa fa-exchange"></i><span
-                                                        class="tooltipp">add to compare</span></button>
-                                                <button class="quick-view"><i class="fa fa-eye"></i><span
-                                                        class="tooltipp">quick view</span></button>
-                                            </div> *}
-                                        </div>
+                                                                                    </div>
                                         <div class="add-to-cart">
                                             <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to
                                                 cart</button>
                                         </div>
                                     </div>
-                                {/foreach}
+                                <?php
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                                     <!-- /product -->
 
-                                    {* <!-- product -->
-                                <div class="product">
-                                    <div class="product-img">
-                                        <img src="../../asset/user/img/product07.png" alt="">
-                                        <div class="product-label">
-                                            <span class="new">NEW</span>
-                                        </div>
-                                    </div>
-                                    <div class="product-body">
-                                        <p class="product-category">Category</p>
-                                        <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                        <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del>
-                                        </h4>
-                                        <div class="product-rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star-o"></i>
-                                        </div>
-                                        <div class="product-btns">
-                                            <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span
-                                                    class="tooltipp">add to wishlist</span></button>
-                                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span
-                                                    class="tooltipp">add to compare</span></button>
-                                            <button class="quick-view"><i class="fa fa-eye"></i><span
-                                                    class="tooltipp">quick view</span></button>
-                                        </div>
-                                    </div>
-                                    <div class="add-to-cart">
-                                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to
-                                            cart</button>
-                                    </div>
-                                </div>
-                                <!-- /product -->
-
-                                <!-- product -->
-                                <div class="product">
-                                    <div class="product-img">
-                                        <img src="../../asset/user/img/product08.png" alt="">
-                                        <div class="product-label">
-                                            <span class="sale">-30%</span>
-                                        </div>
-                                    </div>
-                                    <div class="product-body">
-                                        <p class="product-category">Category</p>
-                                        <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                        <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del>
-                                        </h4>
-                                        <div class="product-rating">
-                                        </div>
-                                        <div class="product-btns">
-                                            <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span
-                                                    class="tooltipp">add to wishlist</span></button>
-                                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span
-                                                    class="tooltipp">add to compare</span></button>
-                                            <button class="quick-view"><i class="fa fa-eye"></i><span
-                                                    class="tooltipp">quick view</span></button>
-                                        </div>
-                                    </div>
-                                    <div class="add-to-cart">
-                                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to
-                                            cart</button>
-                                    </div>
-                                </div>
-                                <!-- /product -->
-
-                                <!-- product -->
-                                <div class="product">
-                                    <div class="product-img">
-                                        <img src="../../asset/user/img/product09.png" alt="">
-                                    </div>
-                                    <div class="product-body">
-                                        <p class="product-category">Category</p>
-                                        <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                        <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del>
-                                        </h4>
-                                        <div class="product-rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <div class="product-btns">
-                                            <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span
-                                                    class="tooltipp">add to wishlist</span></button>
-                                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span
-                                                    class="tooltipp">add to compare</span></button>
-                                            <button class="quick-view"><i class="fa fa-eye"></i><span
-                                                    class="tooltipp">quick view</span></button>
-                                        </div>
-                                    </div>
-                                    <div class="add-to-cart">
-                                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to
-                                            cart</button>
-                                    </div>
-                                </div>
-                                <!-- /product -->
-
-                                <!-- product -->
-                                <div class="product">
-                                    <div class="product-img">
-                                        <img src="../../asset/user/img/product01.png" alt="">
-                                    </div>
-                                    <div class="product-body">
-                                        <p class="product-category">Category</p>
-                                        <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                        <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del>
-                                        </h4>
-                                        <div class="product-rating">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <div class="product-btns">
-                                            <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span
-                                                    class="tooltipp">add to wishlist</span></button>
-                                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span
-                                                    class="tooltipp">add to compare</span></button>
-                                            <button class="quick-view"><i class="fa fa-eye"></i><span
-                                                    class="tooltipp">quick view</span></button>
-                                        </div>
-                                    </div>
-                                    <div class="add-to-cart">
-                                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to
-                                            cart</button>
-                                    </div>
-                                </div>
-                                <!-- /product --> *}
-                                </div>
+                                                                    </div>
                                 <div id="slick-nav-2" class="products-slick-nav"></div>
                             </div>
                             <!-- /tab -->
@@ -643,4 +538,5 @@
         </div>
         <!-- /container -->
     </div>
-    <!-- /SECTION -->
+    <!-- /SECTION --><?php }
+}

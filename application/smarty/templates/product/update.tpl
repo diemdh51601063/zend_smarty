@@ -12,12 +12,12 @@
 
 <h3 class="title_content">{$this->title}</h3>
 <div class="mx-5 form_product">
-    <form class="mx-5 my-5" onsubmit="onSubmitForm('{{$this->url(['controller' => 'product', 'action' => 'update'])}}')"
+    <form class="mx-5 my-5" onsubmit="onSubmitForm('{{$this->url(['controller' => 'product', 'action' => 'update'])}}?id={$item.id}')"
         method="post" id="formAdd" enctype="multipart/form-data">
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Tên Sản Phẩm</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="product_name" name="product_name">
+                <input type="text" class="form-control" id="name" name="name">
             </div>
         </div>
         <div class="form-group row">
@@ -140,7 +140,7 @@
 <script>
     $(document).ready(function(){
         var detail_product = JSON.parse(sessionStorage.getItem("detail_product"));
-        $("#product_name").val(detail_product.name);
+        $("#name").val(detail_product.name);
         $("#product_code").val(detail_product.product_code);
         $("#category_id").val(detail_product.category_id).change();
         $("#brand_id").val(detail_product.brand_id).change();
@@ -154,6 +154,6 @@
         $("#length").val(detail_product.length);
         $("#control").val(detail_product.control);
         $("#compatible").val(detail_product.compatible);
-        console.log(detail_product);
+        //console.log(detail_product.list_image);
     });
 </script>

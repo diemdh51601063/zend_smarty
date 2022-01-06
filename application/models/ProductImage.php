@@ -15,9 +15,9 @@ class Model_ProductImage extends Zend_Db_Table{
     }
 
     public function addItem($arrParam){
-        $row = $this->fetchNew();
-        $row->product_id = $arrParam['product_id'];
-        $row->image = $arrParam['image'];
+        $row = $this->createRow($arrParam);
+        //$row->product_id = $arrParam['product_id'];
+        //$row->image = $arrParam['image'];
         $row->save();
     }
 

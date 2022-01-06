@@ -17,6 +17,14 @@ class BrandController extends Zend_Controller_Action
         $this->view->arrParam = $this->_arrParam;
         $this->view->currentController = $this->_currentController;
         $this->view->actionMain = $this->_actionMain;
+
+        if(Zend_Session::sessionExists() == true){
+            if(isset($_SESSION['adminSessionNamespace'])){
+                $this->view->admin = $_SESSION['adminSessionNamespace']['admin'];
+            }else{
+                $this->redirect('/admin/login');
+            }
+        }
     }
 
 

@@ -52,16 +52,10 @@ $layout = Zend_Layout::startMvc(
     )
 );
 $layout->setViewSuffix('tpl');
-
+Zend_Session::start();
 $front->dispatch();
 
-Zend_Session::start();
 
-$userSessionNamespace = new Zend_Session_Namespace('userSessionNamespace');
-$userSessionNamespace->setExpirationSeconds(3600);
-
-$adminSessionNamespace = new Zend_Session_Namespace('adminSessionNamespace');
-$adminSessionNamespace->setExpirationSeconds(3600);
 
 
 

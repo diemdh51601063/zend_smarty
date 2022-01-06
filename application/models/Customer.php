@@ -8,5 +8,8 @@ class Model_Customer extends Zend_Db_Table{
         $admin = $this->fetchRow($where);
         return $admin;
     }
-
+    public function getListItem(){
+        $list_result = $this->fetchAll()->toArray();
+        return $list_result;
+    }
 }

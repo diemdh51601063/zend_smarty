@@ -1,24 +1,36 @@
-<h3 style="text-align: center;">{$this->title}</h3>
-<table id="table_customer" style="width: 100%">
+<style>
+    #table_customer_wrapper .dataTables_filter input {
+        background-color: white;
+    }
+    .dataTables_wrapper .dataTables_length select{
+        background-color: white;
+    }
+
+    h3 {
+        text-align: center;
+    }
+</style>
+
+
+<h3>{$this->title}</h3>
+<table id="table_customer" class="display nowrap" style="width: 100%">
 <thead>
     <tr style="text-align: center">
-        <th>ID</th>
-        <th style="width: 30%">First Name</th>
-        <th style="width: 30%">Last Name</th>
-        <th>Last Update</th>
-        <th></th>
+        <th>STT</th>
+        <th>Họ Tên</th>
+        <th>SĐT</th>
+        <th>Email</th>
     </tr>
 </thead>
 <tbody>
-    {*{foreach $listItem as $item}
+    {foreach $list_customer as $customer}
         <tr style="text-align: center">
-            <td>{$item.id}</td>
-            <td>{$item.name}</td>
-            <td>{$item.price}</td>
-            <td>{$item.quantily}</td>
-            <td><button style="padding-right: 10px">Edit</button> <button>Delete</button></td>
+            <td>{$customer.id}</td>
+            <td>{$customer.first_name} {$customer.last_name}</td>
+            <td>{$customer.phone}</td>
+            <td>{$customer.email}</td>
         </tr>
-    {/foreach}*}
+    {/foreach}
 </tbody>
 </table>
 

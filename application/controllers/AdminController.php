@@ -1,5 +1,5 @@
 <?php
-
+require_once 'Ext/EnCode.php';
 class AdminController extends Zend_Controller_Action
 {
     protected $_arrParam;
@@ -12,6 +12,8 @@ class AdminController extends Zend_Controller_Action
         $this->_helper->layout->setLayout('layout_admin');
 
         $this->_adminSessionNamespace = new Zend_Session_Namespace('adminSessionNamespace');
+        $this->_adminSessionNamespace->setExpirationSeconds(3600);
+
         $this->_arrParam = $this->_request->getParams();
         $this->_currentController = '/' . $this->_arrParam['controller'];
         $this->_actionMain = '/' . $this->_arrParam['controller'] . '/index';
@@ -22,7 +24,6 @@ class AdminController extends Zend_Controller_Action
 
         if (empty($this->_adminSessionNamespace->admin)) {
             $this->_request->setActionName('login');
-            var_dump($this->_request->getParams());
         } else {
             $this->view->admin = $this->_adminSessionNamespace->admin;
         }
@@ -43,10 +44,10 @@ class AdminController extends Zend_Controller_Action
                 $model = new Model_Admin();
                 $login = $model->logIn($login_name, $password);
                 if ($login != '') {
-                    $this->_admin = $login;
+                    $this->_adminSessionNamespace->admin = $login;
                     $this->redirect($this->_actionMain);
                 } else {
-                    var_dump($login);
+                    //var_dump($login);
                     //die;
                 }
             } catch (Exception $e) {
@@ -70,6 +71,7 @@ class AdminController extends Zend_Controller_Action
         } catch (Exception $e) {
             ($e);
         }
+
         $this->view->assign('title', $this_section);
         $this->view->assign('listItem', $list_product);
     }
@@ -80,24 +82,25 @@ class AdminController extends Zend_Controller_Action
         $category_model = new Model_Category();
         $list_category = $category_model->getListItem();
         $this->view->assign('title', $this_title);
-        $this->view->assign('listCategory', $list_category);
+        $this->view->assign('list_category', $list_category);
     }
 
     public function brandAction()
     {
-        $public_link = BRAND_IMAGE_PATH;
         $this_title = 'Danh Sách Thương Hiệu';
         $brand_model = new Model_Brand();
         $list_brand = $brand_model->getListItem();
         $this->view->assign('title', $this_title);
-        $this->view->assign('listBrand', $list_brand);
-        $this->view->assign('public_link', $public_link);
+        $this->view->assign('list_brand', $list_brand);
     }
 
     public function customerAction()
     {
+        $customer_model = new Model_Customer();
+        $list_customer = $customer_model->getListItem();
         $this_section = 'Danh sách khách hàng';
         $this->view->assign('title', $this_section);
+        $this->view->assign('list_customer', $list_customer);
     }
 
     public function orderAction()
@@ -106,6 +109,12 @@ class AdminController extends Zend_Controller_Action
         $order_model = new Model_Order();
         $list_order = $order_model->getListItem();
         $this->view->assign('title', $this_section);
-        $this->view->assign('listOrder', $list_order);
+        $this->view->assign('lis', $list_order);
+        $this->view->assign('list_order', $list_order);
+    }
+
+    public function logoutAction(){
+        $this->_adminSessionNamespace->unsetAll();
+        $this->redirect('/' . $this->_arrParam['controller'] . '/login');
     }
 }

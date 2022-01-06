@@ -7,19 +7,19 @@
             <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Đơn Hàng</a>
             <ul class="collapse list-unstyled" id="homeSubmenu">
                 <li>
-                    <a onclick="listOrder(1)" href="{$this->url(['controller' => 'admin', 'action' => 'order'])}">Chưa
+                    <a onclick="listOrder(1)" href="{$this->url(['controller' => 'admin', 'action' => 'order'])}?type=1">Chưa
                         xác nhận</a>
                 </li>
                 <li>
-                    <a onclick="listOrder(2)" href="{$this->url(['controller' => 'admin', 'action' => 'order'])}">Đã xác
+                    <a onclick="listOrder(2)" href="{$this->url(['controller' => 'admin', 'action' => 'order'])}?type=1">Đã xác
                         nhận</a>
                 </li>
                 <li>
-                    <a onclick="listOrder(3)" href="{$this->url(['controller' => 'admin', 'action' => 'order'])}">Đã
+                    <a onclick="listOrder(3)" href="{$this->url(['controller' => 'admin', 'action' => 'order'])}?type=1">Đã
                         hủy</a>
                 </li>
                 <li>
-                    <a onclick="listOrder(4)" href="{$this->url(['controller' => 'admin', 'action' => 'order'])}">Hoàn
+                    <a onclick="listOrder(4)" href="{$this->url(['controller' => 'admin', 'action' => 'order'])}?type=1">Hoàn
                         tất</a>
                 </li>
             </ul>

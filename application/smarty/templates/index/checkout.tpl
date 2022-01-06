@@ -141,7 +141,7 @@
                         I've read and accept the <a href="#">terms & conditions</a>
                     </label>
                 </div>
-                <a href="#" class="primary-btn order-submit">Place order</a>
+                <a id="checkout_btn" href="#" class="primary-btn order-submit">Place order</a>
             </div>
             <!-- /Order Details -->
         </div>
@@ -152,34 +152,36 @@
 <!-- /SECTION -->
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         var link_city = 'https://api.mysupership.vn/v1/partner/areas/province';
-        $.getJSON(link_city, function(data) {
-            $.each(data.results, function(key, val) {
+        $.getJSON(link_city, function (data) {
+            $.each(data.results, function (key, val) {
                 $('#city_id').append(new Option(val.name, val.code))
             });
         });
     });
 
-    $('#city_id').change(function() {
+    $('#city_id').change(function () {
         var city_code = $(this).children("option:selected").val();
         var link_district = 'https://api.mysupership.vn/v1/partner/areas/district?province=' + city_code;
 
-        $.getJSON(link_district, function(data) {
-            $.each(data.results, function(key, val) {
+        $.getJSON(link_district, function (data) {
+            $.each(data.results, function (key, val) {
                 $('#province_id').append(new Option(val.name, val.code))
             });
         });
     });
 
-    $('#province_id').change(function() {
+    $('#province_id').change(function () {
         var district_code = $(this).children("option:selected").val();
         var link_ward = 'https://api.mysupership.vn/v1/partner/areas/commune?district=' + district_code;
 
-        $.getJSON(link_ward, function(data) {
-            $.each(data.results, function(key, val) {
+        $.getJSON(link_ward, function (data) {
+            $.each(data.results, function (key, val) {
                 $('#ward_id').append(new Option(val.name, val.code))
             });
         });
     })
+
+
 </script>

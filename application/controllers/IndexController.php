@@ -2,10 +2,10 @@
 
 class IndexController extends Zend_Controller_Action
 {
-
     protected $_arrParam;
     protected $_currentController;
     protected $_actionMain;
+    protected $_userSessionNamespace;
 
     public function __contruct()
     {
@@ -13,9 +13,13 @@ class IndexController extends Zend_Controller_Action
         $this->_currentController = '/' . $this->_arrParam['controller'];
         $this->_actionMain = '/' . $this->_arrParam['controller'] . '/index';
 
+        $this->_userSessionNamespace = new Zend_Session_Namespace('userSessionNamespace');
+        $this->_userSessionNamespace->setExpirationSeconds(3600);
+
         $this->view->arrParam = $this->_arrParam;
         $this->view->currentController = $this->_currentController;
         $this->view->actionMain = $this->_actionMain;
+        $this->view->user = $this->_userSessionNamespace->user;
 
         $category_model = new Model_Category();
         $list_category = $category_model->getListItem();
@@ -48,8 +52,6 @@ class IndexController extends Zend_Controller_Action
 
     public function detailAction()
     {
-        var_dump($this->_arrParam);
-        //die;
         $this_section = 'detail ACTIONS';
         $this->view->assign('content', $this_section);
     }

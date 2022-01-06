@@ -17,11 +17,15 @@ class ProductController extends Zend_Controller_Action
         $this->view->arrParam = $this->_arrParam;
         $this->view->currentController = $this->_currentController;
         $this->view->actionMain = $this->_actionMain;
+
+        if (Zend_Session::sessionExists() == true) {
+            if (isset($_SESSION['adminSessionNamespace'])) {
+                $this->view->admin = $_SESSION['adminSessionNamespace']['admin'];
+            } else {
+                $this->redirect('/admin/login');
+            }
+        }
     }
-
-
-    
-
 
     public function addAction()
     {
@@ -34,15 +38,15 @@ class ProductController extends Zend_Controller_Action
         $this->view->assign('listCategory', $list_category);
         $this->view->assign('listBrand', $list_brand);
         if ($this->_request->isPost()) {
-            /*try {
-                $this->_arrParam['admin_id'] = '1';
+            try {
+                $this->_arrParam['admin_id'] = $_SESSION['adminSessionNamespace']['admin']['id'];
                 $product_model = new Model_Product();
                 $new_product = $product_model->addItem($this->_arrParam);
                 if ($_FILES["product_image"]["name"][0] != "") {
                     $product_image_model = new Model_ProductImage();
                     $list_image = $this->getUploadImages();
                     $this->_arrParam['product_id'] = $new_product['id'];
-                    foreach($list_image as $image){
+                    foreach ($list_image as $image) {
                         $this->_arrParam['image'] = $image;
                         $product_image_model->addItem($this->_arrParam);
                     }
@@ -50,7 +54,7 @@ class ProductController extends Zend_Controller_Action
                 $this->redirect('/admin/product');
             } catch (Exception $e) {
                 var_dump($e->getMessage());
-            }*/
+            }
         }
     }
 
@@ -62,10 +66,30 @@ class ProductController extends Zend_Controller_Action
         $list_category = $category_model->getListItem();
         $brand_model = new Model_Brand();
         $list_brand = $brand_model->getListItem();
-        
+
         $this->view->assign('listCategory', $list_category);
         $this->view->assign('listBrand', $list_brand);
+        if ($this->_request->isPost()) {
+            try {
+                $this->_arrParam['admin_id'] = $_SESSION['adminSessionNamespace']['admin']['id'];
+                $product_model = new Model_Product();
+                $update_product = $product_model->editItem($this->_arrParam);
+                if ($_FILES["product_image"]["name"][0] != "") {
+                    $product_image_model = new Model_ProductImage();
+                    $list_image = $this->getUploadImages();
+                    $this->_arrParam['product_id'] = $this->_arrParam['id'];
+                    foreach ($list_image as $image) {
+                        $this->_arrParam['image'] = $image;
+                        $product_image_model->addItem($this->_arrParam);
+                    }
+                }
+                $this->redirect('/admin/product');
+            } catch (Exception $e) {
+                var_dump($e->getMessage());
+            }
+        }
     }
+
     public function detailAction()
     {
         $title = 'Thông Tin Chi Tiết Sản Phẩm';

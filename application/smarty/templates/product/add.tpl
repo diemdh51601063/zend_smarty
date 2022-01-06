@@ -9,15 +9,14 @@
         border-radius: 10px;
     }
 </style>
-
 <h3 class="title_content">{$this->title}</h3>
 <div class="mx-5 form_product">
     <form class="mx-5 my-5" onsubmit="onSubmitForm('{{$this->url(['controller' => 'product', 'action' => 'add'])}}')"
-        method="post" id="formAdd" enctype="multipart/form-data">
+          method="post" id="formAdd" enctype="multipart/form-data">
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Tên Sản Phẩm</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="product_name" name="product_name">
+                <input type="text" class="form-control" id="name" name="name">
             </div>
         </div>
         <div class="form-group row">
@@ -56,7 +55,7 @@
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Mô tả</label>
             <div class="col-sm-10">
-                <textarea rows="3" class="form-control" id="product_description" name="product_description"></textarea>
+                <textarea rows="3" class="form-control" id="description" name="description"></textarea>
             </div>
         </div>
         <div class="form-group row">
@@ -126,7 +125,7 @@
                 <input type="file" class="form-control-file" id="product_image" name="product_image[]" multiple>
             </div>
         </div>
-        <div class="row">
+        <div class="row my-3">
             <div class="col-md-12 filearray"></div>
         </div>
         <div class="form-group row">
@@ -138,16 +137,30 @@
 </div>
 
 <script>
-$(document).on('ready',()=>{
-    $("#product_image").on('change',function(){
-      /*var filereader = new FileReader();
-      var $img=jQuery.parseHTML("<img src=''>");
-      filereader.onload = function(){
-          $img[0].src=this.result;
-      };
-      filereader.readAsDataURL(this.files[0]);
-      $(".filearray").append($img);*/
-      arlert('dgdg')
+    /*$(document).on('ready', () => {
+        $("#product_image").on('change', function () {
+            //var filereader = new FileReader();
+            //var $img=jQuery.parseHTML("<img src=''>");
+            //filereader.onload = function(){
+            //      $img[0].src=this.result;
+            //  };
+            //   filereader.readAsDataURL(this.files[0]);
+            // $(".filearray").append($img);
+            arlert('dgdg');
+        });
+    });*/
+
+
+    $(document).ready(function () {
+        $('#product_image').change(function () {
+            var leng=this.files.length;
+            for(i=0; i<leng;i++) {
+                var filereader = new FileReader();
+                filereader.onload = function (e) {
+                    $('.filearray').append('<img src=' + e.target.result + ' width=200 height=200 style="margin-right: 15px"/>');
+                };
+                filereader.readAsDataURL(this.files[i]);
+            }
+        });
     });
-  });
 </script>

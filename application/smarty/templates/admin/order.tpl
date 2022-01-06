@@ -1,23 +1,37 @@
-<h3 style="text-align: center;">{$this->title}</h3>
-<table id="table_order" style="width: 100%">
+<style>
+    #table_order_wrapper .dataTables_filter input {
+        background-color: white;
+    }
+    .dataTables_wrapper .dataTables_length select{
+        background-color: white;
+    }
+
+    h3 {
+        text-align: center;
+    }
+</style>
+
+
+<h3>{$this->title}</h3>
+<table id="table_order" class="display nowrap" style="width: 100%">
     <thead>
         <tr style="text-align: center">
             <th>ID</th>
-            <th>Order Name</th>
-            <th>Order Phone</th>
-            <th>Order Date</th>
+            <th>Người Đặt Hàng</th>
+            <th>SĐT</th>
+            <th>Ngày Đặt Hàng</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        {foreach $listOrder as $item}
+        {foreach $list_order as $item}
             {if $item.status == $type_list}
                 <tr style="text-align: center">
                     <td>{$item.id}</td>
                     <td>{$item.order_name}</td>
                     <td>{$item.order_phone}</td>
-                    <td>{$item.regist_dtae}</td>
-                    <td><button style="padding-right: 10px">Duyệt</button> <button>Hủy</button></td>
+                    <td>{$item.regist_date}</td>
+                    <td><button class="btn btn-info" style="padding-right: 10px">Duyệt</button> <button class="btn btn-danger">Hủy</button></td>
                 </tr>
             {/if}
         {/foreach}

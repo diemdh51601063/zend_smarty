@@ -4,6 +4,7 @@ class Model_Product extends Zend_Db_Table{
     protected $_primary = 'id';
 
     public function getListItem(){
+
         $list_result = $this->fetchAll()->toArray();
         return $list_result;
     }
@@ -15,7 +16,7 @@ class Model_Product extends Zend_Db_Table{
     }
 
     public function addItem($arrParam){
-        $row = $this->fetchNew();
+        /*$row = $this->fetchNew();
         $row->product_code = $arrParam['product_code'];
         $row->name = $arrParam['product_name'];
         $row->brand_id = $arrParam['brand_id'];
@@ -31,7 +32,8 @@ class Model_Product extends Zend_Db_Table{
         $row->control = $arrParam['control'];
         $row->compatible = $arrParam['compatible'];
         //$row->warranty_id = $arrParam['warranty_id'];
-        $row->admin_id = $arrParam['admin_id'];
+        $row->admin_id = $arrParam['admin_id'];*/
+        $row = $this->createRow($arrParam);
         $row->save();
         return $row;
     }
@@ -46,9 +48,9 @@ class Model_Product extends Zend_Db_Table{
         $row->price = $arrParam['price'];
         $row->description = $arrParam['product_description'];
         $row->quantily = $arrParam['quantily'];
-        $row->warranty_id = $arrParam['warranty_id'];
+        //$row->warranty_id = $arrParam['warranty_id'];
         $row->admin_id = $arrParam['admin_id'];
-        $row->status = $arrParam['status'];
+        //$row->status = $arrParam['status'];
         $row->update_date = date('Y-m-d H:i:s');
         $row->save();
     }
