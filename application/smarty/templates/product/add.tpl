@@ -8,11 +8,30 @@
         padding: 10px;
         border-radius: 10px;
     }
+
+    .pip {
+        display: inline-block;
+        margin: 10px 10px 0 0;
+    }
+
+    .remove {
+        display: block;
+        background: #444;
+        border: 1px solid black;
+        color: white;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .remove:hover {
+        background: white;
+        color: black;
+    }
 </style>
 <h3 class="title_content">{$this->title}</h3>
 <div class="mx-5 form_product">
     <form class="mx-5 my-5" onsubmit="onSubmitForm('{{$this->url(['controller' => 'product', 'action' => 'add'])}}')"
-          method="post" id="formAdd" enctype="multipart/form-data">
+        method="post" id="formAdd" enctype="multipart/form-data">
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Tên Sản Phẩm</label>
             <div class="col-sm-10">
@@ -151,13 +170,20 @@
     });*/
 
 
-    $(document).ready(function () {
-        $('#product_image').change(function () {
-            var leng=this.files.length;
-            for(i=0; i<leng;i++) {
+    $(document).ready(function() {
+        $('#product_image').change(function() {
+            var flength = this.files.length;
+            for (i = 0; i < flength; i++) {
                 var filereader = new FileReader();
-                filereader.onload = function (e) {
-                    $('.filearray').append('<img src=' + e.target.result + ' width=200 height=200 style="margin-right: 15px"/>');
+                filereader.onload = function(e) {
+                    $('.filearray').append('<span class="pip"> ' +
+                        '<img src=' + e.target.result +
+                        ' width=200 height=200 style="margin-right: 15px"/>'  +
+                        '<br/><span class="remove"><i class="fa fa-remove"></i> </span></span>').insertAfter(
+                        "#files");
+                    $(".remove").click(function() {
+                        $(this).parent(".pip").remove();
+                    });
                 };
                 filereader.readAsDataURL(this.files[i]);
             }

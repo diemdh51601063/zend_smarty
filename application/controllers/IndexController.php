@@ -23,7 +23,12 @@ class IndexController extends Zend_Controller_Action
 
         $category_model = new Model_Category();
         $list_category = $category_model->getListItem();
-        $this->view->assign('listCategory', $list_category);
+        $this->view->assign('list_category', $list_category);
+
+        $brand_model = new Model_Brand();
+        $list_brand = $brand_model->getListItem();
+        $this->view->assign('list_brand', $list_brand);
+        var_dump($list_brand);
     }
 
     public function indexAction()

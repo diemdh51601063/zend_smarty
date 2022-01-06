@@ -8,11 +8,31 @@
         padding: 10px;
         border-radius: 10px;
     }
+
+    .pip {
+        display: inline-block;
+        margin: 10px 10px 0 0;
+    }
+
+    .remove {
+        display: block;
+        background: #444;
+        border: 1px solid black;
+        color: white;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .remove:hover {
+        background: white;
+        color: black;
+    }
 </style>
 
 <h3 class="title_content">{$this->title}</h3>
 <div class="mx-5 form_product">
-    <form class="mx-5 my-5" onsubmit="onSubmitForm('{{$this->url(['controller' => 'product', 'action' => 'update'])}}?id={$item.id}')"
+    <form class="mx-5 my-5"
+        onsubmit="onSubmitForm('{{$this->url(['controller' => 'product', 'action' => 'update'])}}?id={$item.id}')"
         method="post" id="formAdd" enctype="multipart/form-data">
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Tên Sản Phẩm</label>
@@ -138,7 +158,7 @@
 </div>
 
 <script>
-    $(document).ready(function(){
+    $(document).ready(function() {
         var detail_product = JSON.parse(sessionStorage.getItem("detail_product"));
         $("#name").val(detail_product.name);
         $("#product_code").val(detail_product.product_code);
@@ -154,6 +174,19 @@
         $("#length").val(detail_product.length);
         $("#control").val(detail_product.control);
         $("#compatible").val(detail_product.compatible);
+
+        if (detail_product.list_image.length > 0) {
+            for (i = 0; i < detail_product.list_image.length; i++) {
+                $('.filearray').append('<span class="pip"> ' +
+                    '<img src=../../asset/images/products/' + detail_product.list_image[i].image +
+                    ' width=200 height=200 style="margin-right: 15px"/>' +
+                    '<br/><span class="remove"><i class="fa fa-remove"></i> </span></span>').insertAfter(
+                    "#files");
+                $(".remove").click(function() {
+                    $(this).parent(".pip").remove();
+                });
+            }
+        }
         //console.log(detail_product.list_image);
     });
 </script>

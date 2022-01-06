@@ -44,9 +44,9 @@ class CustomerController extends Zend_Controller_Action
     {
         $this_section = 'VIEW ACTIONS';
         $this->view->assign('content', $this_section);
-        if (!isset($userSessionNamespace->bar)) {
-            echo "\$namespace->bar not set\n";
-        }
+        // if (!isset($userSessionNamespace->bar)) {
+        //     echo "\$namespace->bar not set\n";
+        // }
     }
 
     public function detailAction()

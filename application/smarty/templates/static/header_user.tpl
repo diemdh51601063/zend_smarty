@@ -38,7 +38,7 @@
 		                    <div class="header-search">
 		                        <form>
 		                            <select class="input-select">
-		                                {foreach $listCategory as $category}
+		                                {foreach $list_category as $category}
     		                                <option value="{$category.id}">{$category.category_name}</option>
 		                                {/foreach}
 		                            </select>
@@ -124,13 +124,12 @@
 		        <div id="responsive-nav">
 		            <!-- NAV -->
 		            <ul class="main-nav nav navbar-nav">
+
 		                <li class="active"><a href="#">Home</a></li>
-		                <li><a href="#">Hot Deals</a></li>
-		                <li><a href="#">Categories</a></li>
-		                <li><a href="#">Laptops</a></li>
-		                <li><a href="#">Smartphones</a></li>
-		                <li><a href="#">Cameras</a></li>
-		                <li><a href="#">Accessories</a></li>
+		                {foreach $list_brand as $brand}
+    		                <li><a href="#">{$brand.brand_name}</a></li>
+
+		                {/foreach}
 		            </ul>
 		            <!-- /NAV -->
 		        </div>
