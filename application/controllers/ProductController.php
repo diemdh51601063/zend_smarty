@@ -67,27 +67,51 @@ class ProductController extends Zend_Controller_Action
         $brand_model = new Model_Brand();
         $list_brand = $brand_model->getListItem();
 
-        $this->view->assign('listCategory', $list_category);
-        $this->view->assign('listBrand', $list_brand);
+        $id_product = $this->_arrParam['id'];
+
+        $product_model = new Model_Product();
+        $detail = $product_model->getItemDetail($id_product);
+
+        $product_image_model = new Model_ProductImage();
+        $list_image = $product_image_model->getListImageOfProduct($id_product);
+
+        $this->view->assign('list_category', $list_category);
+        $this->view->assign('list_brand', $list_brand);
+        $this->view->assign('detail_product', $detail );
+        $this->view->assign('image_product', $list_image );
+
         if ($this->_request->isPost()) {
+            var_dump($this->_arrParam);
+            exit();
             try {
-                $this->_arrParam['admin_id'] = $_SESSION['adminSessionNamespace']['admin']['id'];
                 $product_model = new Model_Product();
-                $update_product = $product_model->editItem($this->_arrParam);
-                if ($_FILES["product_image"]["name"][0] != "") {
-                    $product_image_model = new Model_ProductImage();
-                    $list_image = $this->getUploadImages();
-                    $this->_arrParam['product_id'] = $this->_arrParam['id'];
-                    foreach ($list_image as $image) {
-                        $this->_arrParam['image'] = $image;
-                        $product_image_model->addItem($this->_arrParam);
+                if (isset($this->_arrParam['status'])) {
+                   // $up = $product_model->hideItem($this->_arrParam);
+                    //return json_encode($up);
+                } else {
+                    $this->_arrParam['admin_id'] = $_SESSION['adminSessionNamespace']['admin']['id'];
+                    $update_product = $product_model->editItem($this->_arrParam);
+                    if ($_FILES["product_image"]["name"][0] != "") {
+                        unset($this->_arrParam['id']);
+                        $product_image_model = new Model_ProductImage();
+                        $list_image = $this->getUploadImages();
+                        $this->_arrParam['product_id'] = $id_product;
+                        foreach ($list_image as $image) {
+                            $this->_arrParam['image'] = $image;
+                            $product_image_model->addItem($this->_arrParam);
+                        }
                     }
+                    $this->redirect('/admin/product');
                 }
-                $this->redirect('/admin/product');
             } catch (Exception $e) {
                 var_dump($e->getMessage());
             }
         }
+    }
+
+    public function hideAction()
+    {
+        $product_model = new Model_Product();
     }
 
     public function detailAction()

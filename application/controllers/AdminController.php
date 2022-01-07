@@ -69,9 +69,8 @@ class AdminController extends Zend_Controller_Action
                 $list_product[$key]['list_image'] = $product_image_model->getListImageOfProduct($product['id']);
             }
         } catch (Exception $e) {
-            ($e);
+            var_dump($e->getMessage());
         }
-
         $this->view->assign('title', $this_section);
         $this->view->assign('listItem', $list_product);
     }
@@ -109,7 +108,6 @@ class AdminController extends Zend_Controller_Action
         $order_model = new Model_Order();
         $list_order = $order_model->getListItem();
         $this->view->assign('title', $this_section);
-        $this->view->assign('lis', $list_order);
         $this->view->assign('list_order', $list_order);
     }
 

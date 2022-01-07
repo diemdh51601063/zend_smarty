@@ -156,20 +156,6 @@
 </div>
 
 <script>
-    /*$(document).on('ready', () => {
-        $("#product_image").on('change', function () {
-            //var filereader = new FileReader();
-            //var $img=jQuery.parseHTML("<img src=''>");
-            //filereader.onload = function(){
-            //      $img[0].src=this.result;
-            //  };
-            //   filereader.readAsDataURL(this.files[0]);
-            // $(".filearray").append($img);
-            arlert('dgdg');
-        });
-    });*/
-
-
     $(document).ready(function() {
         $('#product_image').change(function() {
             var flength = this.files.length;
