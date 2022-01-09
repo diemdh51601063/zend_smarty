@@ -128,7 +128,6 @@
 		                <li class="active"><a href="#">Home</a></li>
 		                {foreach $list_brand as $brand}
     		                <li><a href="#">{$brand.brand_name}</a></li>
-
 		                {/foreach}
 		            </ul>
 		            <!-- /NAV -->

@@ -4,8 +4,8 @@ class Model_Product extends Zend_Db_Table{
     protected $_primary = 'id';
 
     public function getListItem(){
-
-        $list_result = $this->fetchAll()->toArray();
+        $order = "id ASC";
+        $list_result = $this->fetchAll(null, $order)->toArray();
         return $list_result;
     }
 
@@ -64,7 +64,18 @@ class Model_Product extends Zend_Db_Table{
     public function hideItem($arrParam){
         $where = 'id = '.$arrParam['id'];
         $row = $this->fetchRow($where);
-        $row->status = $arrParam['status'];
+        $row->status = 0;
+        $row->admin_id = $arrParam['admin_id'];
+        $row->update_date = date('Y-m-d H:i:s');
+        $row->save();
+        return $row;
+    }
+
+    public function showItem($arrParam){
+        $where = 'id = '.$arrParam['id'];
+        $row = $this->fetchRow($where);
+        $row->status = 1;
+        $row->admin_id = $arrParam['admin_id'];
         $row->update_date = date('Y-m-d H:i:s');
         $row->save();
         return $row;
