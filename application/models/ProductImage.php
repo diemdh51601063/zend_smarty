@@ -36,6 +36,13 @@ class Model_ProductImage extends Zend_Db_Table
         if (!empty($list)) {
             foreach ($list as $image_id) {
                 $where = 'id = ' . $image_id;
+                $detail_image = $this->fetchRow($where);
+                if ($detail_image['image'] !== "") {
+                    $product_image = PRODUCT_IMAGE_PATH . '/' . $detail_image['image'];
+                    if (file_exists($product_image)) {
+                        unlink($product_image);
+                    }
+                }
                 $this->delete($where);
             }
         }

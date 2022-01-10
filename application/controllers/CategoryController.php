@@ -34,21 +34,45 @@ class CategoryController extends Zend_Controller_Action
         $this->view->assign('title', $title);
         if ($this->_request->isPost()) {
             try {
-                $this->_arrParam['admin_id'] = '1';
-                $model = new Model_Category();
-                $add = $model->addItem($this->_arrParam);
-                $this->redirect('/admin/category');
+                $this->_arrParam['admin_id'] = $_SESSION['adminSessionNamespace']['admin']['id'];
+                $category_model = new Model_Category();
+                $add = $category_model->addItem($this->_arrParam);
+                if($add === true){
+                    $this->redirect('/admin/category');
+                }else{
+                    $this->view->assign('error_input', $add);
+                    $this->view->assign('error_value', $this->_arrParam);
+                }
+                
             } catch (Exception $e) {
                 var_dump($e->getMessage());
-                //die;
             }
         }
     }
 
     public function updateAction()
     {
-        $model = new Model_Category();
-        $update = $model->addItem($this->_arrParam);
-        return $update;
+        $title = 'Cập Nhật Thông Tin Danh Mục';
+        $category_model = new Model_Category();
+        $detail_category = $category_model->getItem($this->_arrParam['id']);
+
+        $this->view->assign('detail_category', $detail_category);
+        $this->view->assign('title', $title);
+        
+        if ($this->_request->isPost()) {
+            try {
+                $this->_arrParam['admin_id'] = $_SESSION['adminSessionNamespace']['admin']['id'];
+                
+                $update = $category_model->editItem($this->_arrParam);
+                if($update === true){
+                    $this->redirect('/admin/category');
+                }else{
+                    $this->view->assign('error_input', $update);
+                    $this->view->assign('error_value', $this->_arrParam);
+                };
+            } catch (Exception $e) {
+                var_dump($e->getMessage());
+            }
+        }
     }
 }

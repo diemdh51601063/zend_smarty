@@ -121,15 +121,19 @@ class ProductController extends Zend_Controller_Action
         $this->view->assign('list_type_product', $list_type_product);
         $this->view->assign('list_image_type_product', $list_image_type_product);
 
-
         if ($this->_request->isPost()) {
-                $list_product_image = [];
-                $list_detail_product_image = [];
-                try {
-                    $product_model = new Model_Product();
-                    $this->_arrParam['admin_id'] = $_SESSION['adminSessionNamespace']['admin']['id'];
-                    $product_model->editItem($this->_arrParam);
-
+            echo"<pre>";
+            print_r($this->_arrParam);
+            print_r($_FILES);
+            echo"</pre>";
+            die;
+            $list_product_image = [];
+            $list_detail_product_image = [];
+            try {
+                $product_model = new Model_Product();
+                $this->_arrParam['admin_id'] = $_SESSION['adminSessionNamespace']['admin']['id'];
+                $update_product = $product_model->editItem($this->_arrParam);
+                if ($update_product === true) {
                     $id_product = $this->_arrParam['id'];
                     unset($this->_arrParam['id']);
 
@@ -177,11 +181,11 @@ class ProductController extends Zend_Controller_Action
                             $product_image_model->addImageDetailProduct($add_detail_image);
                         }
                     }
-
                     $this->redirect('/admin/product');
-                } catch (Exception $e) {
-                    var_dump($e->getMessage());
                 }
+            } catch (Exception $e) {
+                var_dump($e->getMessage());
+            }
         }
     }
 
@@ -220,7 +224,10 @@ class ProductController extends Zend_Controller_Action
                 $file_name = $path_info['filename'];
                 $ext = $path_info['extension'];
                 try {
-                    $file_adapter->addValidator('Extension', false, array('extension' => 'jpg,gif,png', 'case' => true)
+                    $file_adapter->addValidator(
+                        'Extension',
+                        false,
+                        array('extension' => 'jpg,gif,png', 'case' => true)
                     );
                     //overwriting file name
                     $new_name = md5(rand()) . '-' . $file_name . '.' . $ext;

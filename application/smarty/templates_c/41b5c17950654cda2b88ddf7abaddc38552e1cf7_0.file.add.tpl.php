@@ -1,4 +1,27 @@
-<style>
+<?php
+/* Smarty version 4.0.0, created on 2022-01-11 06:54:00
+  from 'C:\laragon\www\zend_smarty\application\smarty\templates\product\add.tpl' */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '4.0.0',
+  'unifunc' => 'content_61dcc718eb9c10_57989847',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '41b5c17950654cda2b88ddf7abaddc38552e1cf7' => 
+    array (
+      0 => 'C:\\laragon\\www\\zend_smarty\\application\\smarty\\templates\\product\\add.tpl',
+      1 => 1641858838,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_61dcc718eb9c10_57989847 (Smarty_Internal_Template $_smarty_tpl) {
+?><style>
     .title_content {
         text-align: center;
     }
@@ -40,31 +63,39 @@
 
 </style>
 
-<h3 class="title_content">{$this->title}</h3>
+<h3 class="title_content"><?php echo $_smarty_tpl->tpl_vars['this']->value->title;?>
+</h3>
 <div class="mx-5 form_product">
-    <form class="mx-5 my-5" onsubmit="onSubmitForm('{{$this->url(['controller' => 'product', 'action' => 'add'])}}') "
+    <form class="mx-5 my-5" onsubmit="onSubmitForm('<?php ob_start();
+echo $_smarty_tpl->tpl_vars['this']->value->url(array('controller'=>'product','action'=>'add'));
+$_prefixVariable1 = ob_get_clean();
+echo $_prefixVariable1;?>
+') "
         method="post" id="formAdd" enctype="multipart/form-data">
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Tên Sản Phẩm <span class="text-danger">*</span></label>
             <div class="col-sm-10">
-                {if isset($error_value.name) }
-                    <input type="text" class="form-control input_error" id="name" name="name" required value="{$error_value.name}">
-                {else}
+                <?php if ((isset($_smarty_tpl->tpl_vars['error_value']->value['name']))) {?>
+                    <input type="text" class="form-control input_error" id="name" name="name" required value="<?php echo $_smarty_tpl->tpl_vars['error_value']->value['name'];?>
+">
+                <?php } else { ?>
                     <input type="text" class="form-control" id="name" name="name" required>
-                {/if}
-                {if isset($error_input.name) }
-                    <span class="err_input my-3">{$error_input.name.isEmpty}</span>
-                {/if}
+                <?php }?>
+                <?php if ((isset($_smarty_tpl->tpl_vars['error_input']->value['name']))) {?>
+                    <span class="err_input my-3"><?php echo $_smarty_tpl->tpl_vars['error_input']->value['name']['isEmpty'];?>
+</span>
+                <?php }?>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Mã Sản Phẩm</label>
             <div class="col-sm-10">
-                {if isset($error_value.product_code) }
-                    <input type="text" class="form-control" id="product_code" name="product_code" value="{$error_value.product_code}">
-                {else}
+                <?php if ((isset($_smarty_tpl->tpl_vars['error_value']->value['product_code']))) {?>
+                    <input type="text" class="form-control" id="product_code" name="product_code" value="<?php echo $_smarty_tpl->tpl_vars['error_value']->value['product_code'];?>
+">
+                <?php } else { ?>
                     <input type="text" class="form-control" id="product_code" name="product_code">
-                {/if}
+                <?php }?>
             </div>
         </div>
         <div class="form-group row">
@@ -73,72 +104,95 @@
                     <label class="col-sm-4 col-form-label">Danh Mục <span class="text-danger">*</span></label>
                     <div class="col-sm-8">
                         <select class="form-control" id="category_id" name="category_id" required>
-                            {foreach $listCategory as $category}
-                                <option value="{$category.id}">{$category.category_name}</option>
-                            {/foreach}
+                            <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['listCategory']->value, 'category');
+$_smarty_tpl->tpl_vars['category']->do_else = true;
+if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['category']->value) {
+$_smarty_tpl->tpl_vars['category']->do_else = false;
+?>
+                                <option value="<?php echo $_smarty_tpl->tpl_vars['category']->value['id'];?>
+"><?php echo $_smarty_tpl->tpl_vars['category']->value['category_name'];?>
+</option>
+                            <?php
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                         </select>
-                        {if isset($error_input.category_id) }
-                            <span class="err_input my-3">{$error_input.category_id.noRecordFound}</span>
-                        {/if}
+                        <?php if ((isset($_smarty_tpl->tpl_vars['error_input']->value['category_id']))) {?>
+                            <span class="err_input my-3"><?php echo $_smarty_tpl->tpl_vars['error_input']->value['category_id']['noRecordFound'];?>
+</span>
+                        <?php }?>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Giá <span class="text-danger">*</span></label>
                     <div class="col-sm-8">
-                        {if isset($error_value.price) }
-                            <input type="number" class="form-control" id="price" name="price" value="{$error_value.price}" required>
-                        {else}
+                        <?php if ((isset($_smarty_tpl->tpl_vars['error_value']->value['price']))) {?>
+                            <input type="number" class="form-control" id="price" name="price" value="<?php echo $_smarty_tpl->tpl_vars['error_value']->value['price'];?>
+" required>
+                        <?php } else { ?>
                             <input type="number" class="form-control" id="price" name="price" required>
-                        {/if}
-                        {if isset($error_input.price) }
-                            {foreach $error_input.price as $err}
-                                <span class="err_input my-3">{$err}</span><br>
-                            {/foreach}
-                        {/if}
+                        <?php }?>
+                        <?php if ((isset($_smarty_tpl->tpl_vars['error_input']->value['price']))) {?>
+                            <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['error_input']->value['price'], 'err');
+$_smarty_tpl->tpl_vars['err']->do_else = true;
+if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['err']->value) {
+$_smarty_tpl->tpl_vars['err']->do_else = false;
+?>
+                                <span class="err_input my-3"><?php echo $_smarty_tpl->tpl_vars['err']->value;?>
+</span><br>
+                            <?php
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+                        <?php }?>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label ">Loại jack cắm</label>
                     <div class="col-sm-8">
-                        {if isset($error_value.jack) }
-                            <input type="text" class="form-control" id="jack" name="jack" required value="{$error_value.jack}">
-                        {else}
+                        <?php if ((isset($_smarty_tpl->tpl_vars['error_value']->value['jack']))) {?>
+                            <input type="text" class="form-control" id="jack" name="jack" required value="<?php echo $_smarty_tpl->tpl_vars['error_value']->value['jack'];?>
+">
+                        <?php } else { ?>
                             <input type="text" class="form-control" id="jack" name="jack">
-                        {/if}
+                        <?php }?>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Kích thước</label>
                     <div class="col-sm-8">
-                        {if isset($error_value.size) }
-                            <input type="text" class="form-control" id="size" name="size" value="{$error_value.size}">
-                        {else}
+                        <?php if ((isset($_smarty_tpl->tpl_vars['error_value']->value['size']))) {?>
+                            <input type="text" class="form-control" id="size" name="size" value="<?php echo $_smarty_tpl->tpl_vars['error_value']->value['size'];?>
+">
+                        <?php } else { ?>
                             <input type="text" class="form-control" id="size" name="size">
-                        {/if}
+                        <?php }?>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Chiều dài dây</label>
                     <div class="col-sm-8">
-                        {if isset($error_value.length) }
-                            <input type="text" class="form-control" id="length" name="length" value="{$error_value.length}">
-                        {else}
+                        <?php if ((isset($_smarty_tpl->tpl_vars['error_value']->value['length']))) {?>
+                            <input type="text" class="form-control" id="length" name="length" value="<?php echo $_smarty_tpl->tpl_vars['error_value']->value['length'];?>
+">
+                        <?php } else { ?>
                             <input type="text" class="form-control" id="length" name="length">
-                        {/if}
+                        <?php }?>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Điều khiển <span class="text-danger">*</span></label>
                     <div class="col-sm-8">
-                        {if isset($error_value.control) }
-                            <input type="text" class="form-control" id="control" name="control" value="{$error_value.control}">
-                        {else}
+                        <?php if ((isset($_smarty_tpl->tpl_vars['error_value']->value['control']))) {?>
+                            <input type="text" class="form-control" id="control" name="control" value="<?php echo $_smarty_tpl->tpl_vars['error_value']->value['control'];?>
+">
+                        <?php } else { ?>
                             <input type="text" class="form-control" id="control" name="control">
-                        {/if}
+                        <?php }?>
                     </div>
                 </div>
 
@@ -148,63 +202,85 @@
                     <label class="col-sm-3 col-form-label text-right">Thương Hiệu <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
                         <select class="form-control" id="brand_id" name="brand_id" required>
-                            {foreach $listBrand as $brand}
-                                <option value="{$brand.id}">{$brand.brand_name}</option>
-                            {/foreach}
+                            <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['listBrand']->value, 'brand');
+$_smarty_tpl->tpl_vars['brand']->do_else = true;
+if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['brand']->value) {
+$_smarty_tpl->tpl_vars['brand']->do_else = false;
+?>
+                                <option value="<?php echo $_smarty_tpl->tpl_vars['brand']->value['id'];?>
+"><?php echo $_smarty_tpl->tpl_vars['brand']->value['brand_name'];?>
+</option>
+                            <?php
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                         </select>
-                        {if isset($error_input.brand_id) }
-                            <span class="err_input my-3">{$error_input.brand_id.noRecordFound}</span>
-                        {/if}
+                        <?php if ((isset($_smarty_tpl->tpl_vars['error_input']->value['brand_id']))) {?>
+                            <span class="err_input my-3"><?php echo $_smarty_tpl->tpl_vars['error_input']->value['brand_id']['noRecordFound'];?>
+</span>
+                        <?php }?>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label text-right">Số lượng <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
-                        {if isset($error_value.quantily) }
-                            <input type="number" class="form-control" id="quantily" name="quantily" value="{$error_value.quantily}" required>
-                        {else}
+                        <?php if ((isset($_smarty_tpl->tpl_vars['error_value']->value['quantily']))) {?>
+                            <input type="number" class="form-control" id="quantily" name="quantily" value="<?php echo $_smarty_tpl->tpl_vars['error_value']->value['quantily'];?>
+" required>
+                        <?php } else { ?>
                             <input type="number" class="form-control" id="quantily" name="quantily" required>
-                        {/if}
+                        <?php }?>
 
-                        {if isset($error_input.quantily) }
-                            {foreach $error_input.quantily as $err_quantily}
-                                <span class="err_input my-3">{$err_quantily}</span><br>
-                            {/foreach}
-                        {/if}
+                        <?php if ((isset($_smarty_tpl->tpl_vars['error_input']->value['quantily']))) {?>
+                            <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['error_input']->value['quantily'], 'err_quantily');
+$_smarty_tpl->tpl_vars['err_quantily']->do_else = true;
+if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['err_quantily']->value) {
+$_smarty_tpl->tpl_vars['err_quantily']->do_else = false;
+?>
+                                <span class="err_input my-3"><?php echo $_smarty_tpl->tpl_vars['err_quantily']->value;?>
+</span><br>
+                            <?php
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+                        <?php }?>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label text-right">Cổng sạc</label>
                     <div class="col-sm-9">
-                        {if isset($error_value.charging_port) }
-                            <input type="text" class="form-control" id="charging_port" name="charging_port" value="{$error_value.charging_port}">
-                        {else}
+                        <?php if ((isset($_smarty_tpl->tpl_vars['error_value']->value['charging_port']))) {?>
+                            <input type="text" class="form-control" id="charging_port" name="charging_port" value="<?php echo $_smarty_tpl->tpl_vars['error_value']->value['charging_port'];?>
+">
+                        <?php } else { ?>
                             <input type="text" class="form-control" id="charging_port" name="charging_port">
-                        {/if}
+                        <?php }?>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label text-right">Khối lượng</label>
                     <div class="col-sm-9">
-                        {if isset($error_value.weight) }
-                            <input type="text" class="form-control" id="weight" name="weight" value="{$error_value.weight}">
-                        {else}
+                        <?php if ((isset($_smarty_tpl->tpl_vars['error_value']->value['weight']))) {?>
+                            <input type="text" class="form-control" id="weight" name="weight" value="<?php echo $_smarty_tpl->tpl_vars['error_value']->value['weight'];?>
+">
+                        <?php } else { ?>
                             <input type="text" class="form-control" id="weight" name="weight">
-                        {/if}
+                        <?php }?>
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label text-right">Tương thích</label>
                     <div class="col-sm-9">
-                        {if isset($error_value.compatible) }
-                            <textarea rows="3" class="form-control" id="compatible" name="compatible">{$error_value.compatible}</textarea>
-                        {else}
+                        <?php if ((isset($_smarty_tpl->tpl_vars['error_value']->value['compatible']))) {?>
+                            <textarea rows="3" class="form-control" id="compatible" name="compatible"><?php echo $_smarty_tpl->tpl_vars['error_value']->value['compatible'];?>
+</textarea>
+                        <?php } else { ?>
                             <textarea rows="3" class="form-control" id="compatible" name="compatible"></textarea>
-                        {/if}
+                        <?php }?>
                     </div>
                 </div>
             </div>
@@ -213,14 +289,16 @@
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Mô tả<span class="text-danger">*</span></label>
             <div class="col-sm-10">
-                {if isset($error_value.description) }
-                    <textarea rows="3" class="form-control" id="description" name="description" required>{$error_value.description}</textarea>
-                {else}
+                <?php if ((isset($_smarty_tpl->tpl_vars['error_value']->value['description']))) {?>
+                    <textarea rows="3" class="form-control" id="description" name="description" required><?php echo $_smarty_tpl->tpl_vars['error_value']->value['description'];?>
+</textarea>
+                <?php } else { ?>
                     <textarea rows="3" class="form-control" id="description" name="description" required></textarea>
-                {/if}
-                {if isset($error_input.description) }
-                    <span class="err_input my-3">{$error_input.description.isEmpty}</span>
-                {/if}
+                <?php }?>
+                <?php if ((isset($_smarty_tpl->tpl_vars['error_input']->value['description']))) {?>
+                    <span class="err_input my-3"><?php echo $_smarty_tpl->tpl_vars['error_input']->value['description']['isEmpty'];?>
+</span>
+                <?php }?>
             </div>
         </div>
 
@@ -258,10 +336,12 @@
     </form>
 </div>
 
-<script>
+<?php echo '<script'; ?>
+>
 
-{if isset($error_input) }
-var err_input = {$error_input|@json_encode};
+<?php if ((isset($_smarty_tpl->tpl_vars['error_input']->value))) {?>
+var err_input = <?php echo json_encode($_smarty_tpl->tpl_vars['error_input']->value);?>
+;
 console.log(err_input);
 $(document).ready(function() {
     $('input').each(function () {
@@ -269,12 +349,13 @@ $(document).ready(function() {
     console.log(i);
     });
 });
-{/if}
+<?php }?>
 
     $(document).ready(function() {
 
-        {if isset($error_input) }
-            var err_input = {$error_input|json_encode};
+        <?php if ((isset($_smarty_tpl->tpl_vars['error_input']->value))) {?>
+            var err_input = <?php echo json_encode($_smarty_tpl->tpl_vars['error_input']->value);?>
+;
 
            // console.log(err_input.category_id);
            
@@ -285,7 +366,7 @@ $(document).ready(function() {
                     console.log(err_input.i);
                 }
             });
-        {/if}
+        <?php }?>
 
         $('#product_image').change(function() {
             var flength = this.files.length;
@@ -374,4 +455,6 @@ $(document).ready(function() {
             filereader.readAsDataURL($(div_input).prop('files')[i]);
         }
     }   
-</script>
+<?php echo '</script'; ?>
+><?php }
+}

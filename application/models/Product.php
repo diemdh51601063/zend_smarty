@@ -20,7 +20,7 @@ class Model_Product extends Zend_Db_Table
                 new Zend_Validate_NotEmpty(),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
-                        Zend_Validate_NotEmpty::IS_EMPTY => 'Vui lòng nhập tên sản phẩm !!!'
+                        Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng nhập tên sản phẩm !!!'
                     )
                 )
             ),
@@ -34,7 +34,7 @@ class Model_Product extends Zend_Db_Table
                 ),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
-                        Zend_Validate_Db_RecordExists::ERROR_NO_RECORD_FOUND => 'Vui lòng chọn đúng danh mục !!!'
+                        Zend_Validate_Db_RecordExists::ERROR_NO_RECORD_FOUND => '* Vui lòng chọn đúng danh mục !!!'
                     )
                 )
             ),
@@ -48,7 +48,7 @@ class Model_Product extends Zend_Db_Table
                 ),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
-                        Zend_Validate_Db_RecordExists::ERROR_NO_RECORD_FOUND => 'Vui lòng chọn đúng thương hiệu !!!'
+                        Zend_Validate_Db_RecordExists::ERROR_NO_RECORD_FOUND => '* Vui lòng chọn đúng thương hiệu !!!'
                     )
                 )
             ),
@@ -58,10 +58,10 @@ class Model_Product extends Zend_Db_Table
                 new Zend_Validate_Digits(),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
-                        Zend_Validate_GreaterThan::NOT_GREATER => 'Vui lòng nhập giá sản phẩm hợp lệ !!!',
+                        Zend_Validate_GreaterThan::NOT_GREATER => '* Vui lòng nhập giá sản phẩm hợp lệ !!!',
                     ),
                     array(
-                        Zend_Validate_Digits::NOT_DIGITS => 'Nhập số !!!'
+                        Zend_Validate_Digits::NOT_DIGITS => '* Nhập số !!!'
                     )
                 )
             ),
@@ -71,15 +71,15 @@ class Model_Product extends Zend_Db_Table
                 new Zend_Validate_Digits(),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
-                        Zend_Validate_GreaterThan::NOT_GREATER => 'Vui lòng nhập số lượng sản phẩm hợp lệ !!!',
+                        Zend_Validate_GreaterThan::NOT_GREATER => '* Vui lòng nhập số lượng sản phẩm hợp lệ !!!',
                     ),
                     array(
-                        Zend_Validate_Digits::NOT_DIGITS => 'Nhập số !!!'
+                        Zend_Validate_Digits::NOT_DIGITS => '* Nhập số !!!'
                     )
                 )
             ),
 
-           /* 'compatible' => array(
+            /* 'compatible' => array(
                 new Zend_Validate_NotEmpty(),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
@@ -92,7 +92,7 @@ class Model_Product extends Zend_Db_Table
                 new Zend_Validate_NotEmpty(),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
-                        Zend_Validate_NotEmpty::IS_EMPTY => 'Vui lòng thông tin mô tả !!!'
+                        Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng thông tin mô tả !!!'
                     )
                 )
             ),
@@ -135,40 +135,53 @@ class Model_Product extends Zend_Db_Table
         $row = $this->createRow($arrParam);
         $row->save();
         return $row;*/
+        $result = null;
         $input = new Zend_Filter_Input($this->_filter, $this->_validate, $arrParam, $this->_option);
         if ($input->isValid()) {
             $row = $this->createRow($arrParam);
             $row->save();
-            return $row;
+            $result = true;
         } else {
             if ($input->hasInvalid() || $input->hasMissing()) {
                 $messages = $input->getMessages();
-                return $messages;
+                $result = $messages;
             }
         }
+        return $result;
     }
 
     public function editItem($arrParam)
     {
-        $where = 'id = ' . $arrParam['id'];
-        $row = $this->fetchRow($where);
-        $row->product_code = $arrParam['product_code'];
-        $row->name = $arrParam['name'];
-        $row->brand_id = $arrParam['brand_id'];
-        $row->category_id = $arrParam['category_id'];
-        $row->price = $arrParam['price'];
-        $row->description = $arrParam['description'];
-        $row->quantily = $arrParam['quantily'];
-        $row->admin_id = $arrParam['admin_id'];
-        $row->charging_port = $arrParam['charging_port'];
-        $row->size = $arrParam['size'];
-        $row->weight = $arrParam['weight'];
-        $row->jack = $arrParam['jack'];
-        $row->length = $arrParam['length'];
-        $row->control = $arrParam['control'];
-        $row->compatible = $arrParam['compatible'];
-        $row->update_date = date('Y-m-d H:i:s');
-        $row->save();
+        $result = null;
+        $input = new Zend_Filter_Input($this->_filter, $this->_validate, $arrParam, $this->_option);
+        if ($input->isValid()) {
+            $where = 'id = ' . $arrParam['id'];
+            $row = $this->fetchRow($where);
+            $row->product_code = $arrParam['product_code'];
+            $row->name = $arrParam['name'];
+            $row->brand_id = $arrParam['brand_id'];
+            $row->category_id = $arrParam['category_id'];
+            $row->price = $arrParam['price'];
+            $row->description = $arrParam['description'];
+            $row->quantily = $arrParam['quantily'];
+            $row->admin_id = $arrParam['admin_id'];
+            $row->charging_port = $arrParam['charging_port'];
+            $row->size = $arrParam['size'];
+            $row->weight = $arrParam['weight'];
+            $row->jack = $arrParam['jack'];
+            $row->length = $arrParam['length'];
+            $row->control = $arrParam['control'];
+            $row->compatible = $arrParam['compatible'];
+            $row->update_date = date('Y-m-d H:i:s');
+            $row->save();
+            $result = $row;
+        } else {
+            if ($input->hasInvalid() || $input->hasMissing()) {
+                $messages = $input->getMessages();
+                $result = $messages;
+            }
+        }
+        return $result;
     }
 
     public function hideItem($arrParam)
@@ -192,6 +205,4 @@ class Model_Product extends Zend_Db_Table
         $row->save();
         return $row;
     }
-
-
 }

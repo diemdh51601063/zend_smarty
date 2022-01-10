@@ -37,11 +37,38 @@
                     <a href="{{$this->url(['controller' => 'brand', 'action' => 'update'])}}?id={$brand.id}">
                         <button class="btn btn-primary button_width" style="margin-right: 10px">Cập nhật</button>
                     </a>
-                    <button class="btn btn-danger button_width">Ẩn</button>
+                    {if $category.status == 1 }
+                        <button class="btn-sm btn-danger button_width" data-toggle="modal" data-target="#hideBrandModal">Ẩn
+                        </button>
+                    {else}
+                        <a href="{{$this->url(['controller' => 'category', 'action' => 'show'])}}?id={$category.id}">
+                            <button class="btn-sm btn-info button_width">Hiển thị</button></a>
+                    {/if}
                 </td>
             </tr>
         {/foreach}
     </tbody>
 </table>
 
+
+<div class="modal fade" id="hideBrandModal" tabindex="-1" role="dialog" aria-labelledby="hideBrandModallabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="hideBrandModallabel">Ẩn Thương Hiệu ?</h5>
+                {*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>*}
+            </div>
+            <div class="modal-body">
+                <p>.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <a href="#" id="hideBrand"><button type="button" class="btn btn-primary">Xác nhận</button></a>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript" charset="UTF-8" src="../../asset/admin/js/table_brand.js"></script>

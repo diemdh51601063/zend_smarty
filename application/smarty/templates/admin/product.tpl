@@ -40,8 +40,8 @@
                         </button>
                     </a>
                     {if $item.status == 1 }
-                        <button onclick="setIDProductToRemove({$item.id})" class="btn btn-danger button_width"
-                            data-toggle="modal" data-target="#exampleModal">Ẩn
+                        <button onclick="setIDProductToHide({$item.id})" class="btn btn-danger button_width"
+                            data-toggle="modal" data-target="#hideProductModal">Ẩn
                         </button>
                     {else}
                         <a href="{{$this->url(['controller' => 'product', 'action' => 'show'])}}?id={$item.id}">
@@ -52,12 +52,12 @@
         {/foreach}
     </tbody>
 </table>
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="hideProductModal" tabindex="-1" role="dialog" aria-labelledby="hideProductModallabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ẩn Sản Phẩm ?</h5>
+                <h5 class="modal-title" id="hideProductModallabel">Ẩn Sản Phẩm Khỏi Trang Người Dùng?</h5>
                 {*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>*}
@@ -74,7 +74,7 @@
 <script>
     let id = '';
 
-    function setIDProductToRemove(id_product) {
+    function setIDProductToHide(id_product) {
         id = id_product;
         $("#hideProduct").attr('href', '{{$this->url(['controller' => 'product', 'action' => 'hide'])}}?id='+id);
     }

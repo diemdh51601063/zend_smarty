@@ -12,18 +12,31 @@ class Model_Brand extends Zend_Db_Table
     public function init()
     {
         $this->_filter = array(
-            'id' => array('Int'),
+            'id' => array('Int')
         );
 
         $this->_validate = array(
             'brand_name' => array(
                 new Zend_Validate_NotEmpty(),
+                new Zend_Validate_Alnum(),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
-                        Zend_Validate_NotEmpty::IS_EMPTY => 'Vui lòng nhập tên thương hiệu !!!'
+                        Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng nhập tên thương hiệu !!!'
+                    ),
+                    array(
+                        Zend_Validate_Alnum::NOT_ALNUM => '* Vui lòng nhập tên thương hiệu hợp lệ !!!'
                     )
                 )
-            )
+            ),
+            'description' => array(
+                new Zend_Validate_Alnum(),
+                Zend_Filter_Input::MESSAGES => array(
+                    array(
+                        Zend_Validate_Alnum::NOT_ALNUM => '* Vui lòng nhập mô tả thương hiệu hợp lệ !!!'
+                    )
+                )
+            ),
+
         );
     }
 
@@ -53,7 +66,7 @@ class Model_Brand extends Zend_Db_Table
         } else {
             if ($input->hasInvalid() || $input->hasMissing()) {
                 $messages = $input->getMessages();
-                $result[] = $messages;
+                $result = $messages;
             }
         }
 
@@ -71,9 +84,9 @@ class Model_Brand extends Zend_Db_Table
             $row->image = $arrParam['image'];
             $row->description = $arrParam['description'];
             $row->admin_id = $arrParam['admin_id'];
-            $row->last_update = date('Y-m-d H:i:s');
+            $row->update_date = date('Y-m-d H:i:s');
             $row->save();
-            $result = $row;
+            $result = true;
         } else {
             if ($input->hasInvalid() || $input->hasMissing()) {
                 $messages = $input->getMessages();
@@ -83,12 +96,12 @@ class Model_Brand extends Zend_Db_Table
         return $result;
     }
 
-    public function deleteItem($arrParam)
+    public function hideItem($arrParam)
     {
         $where = 'id = ' . $arrParam['id'];
         $row = $this->fetchRow($where);
         $row->status = 0;
-        $row->last_update = date('Y-m-d H:i:s');
+        $row->update_date = date('Y-m-d H:i:s');
         $row->save();
     }
 }

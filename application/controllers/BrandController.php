@@ -5,7 +5,7 @@ class BrandController extends Zend_Controller_Action
     protected $_arrParam;
     protected $_currentController;
     protected $_actionMain;
-    
+
     public function init()
     {
         $this->_helper->layout->setLayout('layout_admin');
@@ -18,10 +18,10 @@ class BrandController extends Zend_Controller_Action
         $this->view->currentController = $this->_currentController;
         $this->view->actionMain = $this->_actionMain;
 
-        if(Zend_Session::sessionExists() == true){
-            if(isset($_SESSION['adminSessionNamespace'])){
+        if (Zend_Session::sessionExists() == true) {
+            if (isset($_SESSION['adminSessionNamespace'])) {
                 $this->view->admin = $_SESSION['adminSessionNamespace']['admin'];
-            }else{
+            } else {
                 $this->redirect('/admin/login');
             }
         }
@@ -35,22 +35,19 @@ class BrandController extends Zend_Controller_Action
 
         if ($this->_request->isPost()) {
             try {
-               $this->_arrParam['admin_id'] = $_SESSION['adminSessionNamespace']['admin']['id'];
+                $this->_arrParam['admin_id'] = $_SESSION['adminSessionNamespace']['admin']['id'];
                 if ($_FILES["brand_image"]["name"] != "") {
                     $brand_image = $this->getUploadImages();
-                    $this->_arrParam['brand_image'] = $brand_image;
+                    $this->_arrParam['image'] = $brand_image;
                 }
                 $model = new Model_Brand();
                 $add = $model->addItem($this->_arrParam);
-                //var_dump($add);
-                //die;
-                if($add === true){
+                if ($add === true) {
                     $this->redirect('/admin/brand');
-                }else{
+                } else {
                     $this->view->assign('error_input', $add);
                     $this->view->assign('error_value', $this->_arrParam);
                 }
-
             } catch (Exception $e) {
                 var_dump($e->getMessage());
             }
@@ -68,16 +65,23 @@ class BrandController extends Zend_Controller_Action
             try {
                 $this->_arrParam['admin_id'] = $_SESSION['adminSessionNamespace']['admin']['id'];
                 if ($_FILES["brand_image"]["name"] != "") {
-                    $brand_image = $this->getUploadImages();
-                    $this->_arrParam['brand_image'] = $brand_image;
+                    if ($detail_brand['image'] !== "") {
+                        $brand_image = BRAND_IMAGE_PATH . '/' . $detail_brand['image'];
+                        if (file_exists($brand_image)) {
+                            unlink($brand_image);
+                        }
+                    }
+
+                    $brand_update_image = $this->getUploadImages();
+                    $this->_arrParam['image'] = $brand_update_image;
                 }
 
                 $update = $brand_model->editItem($this->_arrParam);
-                if(empty($update['id'])){
+                if ($update === true) {
+                    $this->redirect('/admin/brand');
+                } else {
                     $this->view->assign('error_input', $update);
                     $this->view->assign('error_value', $this->_arrParam);
-                }else{
-                    $this->redirect('/admin/brand');
                 }
             } catch (Exception $e) {
                 var_dump($e->getMessage());
