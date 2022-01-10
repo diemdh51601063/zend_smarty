@@ -32,27 +32,57 @@ class BrandController extends Zend_Controller_Action
     {
         $title = 'Thêm Thương Hiệu';
         $this->view->assign('title', $title);
+
         if ($this->_request->isPost()) {
             try {
-                $this->_arrParam['admin_id'] = '1';
+               $this->_arrParam['admin_id'] = $_SESSION['adminSessionNamespace']['admin']['id'];
                 if ($_FILES["brand_image"]["name"] != "") {
                     $brand_image = $this->getUploadImages();
                     $this->_arrParam['brand_image'] = $brand_image;
                 }
                 $model = new Model_Brand();
-                $model->addItem($this->_arrParam);
-                $this->redirect('/admin/brand');
+                $add = $model->addItem($this->_arrParam);
+                //var_dump($add);
+                //die;
+                if($add === true){
+                    $this->redirect('/admin/brand');
+                }else{
+                    $this->view->assign('error_input', $add);
+                    $this->view->assign('error_value', $this->_arrParam);
+                }
+
             } catch (Exception $e) {
                 var_dump($e->getMessage());
-                //die;
             }
         }
     }
 
     public function updateAction()
     {
+        $brand_model = new Model_Brand();
+        $detail_brand = $brand_model->getItem($this->_arrParam['id']);
         $title = 'Cập Nhật Thông Tin Thương Hiệu';
         $this->view->assign('title', $title);
+        $this->view->assign('detail_brand', $detail_brand);
+        if ($this->_request->isPost()) {
+            try {
+                $this->_arrParam['admin_id'] = $_SESSION['adminSessionNamespace']['admin']['id'];
+                if ($_FILES["brand_image"]["name"] != "") {
+                    $brand_image = $this->getUploadImages();
+                    $this->_arrParam['brand_image'] = $brand_image;
+                }
+
+                $update = $brand_model->editItem($this->_arrParam);
+                if(empty($update['id'])){
+                    $this->view->assign('error_input', $update);
+                    $this->view->assign('error_value', $this->_arrParam);
+                }else{
+                    $this->redirect('/admin/brand');
+                }
+            } catch (Exception $e) {
+                var_dump($e->getMessage());
+            }
+        }
     }
 
     public function detailAction()

@@ -1,41 +1,91 @@
 <?php
-class Model_Brand extends Zend_Db_Table{
+
+class Model_Brand extends Zend_Db_Table
+{
     protected $_name = 'brands';
     protected $_primary = 'id';
 
-    public function getItem($id){
-        $where = 'id = '.$id;
+    protected $_filter = null;
+    protected $_validate = null;
+    protected $_option = null;
+
+    public function init()
+    {
+        $this->_filter = array(
+            'id' => array('Int'),
+        );
+
+        $this->_validate = array(
+            'brand_name' => array(
+                new Zend_Validate_NotEmpty(),
+                Zend_Filter_Input::MESSAGES => array(
+                    array(
+                        Zend_Validate_NotEmpty::IS_EMPTY => 'Vui lòng nhập tên thương hiệu !!!'
+                    )
+                )
+            )
+        );
+    }
+
+    public function getItem($id)
+    {
+        $where = 'id = ' . $id;
         $detail = $this->fetchRow($where);
         return $detail;
     }
 
-    public function getListItem(){
+    public function getListItem()
+    {
         $list_result = $this->fetchAll()->toArray();
         return $list_result;
     }
 
-    public function addItem($arrParam){
-        $row = $this->fetchNew();
-        $row->brand_name = $arrParam['brand_name'];
-        $row->image = $arrParam['brand_image'];
-        $row->description = $arrParam['brand_description'];
-        $row->admin_id = $arrParam['admin_id'];
-        $row->save();
+    public function addItem($arrParam)
+    {
+        $input = new Zend_Filter_Input($this->_filter, $this->_validate, $arrParam, $this->_option);
+
+        $result = null;
+
+        if ($input->isValid()) {
+            $row = $this->createRow($arrParam);
+            $row->save();
+            $result = true;
+        } else {
+            if ($input->hasInvalid() || $input->hasMissing()) {
+                $messages = $input->getMessages();
+                $result[] = $messages;
+            }
+        }
+
+        return $result;
     }
 
-    public function editItem($arrParam){
-        $where = 'id = '.$arrParam['id'];
-        $row = $this->fetchRow($where);
-        $row->brand_name = $arrParam['brand_name'];
-        $row->image = $arrParam['image'];
-        $row->description = $arrParam['description'];
-        $row->admin_id = $arrParam['admin_id'];
-        $row->last_update = date('Y-m-d H:i:s');
-        $row->save();
+    public function editItem($arrParam)
+    {
+        $result = null;
+        $input = new Zend_Filter_Input($this->_filter, $this->_validate, $arrParam, $this->_option);
+        if ($input->isValid()) {
+            $where = 'id = ' . $arrParam['id'];
+            $row = $this->fetchRow($where);
+            $row->brand_name = $arrParam['brand_name'];
+            $row->image = $arrParam['image'];
+            $row->description = $arrParam['description'];
+            $row->admin_id = $arrParam['admin_id'];
+            $row->last_update = date('Y-m-d H:i:s');
+            $row->save();
+            $result = $row;
+        } else {
+            if ($input->hasInvalid() || $input->hasMissing()) {
+                $messages = $input->getMessages();
+                $result = $messages;
+            }
+        }
+        return $result;
     }
 
-    public function deleteItem($arrParam){
-        $where = 'id = '.$arrParam['id'];
+    public function deleteItem($arrParam)
+    {
+        $where = 'id = ' . $arrParam['id'];
         $row = $this->fetchRow($where);
         $row->status = 0;
         $row->last_update = date('Y-m-d H:i:s');

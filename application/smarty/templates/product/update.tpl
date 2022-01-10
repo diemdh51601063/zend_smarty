@@ -47,14 +47,8 @@
         onsubmit="onSubmitForm('{{$this->url(['controller' => 'product', 'action' => 'update'])}}?id={$detail_product.id}')"
         method="post" id="formAdd" enctype="multipart/form-data">
 
-        {if isset($error_input)}
-            {if !empty($error_input)}
-                <p class="err_input my-3">Vui Lòng nhập đúng thông tin</p>
-            {/if}
-        {/if}
-
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Tên Sản Phẩm</label>
+            <label class="col-sm-2 col-form-label">Tên Sản Phẩm<span class="text-danger">*</span></label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="name" name="name" value="{$detail_product.name}" required>
             </div>
@@ -69,7 +63,7 @@
         <div class="form-group row">
             <div class="col-sm-6">
                 <div class="form-group row">
-                    <label class="col-sm-4 col-form-label">Danh Mục</label>
+                    <label class="col-sm-4 col-form-label">Danh Mục<span class="text-danger">*</span></label>
                     <div class="col-sm-8">
                         <select class="form-control" id="category_id" name="category_id" required>
                             {foreach $list_category as $category}
@@ -84,7 +78,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-4 col-form-label">Giá</label>
+                    <label class="col-sm-4 col-form-label">Giá<span class="text-danger">*</span></label>
                     <div class="col-sm-8">
                         <input type="number" class="form-control" id="price" name="price"
                             value="{$detail_product.price}" required>
@@ -113,7 +107,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-4 col-form-label">Điều khiển</label>
+                    <label class="col-sm-4 col-form-label">Điều khiển <span class="text-danger">*</span></label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" id="control" name="control"
                             value="{$detail_product.control}">
@@ -122,7 +116,7 @@
             </div>
             <div class="col-sm-6">
                 <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Thương Hiệu</label>
+                    <label class="col-sm-3 col-form-label">Thương Hiệu <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
                         <select class="form-control" id="brand_id" name="brand_id" required>
                             {foreach $list_brand as $brand}
@@ -138,7 +132,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-3 col-form-label text-right">Số lượng</label>
+                    <label class="col-sm-3 col-form-label text-right">Số lượng <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
                         <input type="number" class="form-control" id="quantily" name="quantily"
                             value="{$detail_product.quantily}" required>
@@ -164,15 +158,14 @@
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label text-right">Tương thích</label>
                     <div class="col-sm-9">
-                        <textarea rows="3" class="form-control" id="compatible" name="compatible"
-                            required>{$detail_product.size}</textarea>
+                        <textarea rows="3" class="form-control" id="compatible" name="compatible">{$detail_product.compatible}</textarea>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Mô tả</label>
+            <label class="col-sm-2 col-form-label">Mô tả <span class="text-danger">*</span></label>
             <div class="col-sm-10">
                 <textarea rows="3" class="form-control" id="description"
                     name="description">{$detail_product.description}</textarea>
@@ -229,21 +222,21 @@
                 <div class="form-group row mx-2">
                     <div class="col-sm-4">
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Màu sắc</label>
+                            <label class="col-sm-4 col-form-label">Màu sắc <span class="text-danger">*</span></label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" id="detail_color"
                                     name="detail_color[{$type_product.id}]" value="{$type_product.color}">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Giá</label>
+                            <label class="col-sm-4 col-form-label">Giá <span class="text-danger">*</span></label>
                             <div class="col-sm-8">
                                 <input type="number" class="form-control" id="detail_price"
                                     name="detail_price[{$type_product.id}]" value="{$type_product.price}">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Số lượng</label>
+                            <label class="col-sm-4 col-form-label">Số lượng <span class="text-danger">*</span></label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" id="detail_quantily"
                                     name="detail_quantily[{$type_product.id}]" value="{$type_product.quantily}">

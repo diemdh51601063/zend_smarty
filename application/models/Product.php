@@ -1,21 +1,120 @@
 <?php
-class Model_Product extends Zend_Db_Table{
+
+class Model_Product extends Zend_Db_Table
+{
     protected $_name = 'products';
     protected $_primary = 'id';
+    protected $_filter = null;
+    protected $_validate = null;
+    protected $_option = null;
 
-    public function getListItem(){
+
+    public function init()
+    {
+        $this->_filter = array(
+            'id' => array('Int'),
+        );
+
+        $this->_validate = array(
+            'name' => array(
+                new Zend_Validate_NotEmpty(),
+                Zend_Filter_Input::MESSAGES => array(
+                    array(
+                        Zend_Validate_NotEmpty::IS_EMPTY => 'Vui lòng nhập tên sản phẩm !!!'
+                    )
+                )
+            ),
+
+            'category_id' => array(
+                new Zend_Validate_Db_RecordExists(
+                    array(
+                        'table' => 'categories',
+                        'field' => 'id'
+                    )
+                ),
+                Zend_Filter_Input::MESSAGES => array(
+                    array(
+                        Zend_Validate_Db_RecordExists::ERROR_NO_RECORD_FOUND => 'Vui lòng chọn đúng danh mục !!!'
+                    )
+                )
+            ),
+
+            'brand_id' => array(
+                new Zend_Validate_Db_RecordExists(
+                    array(
+                        'table' => 'brands',
+                        'field' => 'id'
+                    )
+                ),
+                Zend_Filter_Input::MESSAGES => array(
+                    array(
+                        Zend_Validate_Db_RecordExists::ERROR_NO_RECORD_FOUND => 'Vui lòng chọn đúng thương hiệu !!!'
+                    )
+                )
+            ),
+
+            'price' => array(
+                new Zend_Validate_GreaterThan(array('min' => 0)),
+                new Zend_Validate_Digits(),
+                Zend_Filter_Input::MESSAGES => array(
+                    array(
+                        Zend_Validate_GreaterThan::NOT_GREATER => 'Vui lòng nhập giá sản phẩm hợp lệ !!!',
+                    ),
+                    array(
+                        Zend_Validate_Digits::NOT_DIGITS => 'Nhập số !!!'
+                    )
+                )
+            ),
+
+            'quantily' => array(
+                new Zend_Validate_GreaterThan(array('min' => 0)),
+                new Zend_Validate_Digits(),
+                Zend_Filter_Input::MESSAGES => array(
+                    array(
+                        Zend_Validate_GreaterThan::NOT_GREATER => 'Vui lòng nhập số lượng sản phẩm hợp lệ !!!',
+                    ),
+                    array(
+                        Zend_Validate_Digits::NOT_DIGITS => 'Nhập số !!!'
+                    )
+                )
+            ),
+
+           /* 'compatible' => array(
+                new Zend_Validate_NotEmpty(),
+                Zend_Filter_Input::MESSAGES => array(
+                    array(
+                        Zend_Validate_NotEmpty::IS_EMPTY => 'Vui lòng thông tin tương thích !!!'
+                    )
+                )
+            ),*/
+
+            'description' => array(
+                new Zend_Validate_NotEmpty(),
+                Zend_Filter_Input::MESSAGES => array(
+                    array(
+                        Zend_Validate_NotEmpty::IS_EMPTY => 'Vui lòng thông tin mô tả !!!'
+                    )
+                )
+            ),
+        );
+    }
+
+    public function getListItem()
+    {
         $order = "id ASC";
         $list_result = $this->fetchAll(null, $order)->toArray();
         return $list_result;
     }
 
-    public function getItemDetail($id){
-        $where = 'id = '.$id;
+    public function getItemDetail($id)
+    {
+        $where = 'id = ' . $id;
         $detail = $this->fetchRow($where);
         return $detail;
     }
 
-    public function addItem($arrParam){
+    public function addItem($arrParam)
+    {
         /*$row = $this->fetchNew();
         $row->product_code = $arrParam['product_code'];
         $row->name = $arrParam['product_name'];
@@ -32,14 +131,26 @@ class Model_Product extends Zend_Db_Table{
         $row->control = $arrParam['control'];
         $row->compatible = $arrParam['compatible'];
         //$row->warranty_id = $arrParam['warranty_id'];
-        $row->admin_id = $arrParam['admin_id'];*/
+        $row->admin_id = $arrParam['admin_id'];
         $row = $this->createRow($arrParam);
         $row->save();
-        return $row;
+        return $row;*/
+        $input = new Zend_Filter_Input($this->_filter, $this->_validate, $arrParam, $this->_option);
+        if ($input->isValid()) {
+            $row = $this->createRow($arrParam);
+            $row->save();
+            return $row;
+        } else {
+            if ($input->hasInvalid() || $input->hasMissing()) {
+                $messages = $input->getMessages();
+                return $messages;
+            }
+        }
     }
 
-    public function editItem($arrParam){
-        $where = 'id = '.$arrParam['id'];
+    public function editItem($arrParam)
+    {
+        $where = 'id = ' . $arrParam['id'];
         $row = $this->fetchRow($where);
         $row->product_code = $arrParam['product_code'];
         $row->name = $arrParam['name'];
@@ -56,13 +167,13 @@ class Model_Product extends Zend_Db_Table{
         $row->length = $arrParam['length'];
         $row->control = $arrParam['control'];
         $row->compatible = $arrParam['compatible'];
-       // $row->setFromArray($arrParam);
         $row->update_date = date('Y-m-d H:i:s');
         $row->save();
     }
 
-    public function hideItem($arrParam){
-        $where = 'id = '.$arrParam['id'];
+    public function hideItem($arrParam)
+    {
+        $where = 'id = ' . $arrParam['id'];
         $row = $this->fetchRow($where);
         $row->status = 0;
         $row->admin_id = $arrParam['admin_id'];
@@ -71,8 +182,9 @@ class Model_Product extends Zend_Db_Table{
         return $row;
     }
 
-    public function showItem($arrParam){
-        $where = 'id = '.$arrParam['id'];
+    public function showItem($arrParam)
+    {
+        $where = 'id = ' . $arrParam['id'];
         $row = $this->fetchRow($where);
         $row->status = 1;
         $row->admin_id = $arrParam['admin_id'];
@@ -80,4 +192,6 @@ class Model_Product extends Zend_Db_Table{
         $row->save();
         return $row;
     }
+
+
 }

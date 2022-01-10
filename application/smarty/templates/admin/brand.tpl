@@ -34,7 +34,9 @@
                 <td>{if $brand.image != '' } <img src="../../asset/images/brands/{{$brand.image}}" width="50px" height="40px">{/if}</td>
                 <td>{$brand.brand_name}</td>
                 <td>
-                    <button class="btn btn-primary button_width" style="margin-right: 10px">Cập nhật</button>
+                    <a href="{{$this->url(['controller' => 'brand', 'action' => 'update'])}}?id={$brand.id}">
+                        <button class="btn btn-primary button_width" style="margin-right: 10px">Cập nhật</button>
+                    </a>
                     <button class="btn btn-danger button_width">Ẩn</button>
                 </td>
             </tr>

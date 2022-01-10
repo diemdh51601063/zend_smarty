@@ -1,25 +1,32 @@
 <!-- Sidebar -->
+
+<style>
+    .menu_active {
+        background-color: #d90000;
+        color: #fff;
+    }
+</style>
 <nav id="sidebar">
-    <ul class="list-unstyled components">
-        {* <li class="active"> *}
+    <ul class="list-unstyled components ">
+        {*<li class="active"> *}
         <p><a href="{$this->url(['controller' => 'admin', 'action' => 'index'])}">MENU</a></p>
         <li>
             <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Đơn Hàng</a>
-            <ul class="collapse list-unstyled" id="homeSubmenu">
+            <ul class="collapse list-unstyled " id="homeSubmenu">
                 <li>
-                    <a onclick="listOrder(1)" href="{$this->url(['controller' => 'admin', 'action' => 'order'])}?type=1">Chưa
+                    <a href="{$this->url(['controller' => 'admin', 'action' => 'order'])}?type=1">Chưa
                         xác nhận</a>
                 </li>
                 <li>
-                    <a onclick="listOrder(2)" href="{$this->url(['controller' => 'admin', 'action' => 'order'])}?type=1">Đã xác
+                    <a onclick="" href="{$this->url(['controller' => 'admin', 'action' => 'order'])}?type=2">Đã xác
                         nhận</a>
                 </li>
                 <li>
-                    <a onclick="listOrder(3)" href="{$this->url(['controller' => 'admin', 'action' => 'order'])}?type=1">Đã
+                    <a onclick="" href="{$this->url(['controller' => 'admin', 'action' => 'order'])}?type=3">Đã
                         hủy</a>
                 </li>
                 <li>
-                    <a onclick="listOrder(4)" href="{$this->url(['controller' => 'admin', 'action' => 'order'])}?type=1">Hoàn
+                    <a onclick="" href="{$this->url(['controller' => 'admin', 'action' => 'order'])}?type=4">Hoàn
                         tất</a>
                 </li>
             </ul>
@@ -67,19 +74,18 @@
 </nav>
 
 <script>
-    function listOrder(type) {
-        switch (type) {
-            case 1:
-                {assign var="type_list" value=1 };
-                break;
-            case 2:
-                {assign var="type_list" value=2 };
-                break;
-            case 3:
-                {assign var="type_list" value=3 };
-                break;
-            default:
-                {assign var="type_list" value=4 };
-        }
-    }
+    $(document).ready(function () {
+        var full_href = window.location.pathname;
+        var url = window.location.search;
+        var active_url = full_href + url;
+
+        $('#sidebar ul li').each(function () {
+            //console.log($(this).children('a').attr('href') == active_url);
+            if ($(this).children('a').attr('href') == active_url) {
+                $(this).children('a').addClass('menu_active');
+                var this_parent = $(this).parent('ul').parent().find('a');
+                this_parent[0].click();
+            }
+        });
+    });
 </script>
