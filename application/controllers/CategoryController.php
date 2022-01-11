@@ -14,6 +14,8 @@ class CategoryController extends Zend_Controller_Action
         $this->_currentController = '/' . $this->_arrParam['controller'];
         $this->_actionMain = '/' . $this->_arrParam['controller'] . '/index';
 
+        $this->_arrParam = $this->filterInput($this->_arrParam);
+
         $this->view->arrParam = $this->_arrParam;
         $this->view->currentController = $this->_currentController;
         $this->view->actionMain = $this->_actionMain;
@@ -30,9 +32,6 @@ class CategoryController extends Zend_Controller_Action
 
     public function addAction()
     {
-        $filter = new Zend_Filter_StripTags();
-        $this->_arrParam['category_name'] = $filter->filter( $this->_arrParam['category_name']);
-
         $title = 'Thêm Danh Mục';
         $this->view->assign('title', $title);
         if ($this->_request->isPost()) {
@@ -63,8 +62,6 @@ class CategoryController extends Zend_Controller_Action
         $this->view->assign('title', $title);
         
         if ($this->_request->isPost()) {
-            $filter = new Zend_Filter_StripTags();
-            $this->_arrParam['category_name'] = $filter->filter( $this->_arrParam['category_name']);
             try {
                 $this->_arrParam['admin_id'] = $_SESSION['adminSessionNamespace']['admin']['id'];
                 
@@ -79,5 +76,34 @@ class CategoryController extends Zend_Controller_Action
                 var_dump($e->getMessage());
             }
         }
+    }
+
+    public function deleteAction()
+    {
+        $category_model = new Model_Category();
+        try {
+            $delete = $category_model->deleteItem($this->_arrParam['id']);
+            $this->_helper->layout->disableLayout();
+            $this->_helper->viewRenderer->setNoRender(TRUE);
+            $data = array(
+                'result' => $delete
+            );
+            $this->_helper->json($data);
+        } catch (Exception $e) {
+            var_dump($e->getMessage());
+        }
+    }
+
+    public function filterInput($arrParam)
+    {
+        $filter = new Zend_Filter_StripTags();
+        foreach ($arrParam as $key => $value) {
+            if ($key == "category_name") {
+                $arrParam[$key] = $filter->filter($arrParam[$key]);
+                $arrParam[$key] = preg_replace("/[^a-z0-9A-Z_[:space:]ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂ ưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]/u", "",  $arrParam[$key]);
+                // $arrParam[$key] = preg_replace("/[^a-z0-9A-Z_\x{00C0}-\x{00FF}\x{1EA0}-\x{1EFF}]/u", "",  $arrParam[$key]);
+            }
+        }
+        return $arrParam;
     }
 }

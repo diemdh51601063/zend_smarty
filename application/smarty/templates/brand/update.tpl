@@ -18,9 +18,7 @@
         color: black;
     }
 </style>
-{if isset($error_input) }
-    {$error_input|@var_dump}
-{/if}
+
 <h3 style="text-align: center;">{$this->title}</h3>
 <div class="mx-5" style="background-color: white; padding: 10px; border-radius: 10px;">
     <form class="mx-5 my-5"
@@ -44,6 +42,11 @@
             <label class="col-sm-2 col-form-label">Hình ảnh</label>
             <div class="col-sm-10 upload_image">
                 <input type="file" class="form-control-file" id="brand_image" name="brand_image">
+                {if isset($error_image)}
+                    {foreach $error_image as $err}
+                        <span class="err_input my-3">{$err}</span><br>
+                    {/foreach}
+                {/if}
             </div>
             <div class="row">
                 <div class="col-md-12 brand_image_file"></div>

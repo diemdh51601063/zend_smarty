@@ -39,6 +39,9 @@
         margin-top: 10px;
     }
 </style>
+{if isset($error_input) }
+    {$error_input|@var_dump}
+{/if}
 
 <h3 class="title_content">{$this->title}</h3>
 
@@ -50,9 +53,6 @@
             <label class="col-sm-2 col-form-label">Tên Sản Phẩm<span class="text-danger">*</span></label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="name" name="name" value="{$detail_product.name}" required>
-                {if isset($error_input.name) }
-                    <span class="err_input my-3">{$error_input.name.isEmpty}</span>
-                {/if}
             </div>
         </div>
 
@@ -77,9 +77,6 @@
                                 {/if}
                             {/foreach}
                         </select>
-                        {if isset($error_input.category_id) }
-                            <span class="err_input my-3">{$error_input.category_id.noRecordFound}</span>
-                        {/if}
                     </div>
                 </div>
 
@@ -87,11 +84,6 @@
                     <label class="col-sm-4 col-form-label">Giá<span class="text-danger">*</span></label>
                     <div class="col-sm-8">
                         <input type="number" class="form-control" id="price" name="price" value="{$detail_product.price}" required>
-                        {if isset($error_input.price) }
-                            {foreach $error_input.price as $err}
-                                <span class="err_input my-3">{$err}</span><br>
-                            {/foreach}
-                        {/if}
                     </div>
                 </div>
 
@@ -137,9 +129,6 @@
                                 {/if}
                             {/foreach}
                         </select>
-                        {if isset($error_input.brand_id) }
-                            <span class="err_input my-3">{$error_input.brand_id.noRecordFound}</span>
-                        {/if}
                     </div>
                 </div>
 
@@ -147,11 +136,6 @@
                     <label class="col-sm-3 col-form-label text-right">Số lượng <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
                         <input type="number" class="form-control" id="quantily" name="quantily" value="{$detail_product.quantily}" required>
-                        {if isset($error_input.quantily) }
-                            {foreach $error_input.quantily as $err_quantily}
-                                <span class="err_input my-3">{$err_quantily}</span><br>
-                            {/foreach}
-                        {/if}
                     </div>
                 </div>
 
@@ -182,9 +166,6 @@
             <label class="col-sm-2 col-form-label">Mô tả <span class="text-danger">*</span></label>
             <div class="col-sm-10">
                 <textarea rows="3" class="form-control" id="description" name="description">{$detail_product.description}</textarea>
-                {if isset($error_input.description) }
-                    <span class="err_input my-3">{$error_input.description.isEmpty}</span>
-                {/if}
             </div>
         </div>
 
@@ -274,6 +255,36 @@
         if($('#number_type').val() === 0){
             $('#div_multiple_type').addClass('d-none');
         }
+        
+
+        {if isset($error_value) }
+            var err_value = {$error_value|json_encode};
+            $.each( err_value, function(key, value) {
+                $('.form-control').each(function () {
+                    if($(this).prop('id') == key){
+                        var id_div_input = '#'+key;
+                        $(id_div_input).val(value);
+                    }
+                });
+            });
+        {/if}
+
+        {if isset($error_input) }
+            var err_input = {$error_input|json_encode};
+            $.each( err_input, function(key, value) {
+                $('.form-control').each(function () {
+                    if($(this).prop('id') == key){
+                        var id_div_input = '#'+key;
+                        $.each( value, function(k, v) {
+                            console.log(k + ": " + v);
+                            $(id_div_input).addClass('input_error');
+                            $(id_div_input).after('<span class="err_input my-3">'+v+'</span><br>');
+                        })
+                    }
+                });
+            });
+        {/if}
+        
         var list_image = {$image_product|json_encode};
         var list_image_length = {$image_product|@count};
         if (list_image_length > 0) {

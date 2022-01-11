@@ -14,6 +14,8 @@ class BrandController extends Zend_Controller_Action
         $this->_currentController = '/' . $this->_arrParam['controller'];
         $this->_actionMain = '/' . $this->_arrParam['controller'] . '/index';
 
+        $this->_arrParam = $this->filterInput($this->_arrParam);
+        
         $this->view->arrParam = $this->_arrParam;
         $this->view->currentController = $this->_currentController;
         $this->view->actionMain = $this->_actionMain;
@@ -34,22 +36,19 @@ class BrandController extends Zend_Controller_Action
         $this->view->assign('title', $title);
 
         if ($this->_request->isPost()) {
-            $filter = new Zend_Filter_StripTags();
-            $this->_arrParam['brand_name'] = $filter->filter( $this->_arrParam['brand_name']);
-            $this->_arrParam['description'] = $filter->filter( $this->_arrParam['description']);
             try {
                 $this->_arrParam['admin_id'] = $_SESSION['adminSessionNamespace']['admin']['id'];
                 $brand_image = null;
                 $upload_image = true;
                 if ($_FILES["brand_image"]["name"] != "") {
                     $brand_image = $this->getUploadImages();
-                    if($brand_image['status'] === false){
+                    if ($brand_image['status'] === false) {
                         $upload_image = false;
-                    }else{
+                    } else {
                         $this->_arrParam['image'] = $brand_image[0];
                     }
                 }
-                if($upload_image === true){
+                if ($upload_image === true) {
                     $model = new Model_Brand();
                     $add = $model->addItem($this->_arrParam);
                     if ($add === true) {
@@ -58,7 +57,7 @@ class BrandController extends Zend_Controller_Action
                         $this->view->assign('error_input', $add);
                         $this->view->assign('error_value', $this->_arrParam);
                     }
-                }else{
+                } else {
                     $this->view->assign('error_image', $brand_image['error']);
                 }
             } catch (Exception $e) {
@@ -75,22 +74,12 @@ class BrandController extends Zend_Controller_Action
         $this->view->assign('title', $title);
         $this->view->assign('detail_brand', $detail_brand);
         if ($this->_request->isPost()) {
-            $filter = new Zend_Filter_StripTags();
-            $this->_arrParam['brand_name'] = $filter->filter( $this->_arrParam['brand_name']);
-            $this->_arrParam['description'] = $filter->filter( $this->_arrParam['description']);
             try {
                 $this->_arrParam['admin_id'] = $_SESSION['adminSessionNamespace']['admin']['id'];
-                if ((isset($_FILES["brand_image"])) && (!empty($_FILES["brand_image"]["name"]))) {
-                    if (!empty($detail_brand['image'])) {
-                        $brand_image = BRAND_IMAGE_PATH . '/' . $detail_brand['image'];
-                        if (file_exists($brand_image)) {
-                            unlink($brand_image);
-                        }
-                    }
-                    $brand_update_image = $this->getUploadImages();
-                    $this->_arrParam['image'] = $brand_update_image[0];
-                }
-                else if( (isset($this->_arrParam['delete_brand_image'])) && ($this->_arrParam['delete_brand_image'] == 1)){
+                $brand_image = null;
+                $upload_image = true;
+
+                if (empty($_FILES["brand_image"]["name"]) && (isset($this->_arrParam['delete_brand_image']))) {
                     if (!empty($detail_brand['image'])) {
                         $brand_image = BRAND_IMAGE_PATH . '/' . $detail_brand['image'];
                         if (file_exists($brand_image)) {
@@ -98,13 +87,32 @@ class BrandController extends Zend_Controller_Action
                         }
                     }
                     $this->_arrParam['image'] = '';
+                } else if ((isset($_FILES["brand_image"])) && (!empty($_FILES["brand_image"]["name"]))) {
+                    if (!empty($detail_brand['image'])) {
+                        $brand_image = BRAND_IMAGE_PATH . '/' . $detail_brand['image'];
+                        if (file_exists($brand_image)) {
+                            unlink($brand_image);
+                        }
+                    }
+                    $brand_update_image = $this->getUploadImages();
+
+                    if ($brand_update_image['status'] === false) {
+                        $upload_image = false;
+                    } else {
+                        $this->_arrParam['image'] = $brand_update_image[0];
+                    }
                 }
-                $update = $brand_model->editItem($this->_arrParam);
-                if ($update === true) {
-                    $this->redirect('/admin/brand');
+
+                if ($upload_image === true) {
+                    $update = $brand_model->editItem($this->_arrParam);
+                    if ($update === true) {
+                        $this->redirect('/admin/brand');
+                    } else {
+                        $this->view->assign('error_input', $update);
+                        $this->view->assign('error_value', $this->_arrParam);
+                    }
                 } else {
-                    $this->view->assign('error_input', $update);
-                    $this->view->assign('error_value', $this->_arrParam);
+                    $this->view->assign('error_image', $brand_update_image['error']);
                 }
             } catch (Exception $e) {
                 var_dump($e->getMessage());
@@ -112,10 +120,20 @@ class BrandController extends Zend_Controller_Action
         }
     }
 
-    public function detailAction()
+    public function deleteAction()
     {
-        $title = 'Thông Tin Chi Tiết Thương Hiệu';
-        $this->view->assign('title', $title);
+        $brand_model = new Model_Brand();
+        try {
+            $delete = $brand_model->deleteItem($this->_arrParam['id']);
+            $this->_helper->layout->disableLayout();
+            $this->_helper->viewRenderer->setNoRender(TRUE);
+            $data = array(
+                'result' => $delete
+            );
+            $this->_helper->json($data);
+        } catch (Exception $e) {
+            var_dump($e->getMessage());
+        }
     }
 
     public function getUploadImages()
@@ -124,7 +142,7 @@ class BrandController extends Zend_Controller_Action
         $file_adapter = new Zend_File_Transfer_Adapter_Http();
         $path = BRAND_IMAGE_PATH;
         $file_adapter->setDestination($path);
-        $size_validator = new Zend_Validate_File_Size(array('min' => 10, 'max' => 10000));
+        $size_validator = new Zend_Validate_File_Size(array('min' => 10, 'max' => '10MB'));
         $size_validator->setMessage('Dung lượng quá lớn !!!', Zend_Validate_File_Size::TOO_BIG);
         $size_validator->setMessage('Dung lượng quá nhỏ !!!', Zend_Validate_File_Size::TOO_SMALL);
         $extension_validator = new Zend_Validate_File_Extension('jpg,png,gif');
@@ -133,7 +151,7 @@ class BrandController extends Zend_Controller_Action
         $file_adapter->addValidator($size_validator);
         $file_upload = $file_adapter->getFileInfo();
         foreach ($file_upload as $key => $fileInfo) {
-            if ($fileInfo['name'] != ''){
+            if ($fileInfo['name'] != '') {
                 $path_info = pathinfo($fileInfo['name']);
                 $file_name = $path_info['filename'];
                 $ext = $path_info['extension'];
@@ -144,10 +162,23 @@ class BrandController extends Zend_Controller_Action
             }
         }
         $messages = $file_adapter->getMessages();
-        if(count($messages)){
+        if (count($messages)) {
             $brand_image['status'] = false;
             $brand_image['error'] = $messages;
         }
         return $brand_image;
+    }
+
+    public function filterInput($arrParam)
+    {
+        $filter = new Zend_Filter_StripTags();
+        foreach ($arrParam as $key => $value) {
+            if (($key == "brand_name") || ($key == "description")) {
+                $arrParam[$key] = $filter->filter($arrParam[$key]);
+                $arrParam[$key] = preg_replace("/[^a-z0-9A-Z_[:space:]ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂ ưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]/u", "",  $arrParam[$key]);
+                // $arrParam[$key] = preg_replace("/[^a-z0-9A-Z_\x{00C0}-\x{00FF}\x{1EA0}-\x{1EFF}]/u", "",  $arrParam[$key]);
+            }
+        }
+        return $arrParam;
     }
 }

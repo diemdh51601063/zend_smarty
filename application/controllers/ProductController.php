@@ -38,6 +38,11 @@ class ProductController extends Zend_Controller_Action
         $this->view->assign('listCategory', $list_category);
         $this->view->assign('listBrand', $list_brand);
         if ($this->_request->isPost()) {
+            // echo "<pre>";
+            // print_r($this->_arrParam);
+            // print_r($_FILES);
+            // echo "</pre>";
+            // die;
             $product_model = new Model_Product();
             $product_image_model = new Model_ProductImage();
             $product_detail_model = new Model_ProductDetail();
@@ -83,19 +88,16 @@ class ProductController extends Zend_Controller_Action
                                 $add_detail_image['product_detail_id'] = $new_product_detail['product_detail_type_id'];
                                 $add_detail_image['list_detail_image'] = $list_detail_product_image[$i];
                                 $product_image_model->addImageDetailProduct($add_detail_image);
-                            }else{
+                            } else {
                                 $list_detail_error_input[$i] = $new_product_detail;
                             }
                         }
                     }
-                    /*echo"<pre>";
-                    print_r($list_detail_error_input);
-                    echo"</pre>";
-                    die;*/
-                    if(!empty($list_detail_error_input)){
+
+                    if (!empty($list_detail_error_input)) {
                         $this->view->assign('list_detail_error_input', $list_detail_error_input);
                         $this->view->assign('error_value', $this->_arrParam);
-                    }else{
+                    } else {
                         $this->redirect('/admin/product');
                     }
                 }
@@ -135,17 +137,19 @@ class ProductController extends Zend_Controller_Action
         $this->view->assign('list_image_type_product', $list_image_type_product);
 
         if ($this->_request->isPost()) {
-            echo"<pre>";
-            print_r($this->_arrParam);
-            print_r($_FILES);
-            echo"</pre>";
-            die;
+            // echo "<pre>";
+            //print_r($this->_arrParam);
+            // print_r($_FILES);
+            // echo "</pre>";
+            // die;
             $list_product_image = [];
             $list_detail_product_image = [];
             try {
                 $product_model = new Model_Product();
                 $this->_arrParam['admin_id'] = $_SESSION['adminSessionNamespace']['admin']['id'];
                 $update_product = $product_model->editItem($this->_arrParam);
+               // print_r($update_product);
+                //die;
                 if ($update_product === true) {
                     $id_product = $this->_arrParam['id'];
                     unset($this->_arrParam['id']);

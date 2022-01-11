@@ -84,7 +84,7 @@ class Model_Brand extends Zend_Db_Table
             $where = 'id = ' . $arrParam['id'];
             $row = $this->fetchRow($where);
             $row->brand_name = $arrParam['brand_name'];
-            if(isset($arrParam['image'])){
+            if (isset($arrParam['image'])) {
                 $row->image = $arrParam['image'];
             }
 
@@ -109,5 +109,28 @@ class Model_Brand extends Zend_Db_Table
         $row->status = 0;
         $row->update_date = date('Y-m-d H:i:s');
         $row->save();
+    }
+
+    public function deleteItem($id)
+    {
+        $result = false;
+        $product = new Model_Product();
+        $check_fkey = $product->select()->where('brand_id = ?', $id);
+        $check = $product->fetchRow($check_fkey);
+        if (!empty($check)) {
+        } else {
+            $where = 'id = ' . $id;
+            $row = $this->fetchRow($where);
+            if (!empty($row['image'])) {
+                $brand_image = BRAND_IMAGE_PATH . '/' . $row['image'];
+                if (file_exists($brand_image)) {
+                    unlink($brand_image);
+                }
+            }
+            if ($row->delete()) {
+                $result = true;
+            }
+        }
+        return $result;
     }
 }

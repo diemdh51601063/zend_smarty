@@ -37,9 +37,11 @@
                     <a href="{{$this->url(['controller' => 'brand', 'action' => 'update'])}}?id={$brand.id}">
                         <button class="btn btn-primary button_width" style="margin-right: 10px">Cập nhật</button>
                     </a>
-                    {*{if $category.status == 1 }
-                        <button class="btn-sm btn-danger button_width" data-toggle="modal" data-target="#hideBrandModal">Ẩn
-                        </button>
+                    {*<a href="{{$this->url(['controller' => 'brand', 'action' => 'delete'])}}?id={$brand.id}">*}
+                        <button id="delete_brand" onclick="deleteBrand({$brand.id})" class="btn btn-danger button_width">Xóa</button>
+                    {*</a>
+                    {if $category.status == 1 }
+                        
                     {else}
                         <a href="{{$this->url(['controller' => 'category', 'action' => 'show'])}}?id={$category.id}">
                             <button class="btn-sm btn-info button_width">Hiển thị</button></a>
@@ -56,19 +58,36 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="hideBrandModallabel">Ẩn Thương Hiệu ?</h5>
-                {*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>*}
+                <h5 class="modal-title" id="hideBrandModallabel">Không Xóa Được</h5>
             </div>
             <div class="modal-body">
-                <p>.</p>
+                <p>Có Sản Phẩm Thuộc Thương Hiệu</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                <a href="#" id="hideBrand"><button type="button" class="btn btn-primary">Xác nhận</button></a>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
             </div>
         </div>
     </div>
 </div>
 <script type="text/javascript" charset="UTF-8" src="../../asset/admin/js/table_brand.js"></script>
+
+<script>
+function deleteBrand(brand_id){
+    $.ajax({
+        type: 'post',
+        url: "/brand/delete?id="+brand_id,
+        dataType: 'json',
+        
+        success: function (data) {
+            if(data.result == false){
+                $('#hideBrandModal').modal('show');
+            } else {
+               $('#table_brand').DataTable().row($('#delete_brand').parents('tr') ).remove().draw();
+            }
+        },
+        error: function (status) {
+            console.log(status);
+        }
+    });
+}
+</script>

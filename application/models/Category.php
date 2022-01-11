@@ -96,12 +96,20 @@ class Model_Category extends Zend_Db_Table
         return $result;
     }
 
-    public function hideItem($arrParam)
+    public function deleteItem($id)
     {
-        $where = 'id = ' . $arrParam['id'];
-        $row = $this->fetchRow($where);
-        $row->status = 0;
-        $row->update_date = date('Y-m-d H:i:s');
-        $row->save();
+        $result = false;
+        $product = new Model_Product();
+        $check_fkey = $product->select()->where('category_id = ?', $id);
+        $check = $product->fetchRow($check_fkey);
+        if (!empty($check)) {
+        } else {
+            $where = 'id = ' . $id;
+            $row = $this->fetchRow($where);
+            if ($row->delete()) {
+                $result = true;
+            }
+        }
+        return $result;
     }
 }

@@ -108,7 +108,7 @@ class Model_Product extends Zend_Db_Table
                 new Zend_Validate_NotEmpty(),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
-                        Zend_Validate_NotEmpty::IS_EMPTY => 'Vui lòng thông tin tương thích !!!'
+                        Zend_Validate_NotEmpty::IS_EMPTY => 'Vui lòng nhập thông tin tương thích !!!'
                     )
                 )
             ),
@@ -200,7 +200,7 @@ class Model_Product extends Zend_Db_Table
             $row->compatible = $arrParam['compatible'];
             $row->update_date = date('Y-m-d H:i:s');
             $row->save();
-            $result = $row;
+            $result = true;
         } else {
             if ($input->hasInvalid() || $input->hasMissing()) {
                 $messages = $input->getMessages();
