@@ -33,17 +33,17 @@
                 <td>{$brand.id}</td>
                 <td>{if $brand.image != '' } <img src="../../asset/images/brands/{{$brand.image}}" width="50px" height="40px">{/if}</td>
                 <td>{$brand.brand_name}</td>
-                <td>
+                <td style="text-align: right">
                     <a href="{{$this->url(['controller' => 'brand', 'action' => 'update'])}}?id={$brand.id}">
                         <button class="btn btn-primary button_width" style="margin-right: 10px">Cập nhật</button>
                     </a>
-                    {if $category.status == 1 }
+                    {*{if $category.status == 1 }
                         <button class="btn-sm btn-danger button_width" data-toggle="modal" data-target="#hideBrandModal">Ẩn
                         </button>
                     {else}
                         <a href="{{$this->url(['controller' => 'category', 'action' => 'show'])}}?id={$category.id}">
                             <button class="btn-sm btn-info button_width">Hiển thị</button></a>
-                    {/if}
+                    {/if}*}
                 </td>
             </tr>
         {/foreach}

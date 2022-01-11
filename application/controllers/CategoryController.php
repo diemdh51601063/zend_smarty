@@ -30,6 +30,9 @@ class CategoryController extends Zend_Controller_Action
 
     public function addAction()
     {
+        $filter = new Zend_Filter_StripTags();
+        $this->_arrParam['category_name'] = $filter->filter( $this->_arrParam['category_name']);
+
         $title = 'Thêm Danh Mục';
         $this->view->assign('title', $title);
         if ($this->_request->isPost()) {
@@ -60,6 +63,8 @@ class CategoryController extends Zend_Controller_Action
         $this->view->assign('title', $title);
         
         if ($this->_request->isPost()) {
+            $filter = new Zend_Filter_StripTags();
+            $this->_arrParam['category_name'] = $filter->filter( $this->_arrParam['category_name']);
             try {
                 $this->_arrParam['admin_id'] = $_SESSION['adminSessionNamespace']['admin']['id'];
                 

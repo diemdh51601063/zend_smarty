@@ -12,31 +12,34 @@ class Model_Brand extends Zend_Db_Table
     public function init()
     {
         $this->_filter = array(
-            'id' => array('Int')
+            'id' => array('Int'),
+            'brand_name' => array(
+                new Zend_Filter_StripTags()
+            )
         );
 
         $this->_validate = array(
             'brand_name' => array(
                 new Zend_Validate_NotEmpty(),
-                new Zend_Validate_Alnum(),
+                new Zend_Validate_StringLength(
+                    array(
+                        'min' => 1,
+                        'max' => 30
+                    )
+                ),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
                         Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng nhập tên thương hiệu !!!'
                     ),
                     array(
-                        Zend_Validate_Alnum::NOT_ALNUM => '* Vui lòng nhập tên thương hiệu hợp lệ !!!'
-                    )
-                )
-            ),
-            'description' => array(
-                new Zend_Validate_Alnum(),
-                Zend_Filter_Input::MESSAGES => array(
+                        Zend_Validate_StringLength::TOO_LONG => '* Tên thương hiệu quá dài !!!'
+                    ),
                     array(
-                        Zend_Validate_Alnum::NOT_ALNUM => '* Vui lòng nhập mô tả thương hiệu hợp lệ !!!'
+                        Zend_Validate_StringLength::TOO_SHORT => '* Tên thương hiệu quá ngắn !!!'
                     )
+
                 )
             ),
-
         );
     }
 
@@ -81,7 +84,10 @@ class Model_Brand extends Zend_Db_Table
             $where = 'id = ' . $arrParam['id'];
             $row = $this->fetchRow($where);
             $row->brand_name = $arrParam['brand_name'];
-            $row->image = $arrParam['image'];
+            if(isset($arrParam['image'])){
+                $row->image = $arrParam['image'];
+            }
+
             $row->description = $arrParam['description'];
             $row->admin_id = $arrParam['admin_id'];
             $row->update_date = date('Y-m-d H:i:s');

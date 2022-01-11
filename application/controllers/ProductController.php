@@ -46,7 +46,8 @@ class ProductController extends Zend_Controller_Action
             try {
                 $this->_arrParam['admin_id'] = $_SESSION['adminSessionNamespace']['admin']['id'];
                 $new_product = $product_model->addItem($this->_arrParam);
-                if (empty($new_product['id'])) {
+
+                if (empty($new_product['product_id'])) {
                     $this->view->assign('error_input', $new_product);
                     $this->view->assign('error_value', $this->_arrParam);
                 } else {
@@ -63,28 +64,40 @@ class ProductController extends Zend_Controller_Action
                         }
                     }
 
-                    $add_img_param['product_id'] = $new_product['id'];
+                    $add_img_param['product_id'] = $new_product['product_id'];
                     foreach ($list_product_image as $product_image) {
                         $add_img_param['image'] = $product_image;
                         $product_image_model->addItem($add_img_param);
                     }
 
+                    $list_detail_error_input = [];
                     if ($this->_arrParam['number_type'] > 0) {
                         for ($i = 1; $i <= $this->_arrParam['number_type']; $i++) {
-                            $add_detail_param['product_id'] = $new_product['id'];
+                            $add_detail_param['product_id'] = $new_product['product_id'];
                             $add_detail_param['color'] = $this->_arrParam['detail_color'][$i];
                             $add_detail_param['price'] = $this->_arrParam['detail_price'][$i];
                             $add_detail_param['quantily'] = $this->_arrParam['detail_quantily'][$i];
                             $new_product_detail = $product_detail_model->addItem($add_detail_param);
-                            if ($new_product_detail != '') {
-                                $add_detail_image['product_id'] = $new_product['id'];
-                                $add_detail_image['product_detail_id'] = $new_product_detail['id'];
+                            if (!empty($new_product_detail['product_detail_type_id'])) {
+                                $add_detail_image['product_id'] = $new_product['product_id'];
+                                $add_detail_image['product_detail_id'] = $new_product_detail['product_detail_type_id'];
                                 $add_detail_image['list_detail_image'] = $list_detail_product_image[$i];
                                 $product_image_model->addImageDetailProduct($add_detail_image);
+                            }else{
+                                $list_detail_error_input[$i] = $new_product_detail;
                             }
                         }
                     }
-                    $this->redirect('/admin/product');
+                    /*echo"<pre>";
+                    print_r($list_detail_error_input);
+                    echo"</pre>";
+                    die;*/
+                    if(!empty($list_detail_error_input)){
+                        $this->view->assign('list_detail_error_input', $list_detail_error_input);
+                        $this->view->assign('error_value', $this->_arrParam);
+                    }else{
+                        $this->redirect('/admin/product');
+                    }
                 }
             } catch (Exception $e) {
                 var_dump($e->getMessage());

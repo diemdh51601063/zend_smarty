@@ -17,14 +17,22 @@ class Model_Category extends Zend_Db_Table
         $this->_validate = array(
             'category_name' => array(
                 new Zend_Validate_NotEmpty(),
-                //new Zend_Validate_Alnum(),
+                new Zend_Validate_StringLength(
+                    array(
+                        'min' => 1,
+                        'max' => 30
+                    )
+                ),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
                         Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng nhập tên danh mục !!!'
                     ),
-                    // array(
-                    //     Zend_Validate_Alnum::NOT_ALNUM => 'Vui lòng nhập tên danh mục hợp lệ!!!'
-                    // )
+                    array(
+                        Zend_Validate_StringLength::TOO_LONG => '* Tên danh mục quá dài !!!'
+                    ),
+                    array(
+                        Zend_Validate_StringLength::TOO_SHORT => '* Tên danh mục quá ngắn !!!'
+                    )
                 )
             )
         );

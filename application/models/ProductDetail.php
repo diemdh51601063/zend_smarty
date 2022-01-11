@@ -1,4 +1,5 @@
 <?php
+
 class Model_ProductDetail extends Zend_Db_Table
 {
     protected $_name = 'product_details';
@@ -20,31 +21,20 @@ class Model_ProductDetail extends Zend_Db_Table
                 new Zend_Validate_NotEmpty(),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
-                        Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng nhập màu sắc phân loại !!!'
+                        Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng nhập màu sắc phân loại sản phẩm!!!'
                     )
                 )
             ),
-
-            'product_id' => array(
-                new Zend_Validate_Db_RecordExists(
-                    array(
-                        'table' => 'product',
-                        'field' => 'id'
-                    )
-                ),
-                Zend_Filter_Input::MESSAGES => array(
-                    array(
-                        Zend_Validate_Db_RecordExists::ERROR_NO_RECORD_FOUND => '* Vui lòng chọn sản phẩm hợp lệ !!!'
-                    )
-                )
-            ),
-
             'price' => array(
+                new Zend_Validate_NotEmpty(),
                 new Zend_Validate_GreaterThan(array('min' => 0)),
                 new Zend_Validate_Digits(),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
-                        Zend_Validate_GreaterThan::NOT_GREATER => '* Vui lòng nhập giá sản phẩm hợp lệ !!!',
+                        Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng nhập giá tiền của phân loại sản phẩm !!!'
+                    ),
+                    array(
+                        Zend_Validate_GreaterThan::NOT_GREATER => '* Vui lòng nhập giá tiền của phân loại sản phẩm hợp lệ !!!',
                     ),
                     array(
                         Zend_Validate_Digits::NOT_DIGITS => '* Nhập số !!!'
@@ -53,14 +43,32 @@ class Model_ProductDetail extends Zend_Db_Table
             ),
 
             'quantily' => array(
+                new Zend_Validate_NotEmpty(),
                 new Zend_Validate_GreaterThan(array('min' => 0)),
                 new Zend_Validate_Digits(),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
-                        Zend_Validate_GreaterThan::NOT_GREATER => '* Vui lòng nhập số lượng sản phẩm hợp lệ !!!',
+                        Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng nhập số lượng của phân loại sản phẩm !!!'
+                    ),
+                    array(
+                        Zend_Validate_GreaterThan::NOT_GREATER => '* Vui lòng nhập số lượng của phân loại sản phẩm hợp lệ !!!',
                     ),
                     array(
                         Zend_Validate_Digits::NOT_DIGITS => '* Nhập số !!!'
+                    )
+                )
+            ),
+
+            'product_id' => array(
+                new Zend_Validate_Db_RecordExists(
+                    array(
+                        'table' => 'products',
+                        'field' => 'id'
+                    )
+                ),
+                Zend_Filter_Input::MESSAGES => array(
+                    array(
+                        Zend_Validate_Db_RecordExists::ERROR_NO_RECORD_FOUND => '* Vui lòng chọn sản phẩm hợp lệ !!!'
                     )
                 )
             )
@@ -83,9 +91,20 @@ class Model_ProductDetail extends Zend_Db_Table
 
     public function addItem($arrParam)
     {
-        $row = $this->createRow($arrParam);
-        $row->save();
-        return $row;
+        $result = null;
+        $input = new Zend_Filter_Input($this->_filter, $this->_validate, $arrParam, $this->_option);
+        if ($input->isValid()) {
+            $row = $this->createRow($arrParam);
+            $row->save();
+            $result['status'] = true;
+            $result['product_detail_type_id'] = $row['id'];
+        } else {
+            if ($input->hasInvalid() || $input->hasMissing()) {
+                $messages = $input->getMessages();
+                $result = $messages;
+            }
+        }
+        return $result;
     }
 
     public function deleteItem($arrParam)

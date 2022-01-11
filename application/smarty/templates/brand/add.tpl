@@ -29,11 +29,6 @@
             <label class="col-sm-2 col-form-label">Tên Thương Hiệu</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="brand_name" name="brand_name" required>
-                {if isset($error_input.brand_name)}
-                    {foreach $error_input.brand_name as $err}
-                        <span class="err_input">{$err}</span><br>
-                    {/foreach}
-                {/if}
             </div>
         </div>
         <div class="form-group row">
@@ -46,6 +41,11 @@
             <label class="col-sm-2 col-form-label">Hình ảnh</label>
             <div class="col-sm-10">
                 <input type="file" class="form-control-file" id="brand_image" name="brand_image">
+                {if isset($error_image)}
+                    {foreach $error_image as $err}
+                        <span class="err_input my-3">{$err}</span><br>
+                    {/foreach}
+                {/if}
             </div>
             <div class="row">
                 <div class="col-md-12 filearray"></div>
@@ -62,14 +62,42 @@
 
 <script>
     $(document).ready(function() {
+        {if isset($error_value) }
+        var err_value = {$error_value|json_encode};
+        $.each( err_value, function(key, value) {
+            $('.form-control').each(function () {
+                if($(this).prop('id') == key){
+                    var id_div_input = '#'+key;
+                    $(id_div_input).val(value);
+                }
+            });
+        });
+        {/if}
+
+        {if isset($error_input) }
+        var err_input = {$error_input|json_encode};
+        $.each( err_input, function(key, value) {
+            $('.form-control').each(function () {
+                if($(this).prop('id') == key){
+                    var id_div_input = '#'+key;
+                    $.each( value, function(k, v) {
+                        console.log(k + ": " + v);
+                        $(id_div_input).addClass('input_error');
+                        $(id_div_input).after('<span class="err_input my-3">'+v+'</span><br>');
+                    })
+                }
+            });
+        });
+        {/if}
+
         $('#brand_image').change(function() {
             var flength = this.files.length;
             if (flength === 1) {
                 var filereader = new FileReader();
                 filereader.onload = function(e) {
-                    $('.filearray').append('<span class="pip" ' +
+                    $('.filearray').append('<span class="pip" >' +
                             '<img src=' + e.target.result +
-                            ' width=150 height=150/>' +
+                            ' width=150 height=150 />' +
                             '<br/><span class="remove"><i class="fa fa-remove"></i> </span></span>')
                         .insertAfter(
                             "#files");

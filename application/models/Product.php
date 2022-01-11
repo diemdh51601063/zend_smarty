@@ -26,6 +26,7 @@ class Model_Product extends Zend_Db_Table
             ),
 
             'category_id' => array(
+                new Zend_Validate_NotEmpty(),
                 new Zend_Validate_Db_RecordExists(
                     array(
                         'table' => 'categories',
@@ -34,12 +35,16 @@ class Model_Product extends Zend_Db_Table
                 ),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
+                        Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng chọn danh mục !!!'
+                    ),
+                    array(
                         Zend_Validate_Db_RecordExists::ERROR_NO_RECORD_FOUND => '* Vui lòng chọn đúng danh mục !!!'
                     )
                 )
             ),
 
             'brand_id' => array(
+                new Zend_Validate_NotEmpty(),
                 new Zend_Validate_Db_RecordExists(
                     array(
                         'table' => 'brands',
@@ -48,15 +53,22 @@ class Model_Product extends Zend_Db_Table
                 ),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
+                        Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng chọn thương hiệu !!!'
+                    ),
+                    array(
                         Zend_Validate_Db_RecordExists::ERROR_NO_RECORD_FOUND => '* Vui lòng chọn đúng thương hiệu !!!'
                     )
                 )
             ),
 
             'price' => array(
+                new Zend_Validate_NotEmpty(),
                 new Zend_Validate_GreaterThan(array('min' => 0)),
                 new Zend_Validate_Digits(),
                 Zend_Filter_Input::MESSAGES => array(
+                    array(
+                        Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng nhập giá sản phẩm !!!'
+                    ),
                     array(
                         Zend_Validate_GreaterThan::NOT_GREATER => '* Vui lòng nhập giá sản phẩm hợp lệ !!!',
                     ),
@@ -67,9 +79,13 @@ class Model_Product extends Zend_Db_Table
             ),
 
             'quantily' => array(
+                new Zend_Validate_NotEmpty(),
                 new Zend_Validate_GreaterThan(array('min' => 0)),
                 new Zend_Validate_Digits(),
                 Zend_Filter_Input::MESSAGES => array(
+                    array(
+                        Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng nhập số lượng sản phẩm !!!'
+                    ),
                     array(
                         Zend_Validate_GreaterThan::NOT_GREATER => '* Vui lòng nhập số lượng sản phẩm hợp lệ !!!',
                     ),
@@ -79,14 +95,23 @@ class Model_Product extends Zend_Db_Table
                 )
             ),
 
-            /* 'compatible' => array(
+            'control' => array(
+                new Zend_Validate_NotEmpty(),
+                Zend_Filter_Input::MESSAGES => array(
+                    array(
+                        Zend_Validate_NotEmpty::IS_EMPTY => 'Vui lòng thông tin điều khiển (tương tác với sản phẩm) !!!'
+                    )
+                )
+            ),
+
+            'compatible' => array(
                 new Zend_Validate_NotEmpty(),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
                         Zend_Validate_NotEmpty::IS_EMPTY => 'Vui lòng thông tin tương thích !!!'
                     )
                 )
-            ),*/
+            ),
 
             'description' => array(
                 new Zend_Validate_NotEmpty(),
@@ -140,7 +165,8 @@ class Model_Product extends Zend_Db_Table
         if ($input->isValid()) {
             $row = $this->createRow($arrParam);
             $row->save();
-            $result = true;
+            $result['status'] = true;
+            $result['product_id'] = $row['id'];
         } else {
             if ($input->hasInvalid() || $input->hasMissing()) {
                 $messages = $input->getMessages();

@@ -34,19 +34,32 @@ class BrandController extends Zend_Controller_Action
         $this->view->assign('title', $title);
 
         if ($this->_request->isPost()) {
+            $filter = new Zend_Filter_StripTags();
+            $this->_arrParam['brand_name'] = $filter->filter( $this->_arrParam['brand_name']);
+            $this->_arrParam['description'] = $filter->filter( $this->_arrParam['description']);
             try {
                 $this->_arrParam['admin_id'] = $_SESSION['adminSessionNamespace']['admin']['id'];
+                $brand_image = null;
+                $upload_image = true;
                 if ($_FILES["brand_image"]["name"] != "") {
                     $brand_image = $this->getUploadImages();
-                    $this->_arrParam['image'] = $brand_image;
+                    if($brand_image['status'] === false){
+                        $upload_image = false;
+                    }else{
+                        $this->_arrParam['image'] = $brand_image[0];
+                    }
                 }
-                $model = new Model_Brand();
-                $add = $model->addItem($this->_arrParam);
-                if ($add === true) {
-                    $this->redirect('/admin/brand');
-                } else {
-                    $this->view->assign('error_input', $add);
-                    $this->view->assign('error_value', $this->_arrParam);
+                if($upload_image === true){
+                    $model = new Model_Brand();
+                    $add = $model->addItem($this->_arrParam);
+                    if ($add === true) {
+                        $this->redirect('/admin/brand');
+                    } else {
+                        $this->view->assign('error_input', $add);
+                        $this->view->assign('error_value', $this->_arrParam);
+                    }
+                }else{
+                    $this->view->assign('error_image', $brand_image['error']);
                 }
             } catch (Exception $e) {
                 var_dump($e->getMessage());
@@ -62,20 +75,30 @@ class BrandController extends Zend_Controller_Action
         $this->view->assign('title', $title);
         $this->view->assign('detail_brand', $detail_brand);
         if ($this->_request->isPost()) {
+            $filter = new Zend_Filter_StripTags();
+            $this->_arrParam['brand_name'] = $filter->filter( $this->_arrParam['brand_name']);
+            $this->_arrParam['description'] = $filter->filter( $this->_arrParam['description']);
             try {
                 $this->_arrParam['admin_id'] = $_SESSION['adminSessionNamespace']['admin']['id'];
-                if ($_FILES["brand_image"]["name"] != "") {
-                    if ($detail_brand['image'] !== "") {
+                if ((isset($_FILES["brand_image"])) && (!empty($_FILES["brand_image"]["name"]))) {
+                    if (!empty($detail_brand['image'])) {
                         $brand_image = BRAND_IMAGE_PATH . '/' . $detail_brand['image'];
                         if (file_exists($brand_image)) {
                             unlink($brand_image);
                         }
                     }
-
                     $brand_update_image = $this->getUploadImages();
-                    $this->_arrParam['image'] = $brand_update_image;
+                    $this->_arrParam['image'] = $brand_update_image[0];
                 }
-
+                else if( (isset($this->_arrParam['delete_brand_image'])) && ($this->_arrParam['delete_brand_image'] == 1)){
+                    if (!empty($detail_brand['image'])) {
+                        $brand_image = BRAND_IMAGE_PATH . '/' . $detail_brand['image'];
+                        if (file_exists($brand_image)) {
+                            unlink($brand_image);
+                        }
+                    }
+                    $this->_arrParam['image'] = '';
+                }
                 $update = $brand_model->editItem($this->_arrParam);
                 if ($update === true) {
                     $this->redirect('/admin/brand');
@@ -101,27 +124,29 @@ class BrandController extends Zend_Controller_Action
         $file_adapter = new Zend_File_Transfer_Adapter_Http();
         $path = BRAND_IMAGE_PATH;
         $file_adapter->setDestination($path);
-        $list_photo = $file_adapter->getFileInfo();
-        foreach ($list_photo as $key => $fileInfo) {
-            $path_info = pathinfo($fileInfo['name']);
-            $file_name = $path_info['filename'];
-            $ext = $path_info['extension'];
-            try {
-                $file_adapter->addValidator('Extension', false, array('extension' => 'jpg,gif,png', 'case' => true));
-                //overwriting file name
-                $new_name = md5(rand()) . '-' . $file_name . '.' . $ext;
-                //Add rename filter
+        $size_validator = new Zend_Validate_File_Size(array('min' => 10, 'max' => 10000));
+        $size_validator->setMessage('Dung lượng quá lớn !!!', Zend_Validate_File_Size::TOO_BIG);
+        $size_validator->setMessage('Dung lượng quá nhỏ !!!', Zend_Validate_File_Size::TOO_SMALL);
+        $extension_validator = new Zend_Validate_File_Extension('jpg,png,gif');
+        $extension_validator->setMessage('Sai định dạng hình ảnh !!!!', Zend_Validate_File_Extension::FALSE_EXTENSION);
+        $file_adapter->addValidator($extension_validator);
+        $file_adapter->addValidator($size_validator);
+        $file_upload = $file_adapter->getFileInfo();
+        foreach ($file_upload as $key => $fileInfo) {
+            if ($fileInfo['name'] != ''){
+                $path_info = pathinfo($fileInfo['name']);
+                $file_name = $path_info['filename'];
+                $ext = $path_info['extension'];
+                $new_name = substr(md5(uniqid(rand(1, 6))), 0, 8) . '-' . $file_name . '.' . $ext;
                 $file_adapter->addFilter('Rename', $path . '/' . $new_name);
-                $brand_image = $new_name;
-            } catch (Zend_File_Transfer_Exception $e) {
-                die($e->getMessage());
-            }
-            try {
-                //Store
                 $file_adapter->receive($fileInfo['name']);
-            } catch (Zend_File_Transfer_Exception $e) {
-                //die($e->getMessage());
+                $brand_image[] = $new_name;
             }
+        }
+        $messages = $file_adapter->getMessages();
+        if(count($messages)){
+            $brand_image['status'] = false;
+            $brand_image['error'] = $messages;
         }
         return $brand_image;
     }
