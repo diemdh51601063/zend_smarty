@@ -4,6 +4,7 @@
     <div class="container">
         <!-- row -->
         <div class="row">
+
             <!-- shop -->
             <div class="col-md-4 col-xs-6">
                 <div class="shop">
@@ -26,7 +27,7 @@
                     </div>
                     <div class="shop-body">
                         <h3>Accessories<br>Collection</h3>
-                        <a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="{$this->url(['controller' => 'index', 'action' => 'view'])}" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -40,11 +41,12 @@
                     </div>
                     <div class="shop-body">
                         <h3>Cameras<br>Collection</h3>
-                        <a href="#" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="{$this->url(['controller' => 'index', 'action' => 'view'])}" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>
             <!-- /shop -->
+
         </div>
         <!-- /row -->
     </div>
@@ -76,40 +78,27 @@
                             <div class="products-slick" data-nav="#slick-nav-1">
                                 <!-- product -->
                                 {foreach $listItem as $item}
+                                    {if $item.list_image|@count != 0 }
                                     <div class="product">
                                         <div class="product-img">
-
-                                            {if $item.list_image|@count != 0 }
-                                                <img src="../../asset/images/products/{{$item.list_image[0].image}}" alt="" style="max-height: 263px; !important;">
-                                            {/if}
+                                                <img src="../../asset/images/products/{{$item.list_image[0].image}}" alt="" style="height: 263px; !important;">
                                             <div class="product-label">
-
                                                 <span class="new">NEW</span>
                                             </div>
                                         </div>
+
                                         <div class="product-body">
-                                            {* <p class="product-category">Category</p> *}
                                             <h3 class="product-name" style="height: 50px;"><a href="{{$this->url(['controller' => 'index', 'action' => 'detail'])}}?id={$item.id}">{$item.name}</a></h3>
-                                            <h4 class="product-price">${$item.price} <del
-                                                    class="product-old-price">$990.00</del>
-                                            </h4>
-                                            <div class="product-rating">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
-                                            
+                                            <h4 class="product-price">{$item.price}</h4>
                                         </div>
+
                                         <div class="add-to-cart">
-                                            <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to
-                                                cart</button>
+                                            <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
                                         </div>
                                     </div>
                                     <!-- /product -->
+                                    {/if}
                                 {/foreach}
-
 
                             </div>
                             <div id="slick-nav-1" class="products-slick-nav"></div>
@@ -153,26 +142,15 @@
                                     <div class="product">
                                         <div class="product-img">
                                             {if $item.list_image|@count != 0 }
-                                                <img src="../../asset/images/products/{{$item.list_image[0].image}}" alt="" style="max-height: 263px; !important;">
+                                                <img src="../../asset/images/products/{{$item.list_image[0].image}}" alt="" style="height: 263px; !important;">
                                             {/if}
-                                            <div class="product-label">
-
-                                                <span class="new">NEW</span>
-                                            </div>
                                         </div>
+
                                         <div class="product-body">
                                             <h3 class="product-name" style="height: 50px;"><a href="#">{$item.name}</a></h3>
-                                            <h4 class="product-price">${$item.price} <del
-                                                    class="product-old-price">$990.00</del>
-                                            </h4>
-                                            <div class="product-rating">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
+                                            <h4 class="product-price">{$item.price}</h4>
                                         </div>
+
                                         <div class="add-to-cart">
                                             <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to
                                                 cart</button>

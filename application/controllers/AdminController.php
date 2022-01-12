@@ -47,12 +47,11 @@ class AdminController extends Zend_Controller_Action
                     $this->_adminSessionNamespace->admin = $login;
                     $this->redirect($this->_actionMain);
                 } else {
-                    //var_dump($login);
-                    //die;
+                    $message_error = 'Sai thông tin đăng nhập !!!!';
+                    $this->view->assign('message_error',$message_error);
                 }
             } catch (Exception $e) {
                 var_dump($e->getMessage());
-                //die;
             }
         }
     }

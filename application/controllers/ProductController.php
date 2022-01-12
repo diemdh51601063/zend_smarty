@@ -43,6 +43,8 @@ class ProductController extends Zend_Controller_Action
             // print_r($_FILES);
             // echo "</pre>";
             // die;
+            $upload_image = true;
+            $list_image = null;
             $product_model = new Model_Product();
             $product_image_model = new Model_ProductImage();
             $product_detail_model = new Model_ProductDetail();
@@ -58,48 +60,56 @@ class ProductController extends Zend_Controller_Action
                 } else {
                     if ($_FILES["product_image"]["name"] != "") {
                         $list_image = $this->getUploadImages();
-                        foreach ($list_image as $key => $img) {
-                            if (strstr($key, 'product_image_') != '') {
-                                $list_product_image[] = $list_image[$key];
-                            } else {
-                                $k = substr($key, -4, 1);
-                                $i = substr($key, -2, 1);
-                                $list_detail_product_image[$k][$i] = $list_image[$key];
+                        if ($list_image['status'] === false) {
+                            $upload_image = false;
+                        } else {
+                            foreach ($list_image as $key => $img) {
+                                if (strstr($key, 'product_image_') != '') {
+                                    $list_product_image[] = $list_image[$key];
+                                } else {
+                                    $k = substr($key, -4, 1);
+                                    $i = substr($key, -2, 1);
+                                    $list_detail_product_image[$k][$i] = $list_image[$key];
+                                }
                             }
                         }
                     }
 
-                    $add_img_param['product_id'] = $new_product['product_id'];
-                    foreach ($list_product_image as $product_image) {
-                        $add_img_param['image'] = $product_image;
-                        $product_image_model->addItem($add_img_param);
-                    }
-
-                    $list_detail_error_input = [];
-                    if ($this->_arrParam['number_type'] > 0) {
-                        for ($i = 1; $i <= $this->_arrParam['number_type']; $i++) {
-                            $add_detail_param['product_id'] = $new_product['product_id'];
-                            $add_detail_param['color'] = $this->_arrParam['detail_color'][$i];
-                            $add_detail_param['price'] = $this->_arrParam['detail_price'][$i];
-                            $add_detail_param['quantily'] = $this->_arrParam['detail_quantily'][$i];
-                            $new_product_detail = $product_detail_model->addItem($add_detail_param);
-                            if (!empty($new_product_detail['product_detail_type_id'])) {
-                                $add_detail_image['product_id'] = $new_product['product_id'];
-                                $add_detail_image['product_detail_id'] = $new_product_detail['product_detail_type_id'];
-                                $add_detail_image['list_detail_image'] = $list_detail_product_image[$i];
-                                $product_image_model->addImageDetailProduct($add_detail_image);
-                            } else {
-                                $list_detail_error_input[$i] = $new_product_detail;
+                    if($upload_image === false){
+                        $this->view->assign('error_image', $list_image['error']);
+                    }else{
+                        $add_img_param['product_id'] = $new_product['product_id'];
+                        foreach ($list_product_image as $product_image) {
+                            $add_img_param['image'] = $product_image;
+                            $product_image_model->addItem($add_img_param);
+                        }
+                        $list_detail_error_input = [];
+                        if ($this->_arrParam['number_type'] > 0) {
+                            for ($i = 1; $i <= $this->_arrParam['number_type']; $i++) {
+                                $add_detail_param['product_id'] = $new_product['product_id'];
+                                $add_detail_param['color'] = $this->_arrParam['detail_color'][$i];
+                                $add_detail_param['price'] = $this->_arrParam['detail_price'][$i];
+                                $add_detail_param['quantily'] = $this->_arrParam['detail_quantily'][$i];
+                                $new_product_detail = $product_detail_model->addItem($add_detail_param);
+                                if (!empty($new_product_detail['product_detail_type_id'])) {
+                                    $add_detail_image['product_id'] = $new_product['product_id'];
+                                    $add_detail_image['product_detail_id'] = $new_product_detail['product_detail_type_id'];
+                                    $add_detail_image['list_detail_image'] = $list_detail_product_image[$i];
+                                    $product_image_model->addImageDetailProduct($add_detail_image);
+                                } else {
+                                    $list_detail_error_input[$i] = $new_product_detail;
+                                }
                             }
+                        }
+
+                        if (!empty($list_detail_error_input)) {
+                            $this->view->assign('list_detail_error_input', $list_detail_error_input);
+                            $this->view->assign('error_value', $this->_arrParam);
+                        } else {
+                            $this->redirect('/admin/product');
                         }
                     }
 
-                    if (!empty($list_detail_error_input)) {
-                        $this->view->assign('list_detail_error_input', $list_detail_error_input);
-                        $this->view->assign('error_value', $this->_arrParam);
-                    } else {
-                        $this->redirect('/admin/product');
-                    }
                 }
             } catch (Exception $e) {
                 var_dump($e->getMessage());
@@ -142,14 +152,15 @@ class ProductController extends Zend_Controller_Action
             // print_r($_FILES);
             // echo "</pre>";
             // die;
+            $upload_image = true;
+            $list_image = null;
             $list_product_image = [];
             $list_detail_product_image = [];
             try {
                 $product_model = new Model_Product();
                 $this->_arrParam['admin_id'] = $_SESSION['adminSessionNamespace']['admin']['id'];
                 $update_product = $product_model->editItem($this->_arrParam);
-               // print_r($update_product);
-                //die;
+
                 if ($update_product === true) {
                     $id_product = $this->_arrParam['id'];
                     unset($this->_arrParam['id']);
@@ -163,42 +174,52 @@ class ProductController extends Zend_Controller_Action
 
                     if (isset($_FILES)) {
                         $list_image = $this->getUploadImages();
-                        foreach ($list_image as $key => $img) {
-                            if (strstr($key, 'product_image_') != '') {
-                                $list_product_image[] = $list_image[$key];
-                            } else {
-                                $k = substr($key, -4, 1);
-                                $i = substr($key, -2, 1);
-                                $list_detail_product_image[$k][$i] = $list_image[$key];
+                        if ($list_image['status'] === false) {
+                            $upload_image = false;
+                        } else {
+                            foreach ($list_image as $key => $img) {
+                                if (strstr($key, 'product_image_') != '') {
+                                    $list_product_image[] = $list_image[$key];
+                                } else {
+                                    $k = substr($key, -4, 1);
+                                    $i = substr($key, -2, 1);
+                                    $list_detail_product_image[$k][$i] = $list_image[$key];
+                                }
                             }
                         }
                     }
 
-                    if ($list_product_image != '') {
-                        $add_img_param['product_id'] = $id_product;
-                        foreach ($list_product_image as $product_image) {
-                            $add_img_param['image'] = $product_image;
-                            $product_image_model->addItem($add_img_param);
+                    if ($upload_image === true) {
+                        if ($list_product_image != '') {
+                            $add_img_param['product_id'] = $id_product;
+                            foreach ($list_product_image as $product_image) {
+                                $add_img_param['image'] = $product_image;
+                                $product_image_model->addItem($add_img_param);
+                            }
                         }
-                    }
-
-                    foreach ($list_type_product as $type_product) {
-                        $edit_detail_param['id'] = $type_product['id'];
-                        $edit_detail_param['product_id'] = $id_product;
-                        $edit_detail_param['color'] = $this->_arrParam['detail_color'][$type_product['id']];
-                        $edit_detail_param['price'] = $this->_arrParam['detail_price'][$type_product['id']];
-                        $edit_detail_param['quantily'] = $this->_arrParam['detail_quantily'][$type_product['id']];
-                        $product_detail_model->editItem($edit_detail_param);
-                    }
-                    if ($list_detail_product_image != '') {
-                        foreach ($list_detail_product_image as $key => $value) {
-                            $add_detail_image['product_id'] = $id_product;
-                            $add_detail_image['product_detail_id'] = $key;
-                            $add_detail_image['list_detail_image'] = $value;
-                            $product_image_model->addImageDetailProduct($add_detail_image);
+                        foreach ($list_type_product as $type_product) {
+                            $edit_detail_param['id'] = $type_product['id'];
+                            $edit_detail_param['product_id'] = $id_product;
+                            $edit_detail_param['color'] = $this->_arrParam['detail_color'][$type_product['id']];
+                            $edit_detail_param['price'] = $this->_arrParam['detail_price'][$type_product['id']];
+                            $edit_detail_param['quantily'] = $this->_arrParam['detail_quantily'][$type_product['id']];
+                            $product_detail_model->editItem($edit_detail_param);
                         }
+                        if ($list_detail_product_image != '') {
+                            foreach ($list_detail_product_image as $key => $value) {
+                                $add_detail_image['product_id'] = $id_product;
+                                $add_detail_image['product_detail_id'] = $key;
+                                $add_detail_image['list_detail_image'] = $value;
+                                $product_image_model->addImageDetailProduct($add_detail_image);
+                            }
+                        }
+                        $this->redirect('/admin/product');
+                    } else {
+                        $this->view->assign('error_image', $list_image['error']);
                     }
-                    $this->redirect('/admin/product');
+                } else {
+                    $this->view->assign('error_input', $update_product);
+                    $this->view->assign('error_value', $this->_arrParam);
                 }
             } catch (Exception $e) {
                 var_dump($e->getMessage());
@@ -230,38 +251,67 @@ class ProductController extends Zend_Controller_Action
 
     public function getUploadImages()
     {
-        $product_images = [];
+        $product_images = null;
         $file_adapter = new Zend_File_Transfer_Adapter_Http();
         $path = PRODUCT_IMAGE_PATH;
         $file_adapter->setDestination($path);
-        $list_photo = $file_adapter->getFileInfo();
-        foreach ($list_photo as $key => $fileInfo) {
+        $size_validator = new Zend_Validate_File_Size(array('min' => 10, 'max' => '10MB'));
+        $size_validator->setMessage('Dung lượng quá lớn !!!', Zend_Validate_File_Size::TOO_BIG);
+        $size_validator->setMessage('Dung lượng quá nhỏ !!!', Zend_Validate_File_Size::TOO_SMALL);
+        $extension_validator = new Zend_Validate_File_Extension('jpg,png,gif');
+        $extension_validator->setMessage('Sai định dạng hình ảnh !!!!', Zend_Validate_File_Extension::FALSE_EXTENSION);
+        $file_adapter->addValidator($extension_validator);
+        $file_adapter->addValidator($size_validator);
+        $file_upload = $file_adapter->getFileInfo();
+        foreach ($file_upload as $key => $fileInfo) {
             if ($fileInfo['name'] != '') {
                 $path_info = pathinfo($fileInfo['name']);
                 $file_name = $path_info['filename'];
                 $ext = $path_info['extension'];
-                try {
-                    $file_adapter->addValidator(
-                        'Extension',
-                        false,
-                        array('extension' => 'jpg,gif,png', 'case' => true)
-                    );
-                    //overwriting file name
-                    $new_name = md5(rand()) . '-' . $file_name . '.' . $ext;
-                    //Add rename filter
-                    $file_adapter->addFilter('Rename', $path . '/' . $new_name);
-                    $product_images[$key] = $new_name;
-                } catch (Zend_File_Transfer_Exception $e) {
-                    var_dump($e->getMessage());
-                }
-                try {
-                    //Store
-                    $file_adapter->receive($fileInfo['name']);
-                } catch (Zend_File_Transfer_Exception $e) {
-                    var_dump($e->getMessage());
-                }
+                $new_name = substr(md5(uniqid(rand(1, 6))), 0, 8) . '-' . $file_name . '.' . $ext;
+                $file_adapter->addFilter('Rename', $path . '/' . $new_name);
+                $file_adapter->receive($fileInfo['name']);
+                $product_images[$key] = $new_name;
             }
         }
+        $messages = $file_adapter->getMessages();
+        if (count($messages)) {
+            $product_images['status'] = false;
+            $product_images['error'] = $messages;
+        }
         return $product_images;
+    }
+
+    public function deleteAction()
+    {
+        $product_model = new Model_Product();
+        try {
+            $delete = $product_model->deleteItem($this->_arrParam['id']);
+            $this->_helper->layout->disableLayout();
+            $this->_helper->viewRenderer->setNoRender(true);
+            $data = array(
+                'result' => $delete
+            );
+            $this->_helper->json($data);
+        } catch (Exception $e) {
+            var_dump($e->getMessage());
+        }
+    }
+
+    public function filterInput($arrParam)
+    {
+        $filter = new Zend_Filter_StripTags();
+        foreach ($arrParam as $key => $value) {
+            if (($key == "name") || ($key == "description")) {
+                $arrParam[$key] = $filter->filter($arrParam[$key]);
+                $arrParam[$key] = preg_replace(
+                    "/[^a-z0-9A-Z_[:space:]ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂ ưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]/u",
+                    "",
+                    $arrParam[$key]
+                );
+                //$arrParam[$key] = preg_replace("/[^a-z0-9A-Z_\x{00C0}-\x{00FF}\x{1EA0}-\x{1EFF}]/u", "",  $arrParam[$key]);
+            }
+        }
+        return $arrParam;
     }
 }

@@ -42,7 +42,7 @@ class BrandController extends Zend_Controller_Action
                 $upload_image = true;
                 if ($_FILES["brand_image"]["name"] != "") {
                     $brand_image = $this->getUploadImages();
-                    if ($brand_image['status'] === false) {
+                    if (isset($brand_image['error'])) {
                         $upload_image = false;
                     } else {
                         $this->_arrParam['image'] = $brand_image[0];
@@ -58,6 +58,7 @@ class BrandController extends Zend_Controller_Action
                         $this->view->assign('error_value', $this->_arrParam);
                     }
                 } else {
+                    $this->view->assign('error_value', $this->_arrParam);
                     $this->view->assign('error_image', $brand_image['error']);
                 }
             } catch (Exception $e) {
@@ -112,6 +113,7 @@ class BrandController extends Zend_Controller_Action
                         $this->view->assign('error_value', $this->_arrParam);
                     }
                 } else {
+                    $this->view->assign('error_value', $this->_arrParam);
                     $this->view->assign('error_image', $brand_update_image['error']);
                 }
             } catch (Exception $e) {
@@ -157,8 +159,9 @@ class BrandController extends Zend_Controller_Action
                 $ext = $path_info['extension'];
                 $new_name = substr(md5(uniqid(rand(1, 6))), 0, 8) . '-' . $file_name . '.' . $ext;
                 $file_adapter->addFilter('Rename', $path . '/' . $new_name);
-                $file_adapter->receive($fileInfo['name']);
-                $brand_image[] = $new_name;
+               if($file_adapter->receive($fileInfo['name'])){
+                   $brand_image[] = $new_name;
+               }
             }
         }
         $messages = $file_adapter->getMessages();
@@ -176,7 +179,7 @@ class BrandController extends Zend_Controller_Action
             if (($key == "brand_name") || ($key == "description")) {
                 $arrParam[$key] = $filter->filter($arrParam[$key]);
                 $arrParam[$key] = preg_replace("/[^a-z0-9A-Z_[:space:]ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂ ưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]/u", "",  $arrParam[$key]);
-                // $arrParam[$key] = preg_replace("/[^a-z0-9A-Z_\x{00C0}-\x{00FF}\x{1EA0}-\x{1EFF}]/u", "",  $arrParam[$key]);
+                //$arrParam[$key] = preg_replace("/[^a-z0-9A-Z_\x{00C0}-\x{00FF}\x{1EA0}-\x{1EFF}]/u", "",  $arrParam[$key]);
             }
         }
         return $arrParam;

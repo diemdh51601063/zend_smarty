@@ -36,8 +36,15 @@
                         <input class="input" type="email" name="email" placeholder="Email">
                     </div>
                     <div class="form-group">
-                        <input class="input" type="text" name="address" placeholder="Address">
+                        <input class="input" type="tel" name="tel" placeholder="Telephone">
                     </div>
+                    <div class="form-group">
+                        <input class="input" type="text" name="country" placeholder="Country">
+                    </div>
+                    <div class="form-group">
+                        <input class="input" type="text" name="zip-code" placeholder="ZIP Code">
+                    </div>
+
                     <div class="form-group">
                         <select class="form-control" id="city_id" name="city_id">
                             <option value="">Chọn thành phố</option>
@@ -50,20 +57,14 @@
                     </div>
                     <div class="form-group">
                         <select class="form-control" id="ward_id" name="ward_id">
-
                         </select>
                     </div>
                     <div class="form-group">
-                        <input class="input" type="text" name="country" placeholder="Country">
+                        <input class="input" type="text" name="address" placeholder="Address">
                     </div>
-                    <div class="form-group">
-                        <input class="input" type="text" name="zip-code" placeholder="ZIP Code">
-                    </div>
-                    <div class="form-group">
-                        <input class="input" type="tel" name="tel" placeholder="Telephone">
-                    </div>
+
                     <div class="order-notes">
-                        <textarea class="input" placeholder="Order Notes"></textarea>
+                        <textarea class="input" placeholder="Notes"></textarea>
                     </div>
 
                 </div>

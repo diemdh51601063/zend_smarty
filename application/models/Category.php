@@ -19,7 +19,7 @@ class Model_Category extends Zend_Db_Table
                 new Zend_Validate_NotEmpty(),
                 new Zend_Validate_StringLength(
                     array(
-                        'min' => 1,
+                        'min' => 2,
                         'max' => 30
                     )
                 ),
@@ -28,10 +28,10 @@ class Model_Category extends Zend_Db_Table
                         Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng nhập tên danh mục !!!'
                     ),
                     array(
-                        Zend_Validate_StringLength::TOO_LONG => '* Tên danh mục quá dài !!!'
+                        Zend_Validate_StringLength::TOO_LONG => '* Tên danh mục tối đa 30 kí tự !!!'
                     ),
                     array(
-                        Zend_Validate_StringLength::TOO_SHORT => '* Tên danh mục quá ngắn !!!'
+                        Zend_Validate_StringLength::TOO_SHORT => '* Tên danh mục tối thiểu 2 kí tự !!!'
                     )
                 )
             )

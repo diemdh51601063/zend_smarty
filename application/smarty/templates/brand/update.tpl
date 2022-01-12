@@ -41,7 +41,7 @@
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Hình ảnh</label>
             <div class="col-sm-10 upload_image">
-                <input type="file" class="form-control-file" id="brand_image" name="brand_image">
+                <input type="file" class="form-control-file" id="brand_image" name="brand_image" accept="image/png, image/gif, image/jpeg">
                 {if isset($error_image)}
                     {foreach $error_image as $err}
                         <span class="err_input my-3">{$err}</span><br>
@@ -107,6 +107,7 @@
 
         $('#brand_image').change(function () {
             $('.brand_image_file').children("span").remove();
+            $('.upload_image').children("span").remove();
             var filereader = new FileReader();
             filereader.onload = function (e) {
                 $('.brand_image_file').append('<span class="pip">' +

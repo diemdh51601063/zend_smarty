@@ -1,4 +1,5 @@
-<!-- BREADCRUMB -->
+
+{*<!-- BREADCRUMB -->
 <div id="breadcrumb" class="section">
     <!-- container -->
     <div class="container">
@@ -18,7 +19,7 @@
     </div>
     <!-- /container -->
 </div>
-<!-- /BREADCRUMB -->
+<!-- /BREADCRUMB -*}
 
 <!-- SECTION -->
 <div class="section">
@@ -29,21 +30,14 @@
             <!-- Product main img -->
             <div class="col-md-5 col-md-push-2">
                 <div id="product-main-img">
-                    <div class="product-preview">
-                        <img src="../../asset/user/img/product01.png" alt="">
-                    </div>
-
-                    <div class="product-preview">
+                    {foreach $image_product as $image }
+                        <div class="product-preview">
+                            <img src="../../asset/images/products/{$image.image}" alt="">
+                        </div>
+                    {/foreach}
+                    {*<div class="product-preview">
                         <img src="../../asset/user/img/product03.png" alt="">
-                    </div>
-
-                    <div class="product-preview">
-                        <img src="../../asset/user/img/product06.png" alt="">
-                    </div>
-
-                    <div class="product-preview">
-                        <img src="../../asset/user/img/product08.png" alt="">
-                    </div>
+                    </div>*}
                 </div>
             </div>
             <!-- /Product main img -->
@@ -51,21 +45,16 @@
             <!-- Product thumb imgs -->
             <div class="col-md-2  col-md-pull-5">
                 <div id="product-imgs">
-                    <div class="product-preview">
-                        <img src="../../asset/user/img/product01.png" alt="">
-                    </div>
+                    {foreach $image_product as $image }
+                        <div class="product-preview">
+                            <img src="../../asset/images/products/{$image.image}" alt="">
+                        </div>
+                    {/foreach}
 
-                    <div class="product-preview">
+                   {* <div class="product-preview">
                         <img src="../../asset/user/img/product03.png" alt="">
                     </div>
-
-                    <div class="product-preview">
-                        <img src="../../asset/user/img/product06.png" alt="">
-                    </div>
-
-                    <div class="product-preview">
-                        <img src="../../asset/user/img/product08.png" alt="">
-                    </div>
+                    *}
                 </div>
             </div>
             <!-- /Product thumb imgs -->
@@ -73,40 +62,45 @@
             <!-- Product details -->
             <div class="col-md-5">
                 <div class="product-details">
-                    <h2 class="product-name">product name goes here</h2>
+                    <h2 class="product-name">{$detail_product.name}</h2>
                     <div>
-                        <h3 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h3>
-                        <span class="product-available">In Stock</span>
+                        <h3 class="product-price">{$detail_product.price}VND</h3>
+                        {*<span class="product-available">In Stock</span>*}
                     </div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                        laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    {*<p>{$detail_product.description}</p>*}
 
                     <div class="add-to-cart">
                         <div class="qty-label">
-                            Qty
                             <div class="input-number">
-                                <input type="number">
+                                <input type="number" value="0">
                                 <span class="qty-up">+</span>
                                 <span class="qty-down">-</span>
                             </div>
                         </div>
-                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                        <button class="add-to-cart-btn" value="{$detail_product.id}"><i class="fa fa-shopping-cart"></i></button>
                     </div>
 
                     <ul class="product-links">
-                        <li>Category:</li>
-                        <li><a href="#">Headphones</a></li>
-                        <li><a href="#">Accessories</a></li>
+                        <li>Danh mục:</li>
+                        {foreach $list_category as $category}
+                            {if $category.id == $detail_product.id}
+                                <li><a href="#">{$category.category_name}</a></li>
+                            {/if}
+                        {/foreach}
                     </ul>
 
-                    <ul class="product-links">
-                        <li>Share:</li>
-                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                        <li><a href="#"><i class="fa fa-envelope"></i></a></li>
-                    </ul>
+                    {if ($list_type_product|@count) > 0 }
+                        <ul class="product-links">
+                            {foreach $list_type_product as $type}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="{$type.id}" value="{$type.id}">
+                                    <label class="form-check-label" for="{$type.id}">
+                                        {$type.color}
+                                    </label>
+                                </div>
+                            {/foreach}
+                        </ul>
+                    {/if}
 
                 </div>
             </div>
@@ -117,8 +111,8 @@
                 <div id="product-tab">
                     <!-- product tab nav -->
                     <ul class="tab-nav">
-                        <li class="active"><a data-toggle="tab" href="#tab1">Description</a></li>
-                        <li><a data-toggle="tab" href="#tab2">Details</a></li>
+                        <li class="active"><a data-toggle="tab" href="#tab1">Mô tả</a></li>
+                        <li><a data-toggle="tab" href="#tab2">Thông tin chi tiết</a></li>
                     </ul>
                     <!-- /product tab nav -->
 
@@ -127,13 +121,8 @@
                         <!-- tab1  -->
                         <div id="tab1" class="tab-pane fade in active">
                             <div class="row">
-                                <div class="col-md-12">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-                                        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                                        eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
-                                        in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                <div class="col-md-12 text-center">
+                                    <p>{$detail_product.description}</p>
                                 </div>
                             </div>
                         </div>
@@ -145,23 +134,57 @@
                                 <div class="col-md-12">
                                     <table class="table">
                                         <tr>
-                                            <th>Name:</th>
-                                            <td>Bill Gates</td>
+                                            <th>Tên Sản Phẩm</th>
+                                            <td>{$detail_product.name}</td>
                                         </tr>
                                         <tr>
-                                            <th>Telephone:</th>
-                                            <td>555 77 854</td>
+                                            <th>Danh Mục</th>
+                                            {foreach $list_category as $category}
+                                                {if $category.id == $detail_product.id}
+                                                    <td>{$category.category_name}</td>
+                                                {/if}
+                                            {/foreach}
                                         </tr>
                                         <tr>
-                                            <th>Telephone:</th>
-                                            <td>555 77 855</td>
+                                            <th>Thương Hiệu</th>
+                                            {foreach $list_brand as $brand}
+                                                {if $brand.id == $detail_product.id}
+                                                    <td>{$brand.brand_name}</td>
+                                                {/if}
+                                            {/foreach}
+                                        </tr>
+                                        <tr>
+                                            <th>Loại jack cắm</th>
+                                            <td>{$detail_product.jack}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Cổng sạc</th>
+                                            <td>{$detail_product.charging_port}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Kích thước</th>
+                                            <td>{$detail_product.size}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Khối lượng</th>
+                                            <td>{$detail_product.weight}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Chiều dài dây</th>
+                                            <td>{$detail_product.length}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Độ tương thích</th>
+                                            <td>{$detail_product.compatible}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Tương tác/ điều khiển</th>
+                                            <td>{$detail_product.control}</td>
                                         </tr>
                                     </table>
-
                                 </div>
 
                             </div>
-
                         </div>
                         <!-- /tab2  -->
                     </div>
@@ -185,7 +208,7 @@
 
             <div class="col-md-12">
                 <div class="section-title text-center">
-                    <h3 class="title">Related Products</h3>
+                    <h3 class="title">Các Sản Phẩm Liên Quan</h3>
                 </div>
             </div>
 
@@ -212,9 +235,9 @@
                 <div class="product">
                     <div class="product-img">
                         <img src="../../asset/user/img/product02.png" alt="">
-                        <div class="product-label">
+                        {*<div class="product-label">
                             <span class="new">NEW</span>
-                        </div>
+                        </div>*}
                     </div>
                     <div class="product-body">
                         <p class="product-category">Category</p>
@@ -227,48 +250,30 @@
                 </div>
             </div>
             <!-- /product -->
-
-            <div class="clearfix visible-sm visible-xs"></div>
-
-            <!-- product -->
-            <div class="col-md-3 col-xs-6">
-                <div class="product">
-                    <div class="product-img">
-                        <img src="../../asset/user/img/product03.png" alt="">
-                    </div>
-                    <div class="product-body">
-                        <p class="product-category">Category</p>
-                        <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                        <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                    </div>
-                    <div class="add-to-cart">
-                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-                    </div>
-                </div>
-            </div>
-            <!-- /product -->
-
-            <!-- product -->
-            <div class="col-md-3 col-xs-6">
-                <div class="product">
-                    <div class="product-img">
-                        <img src="../../asset/user/img/product04.png" alt="">
-                    </div>
-                    <div class="product-body">
-                        <p class="product-category">Category</p>
-                        <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                        <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                    </div>
-                    <div class="add-to-cart">
-                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-                    </div>
-                </div>
-            </div>
-            <!-- /product -->
-
         </div>
         <!-- /row -->
     </div>
     <!-- /container -->
 </div>
 <!-- /Section -->
+
+<script>
+    var list_image_type_product = {$list_image_type_product|@json_encode};
+
+    function changeImage(type_id){
+        var list_image_replace = [];
+        $.each(list_image_type_product, function (key, value) {
+            if((value.product_detail_id == type_id) && (value.image !== '')){
+                list_image_replace.push(value.image);
+            }
+        });
+        if(list_image_replace !== ''){
+            $('#product-imgs').children('.product-preview').remove();
+            $('#product-main-img').children('.product-preview').remove();
+            $.each(list_image_replace, function (k, v){
+                $('#product-preview').append('<div class="product-preview"><img src="../../asset/images/products/'+v+'" alt=""></div>');
+                $('#product-imgs').append('<div class="product-preview"><img src="../../asset/images/products/'+v+'" alt=""></div>');
+            });
+        }
+    }
+</script>

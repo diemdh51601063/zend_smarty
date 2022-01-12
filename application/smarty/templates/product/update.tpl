@@ -32,16 +32,7 @@
         font-weight: 600;
     }
 
-    .err_input {
-        color: red;
-        text-align: center;
-        font-weight: bolder;
-        margin-top: 10px;
-    }
 </style>
-{if isset($error_input) }
-    {$error_input|@var_dump}
-{/if}
 
 <h3 class="title_content">{$this->title}</h3>
 
@@ -172,7 +163,12 @@
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Hình ảnh</label>
             <div class="col-sm-10">
-                <input type="file" class="form-control-file" id="product_image" name="product_image[]" multiple>
+                <input type="file" class="form-control-file" id="product_image" name="product_image[]" accept="image/*" multiple>
+                {if isset($error_image)}
+                    {foreach $error_image as $err}
+                        <span class="err_input my-3">{$err}</span><br>
+                    {/foreach}
+                {/if}
             </div>
         </div>
 
@@ -255,8 +251,6 @@
         if($('#number_type').val() === 0){
             $('#div_multiple_type').addClass('d-none');
         }
-        
-
         {if isset($error_value) }
             var err_value = {$error_value|json_encode};
             $.each( err_value, function(key, value) {

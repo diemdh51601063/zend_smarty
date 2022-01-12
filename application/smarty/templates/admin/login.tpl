@@ -29,10 +29,20 @@
         margin: 20px;
         color: whitesmoke;
     }
+
+    .login_error{
+        color: red;
+        text-align: center;
+        font-weight: 600;
+    }
 </style>
+
+
+
 <div class="container-fluid">
     <div class="vertical-center">
         <h3>Đăng Nhập</h3>
+
         <form  onsubmit="onSubmitForm('{{$this->url(['controller' => 'admin', 'action' => 'login'])}}')" method="post" id="formAdd">
             <div class="form-group">
                 <label class="font-weight-bold">Admin name</label>
@@ -42,7 +52,11 @@
                 <label class="font-weight-bold">Password</label>
                 <input type="password" class="form-control" id="password" name="password" placeholder="Password">
             </div>
+
             <div class="row justify-content-center">
+                {if isset($message_error)}
+                    <span class="login_error">{$message_error}</span>
+                {/if}
                 <button type="submit" class="btn btn-block">Log In</button>
             </div>
         </form>

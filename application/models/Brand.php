@@ -23,7 +23,7 @@ class Model_Brand extends Zend_Db_Table
                 new Zend_Validate_NotEmpty(),
                 new Zend_Validate_StringLength(
                     array(
-                        'min' => 1,
+                        'min' => 2,
                         'max' => 30
                     )
                 ),
@@ -32,12 +32,9 @@ class Model_Brand extends Zend_Db_Table
                         Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng nhập tên thương hiệu !!!'
                     ),
                     array(
-                        Zend_Validate_StringLength::TOO_LONG => '* Tên thương hiệu quá dài !!!'
-                    ),
-                    array(
-                        Zend_Validate_StringLength::TOO_SHORT => '* Tên thương hiệu quá ngắn !!!'
+                        Zend_Validate_StringLength::TOO_LONG => '* Tên thương hiệu tối đa 30 kí tự !!!',
+                        Zend_Validate_StringLength::TOO_SHORT => '* Tên thương hiệu tối thiểu 2 kí tự !!!'
                     )
-
                 )
             ),
         );
@@ -59,9 +56,7 @@ class Model_Brand extends Zend_Db_Table
     public function addItem($arrParam)
     {
         $input = new Zend_Filter_Input($this->_filter, $this->_validate, $arrParam, $this->_option);
-
         $result = null;
-
         if ($input->isValid()) {
             $row = $this->createRow($arrParam);
             $row->save();
@@ -72,7 +67,6 @@ class Model_Brand extends Zend_Db_Table
                 $result = $messages;
             }
         }
-
         return $result;
     }
 
@@ -87,7 +81,6 @@ class Model_Brand extends Zend_Db_Table
             if (isset($arrParam['image'])) {
                 $row->image = $arrParam['image'];
             }
-
             $row->description = $arrParam['description'];
             $row->admin_id = $arrParam['admin_id'];
             $row->update_date = date('Y-m-d H:i:s');
@@ -102,22 +95,14 @@ class Model_Brand extends Zend_Db_Table
         return $result;
     }
 
-    public function hideItem($arrParam)
-    {
-        $where = 'id = ' . $arrParam['id'];
-        $row = $this->fetchRow($where);
-        $row->status = 0;
-        $row->update_date = date('Y-m-d H:i:s');
-        $row->save();
-    }
-
     public function deleteItem($id)
     {
         $result = false;
         $product = new Model_Product();
         $check_fkey = $product->select()->where('brand_id = ?', $id);
-        $check = $product->fetchRow($check_fkey);
-        if (!empty($check)) {
+        $check_product_in_brand = $product->fetchRow($check_fkey);
+        if (!empty($check_product_in_brand)) {
+
         } else {
             $where = 'id = ' . $id;
             $row = $this->fetchRow($where);

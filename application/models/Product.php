@@ -140,26 +140,6 @@ class Model_Product extends Zend_Db_Table
 
     public function addItem($arrParam)
     {
-        /*$row = $this->fetchNew();
-        $row->product_code = $arrParam['product_code'];
-        $row->name = $arrParam['product_name'];
-        $row->brand_id = $arrParam['brand_id'];
-        $row->category_id = $arrParam['category_id'];
-        $row->price = $arrParam['price'];
-        $row->description = $arrParam['product_description'];
-        $row->quantily = $arrParam['quantily'];
-        $row->charging_port = $arrParam['charging_port'];
-        $row->size = $arrParam['size'];
-        $row->weight = $arrParam['weight'];
-        $row->jack = $arrParam['jack'];
-        $row->length = $arrParam['length'];
-        $row->control = $arrParam['control'];
-        $row->compatible = $arrParam['compatible'];
-        //$row->warranty_id = $arrParam['warranty_id'];
-        $row->admin_id = $arrParam['admin_id'];
-        $row = $this->createRow($arrParam);
-        $row->save();
-        return $row;*/
         $result = null;
         $input = new Zend_Filter_Input($this->_filter, $this->_validate, $arrParam, $this->_option);
         if ($input->isValid()) {
@@ -230,5 +210,31 @@ class Model_Product extends Zend_Db_Table
         $row->update_date = date('Y-m-d H:i:s');
         $row->save();
         return $row;
+    }
+
+    public function deleteItem($id)
+    {
+        $result = false;
+        $where = 'id = ' . $id;
+        $row = $this->fetchRow($where);
+
+        $product_detail = new Model_ProductDetail();
+        $product_image = new Model_ProductImage();
+
+        $where_delete_detail = 'product_id = '.$id;
+        $product_detail->delete($where_delete_detail);
+
+        $where_delete_image = 'product_id = '.$id;
+        $product_image->delete($where_delete_image);
+        //$check_fkey_image = $product_image->select()->where('product_id = ?', $id);
+        //$check_image = $product_image->fetchAll($check_fkey_image);
+
+        //$check_fkey_detail = $product_detail->select()->where('product_id = ?', $id);
+        //$check_detail = $product_detail->fetchAll($check_fkey_detail);
+
+        if($row->delete($where)){
+            $result = true;
+        }
+        return $result;
     }
 }

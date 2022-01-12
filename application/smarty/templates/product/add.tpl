@@ -162,6 +162,11 @@
             <label class="col-sm-2 col-form-label">Hình ảnh</label>
             <div class="col-sm-10">
                 <input type="file" class="form-control-file" id="product_image" name="product_image[]" multiple>
+                {if isset($error_image)}
+                    {foreach $error_image as $err}
+                        <span class="err_input my-3">{$err}</span><br>
+                    {/foreach}
+                {/if}
             </div>
         </div>
         <div class="row my-3">

@@ -31,19 +31,11 @@
             <tr style="text-align: center">
                 <td>{$category.id}</td>
                 <td style="text-align: left">{$category.category_name}</td>
-                <td style="text-align: right">
+                <td>
                     <a href="{{$this->url(['controller' => 'category', 'action' => 'update'])}}?id={$category.id}">
-                        <button class="btn btn-primary button_width" style="margin-right: 10px">Cập nhật</button>
+                        <button class="btn btn-primary button_width" style="margin-right: 10px"><i class="fa fa-edit"></i></button>
                     </a>
-                    <button id="delete_category" onclick="deleteCategory({$category.id})" class="btn btn-danger button_width">Xóa</button>
-                    {*{if $category.status == 1 }
-                        <button class="btn-sm btn-danger button_width" data-toggle="modal" data-target="#hideCategoryModal">Ẩn
-                        </button>
-                    {else}
-                        <a href="{{$this->url(['controller' => 'category', 'action' => 'show'])}}?id={$category.id}">
-                            <button class="btn-sm btn-info button_width">Hiển thị</button></a>
-                    {/if}*}
-
+                    <button id="delete_category" onclick="deleteCategory({$category.id})" class="btn btn-danger button_width"><i class="fa fa-trash"></i></button>
                 </td>
             </tr>
         {/foreach}

@@ -35,17 +35,10 @@
                 <td>{$brand.brand_name}</td>
                 <td style="text-align: right">
                     <a href="{{$this->url(['controller' => 'brand', 'action' => 'update'])}}?id={$brand.id}">
-                        <button class="btn btn-primary button_width" style="margin-right: 10px">Cập nhật</button>
+                        <button class="btn btn-primary button_width" style="margin-right: 10px"><i class="fa fa-edit"></i></button>
                     </a>
                     {*<a href="{{$this->url(['controller' => 'brand', 'action' => 'delete'])}}?id={$brand.id}">*}
-                        <button id="delete_brand" onclick="deleteBrand({$brand.id})" class="btn btn-danger button_width">Xóa</button>
-                    {*</a>
-                    {if $category.status == 1 }
-                        
-                    {else}
-                        <a href="{{$this->url(['controller' => 'category', 'action' => 'show'])}}?id={$category.id}">
-                            <button class="btn-sm btn-info button_width">Hiển thị</button></a>
-                    {/if}*}
+                        <button id="delete_brand" onclick="deleteBrand({$brand.id})" class="btn btn-danger button_width"><i class="fa fa-trash"></i></button>
                 </td>
             </tr>
         {/foreach}
@@ -58,7 +51,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="hideBrandModallabel">Không Xóa Được</h5>
+                <h5 class="modal-title" id="hideBrandModallabel">Không Thể Xóa Thương Hiệu</h5>
             </div>
             <div class="modal-body">
                 <p>Có Sản Phẩm Thuộc Thương Hiệu</p>
