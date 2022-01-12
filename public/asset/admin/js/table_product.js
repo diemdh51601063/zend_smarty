@@ -5,8 +5,8 @@ $(document).ready(function () {
         "pagingType": "full_numbers",
         "order": ([ 0, "desc" ]),
         "render": function ( data, type, row, meta ) {
-            return type === 'display' && data.length > 40 ?
-              '<span title="'+data+'">'+data.substr( 0, 38 )+'...</span>' :
+            return type === 'display' && data.length > 20 ?
+              '<span title="'+data+'">'+data.substr( 0, 18 )+'...</span>' :
               data;
           }
     });

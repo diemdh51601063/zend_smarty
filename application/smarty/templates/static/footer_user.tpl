@@ -6,10 +6,10 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="newsletter">
-                        <p>Đăng kí tài khoản</p>
+                        <p>Cần hỗ trợ hoặc liên hệ</p>
                         <form>
                             <input class="input" type="email" placeholder="Email">
-                            <button class="newsletter-btn"><i class="fa fa-envelope"></i>Đăng ký</button>
+                            <button class="newsletter-btn"><i class="fa fa-envelope"></i></button>
                         </form>
 
                     </div>

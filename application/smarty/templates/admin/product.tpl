@@ -36,7 +36,7 @@
                 <td style="text-align: left">{$item.name}</td>
                 <td>
                     {if isset($item.price) }
-                        {$item.price}
+                        {$item.price|number_format:0:".":","}VNĐ
                     {/if}
                 </td>
                 <td>{$item.quantily}</td>
@@ -80,10 +80,9 @@
 <script type="text/javascript" charset="UTF-8" src="../../asset/admin/js/table_product.js"></script>
 <script>
 
-    $(document).ready(function () {
-        var a = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(19000)
-        console.log(a);
-    })
+function formatPrice(price) {
+    return String(price).replace(/(.)(?=(\d{3})+$)/g, '$1.');
+  }
 
     let id = '';
     function setIDProductToHide(id_product) {

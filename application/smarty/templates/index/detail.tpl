@@ -1,5 +1,5 @@
 
-{*<!-- BREADCRUMB -->
+<!-- BREADCRUMB -->
 <div id="breadcrumb" class="section">
     <!-- container -->
     <div class="container">
@@ -19,7 +19,7 @@
     </div>
     <!-- /container -->
 </div>
-<!-- /BREADCRUMB -*}
+<!-- /BREADCRUMB -->
 
 <!-- SECTION -->
 <div class="section">

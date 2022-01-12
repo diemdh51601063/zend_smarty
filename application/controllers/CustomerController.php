@@ -7,7 +7,7 @@ class CustomerController extends Zend_Controller_Action
     protected $_currentController;
     protected $_actionMain;
     protected $_userSessionNamespace;
- 
+
 
     public function init()
     {
@@ -20,19 +20,24 @@ class CustomerController extends Zend_Controller_Action
         $this->view->actionMain = $this->_actionMain;
 
         $this->_userSessionNamespace = new Zend_Session_Namespace('userSessionNamespace');
+        if (empty($this->_userSessionNamespace->user)) {
+            //$this->_request->setActionName('login');
+        } else {
+            $this->view->user = $this->_userSessionNamespace->user;
+        }
     }
 
     public function indexAction()
     {
         $list_product = [];
-        try{
+        try {
             $product_model = new Model_Product();
             $list_product = $product_model->getListItem();
-            foreach($list_product as $key => $product){
+            foreach ($list_product as $key => $product) {
                 $product_image_model = new Model_ProductImage();
                 $list_product[$key]['list_image'] = $product_image_model->getListImageOfProduct($product['id']);
             }
-        }catch (Exception $e){
+        } catch (Exception $e) {
             ($e);
         }
         $this_section = 'content indexActions';
@@ -63,9 +68,5 @@ class CustomerController extends Zend_Controller_Action
         $this->view->assign('content', $this_section);
     }
 
-    public function registerAction()
-    {
-        $this_section = 'register ACTIONS';
-        $this->view->assign('content', $this_section);
-    }
+    
 }

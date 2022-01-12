@@ -33,14 +33,14 @@ class IndexController extends Zend_Controller_Action
     public function indexAction()
     {
         $list_product = [];
-        try{
+        try {
             $product_model = new Model_Product();
             $list_product = $product_model->getListItem();
-            foreach($list_product as $key => $product){
+            foreach ($list_product as $key => $product) {
                 $product_image_model = new Model_ProductImage();
                 $list_product[$key]['list_image'] = $product_image_model->getListImageOfProduct($product['id']);
             }
-        }catch (Exception $e){
+        } catch (Exception $e) {
             ($e);
         }
         $this_section = 'content indexActions';
@@ -51,14 +51,14 @@ class IndexController extends Zend_Controller_Action
     public function viewAction()
     {
         $list_product = [];
-        try{
+        try {
             $product_model = new Model_Product();
             $list_product = $product_model->getListItem();
-            foreach($list_product as $key => $product){
+            foreach ($list_product as $key => $product) {
                 $product_image_model = new Model_ProductImage();
                 $list_product[$key]['list_image'] = $product_image_model->getListImageOfProduct($product['id']);
             }
-        }catch (Exception $e){
+        } catch (Exception $e) {
             ($e);
         }
         $this_section = 'content indexActions';
@@ -102,7 +102,80 @@ class IndexController extends Zend_Controller_Action
 
     public function registerAction()
     {
-        $this_section = 'register ACTIONS';
+        $this->filterInputRegister($this->_arrParam);
+        $this_section = 'Đăng Ký Tài Khoản';
         $this->view->assign('content', $this_section);
+        
+        $customer_model = new Model_Customer();
+        if ($this->_request->isPost()) {
+            try {
+                $check_exist = $customer_model->checkExistCustomer($this->_arrParam);
+                if (empty($check_exist['id'])) {
+                    $register = $customer_model->registerUser($this->_arrParam);
+                    if (isset($register['status']) && ($register['status'] === true)) {
+                        $this->_userSessionNamespace->user = $register['user'];
+                        $data = $register['customer'];
+                        $this->redirect('/index');
+                    } else {
+                        $this->view->assign('message_error', $register);
+                        $this->view->assign('input_value', $this->_arrParam);
+                    }
+                }else{
+                    $content = 'Email hoặc Số điện thoại đã được đăng ký !!!!';
+                    $this->view->assign('customer_exits', $content);
+                    $this->view->assign('input_value', $this->_arrParam);
+                }
+            } catch (Exception $e) {
+                var_dump($e->getMessage());
+            }
+        }
+    }
+
+    public function logoutAction(){
+        $this->_userSessionNamespace->unsetAll();
+        $this->redirect('/' . $this->_arrParam['controller'].'/index');
+    }
+
+    public function loginAction()
+    {
+        if ($this->_request->isPost()) {
+            $login_name = $this->_arrParam['email'];
+            $encode = new Ext_Encode();
+            $password = $encode->encode_md5($this->_arrParam['password']);
+            try {
+                $model = new Model_Customer();
+                $login = $model->logIn($login_name, $password);
+                if ($login != '') {
+                    $this->_userSessionNamespace->user = $login;
+                    $this->redirect($this->_actionMain);
+                } else {
+                    $message_error = 'Sai thông tin đăng nhập !!!!';
+                    $this->view->assign('message_error',$message_error);
+                }
+            } catch (Exception $e) {
+                var_dump($e->getMessage());
+            }
+        }
+    }
+
+
+    public function addcartAction(){
+
+    }
+
+    public function filterInputRegister($arrParam)
+    {
+        $param_filter=array('first_name', 'last_name', 'address', 'city_name', 'district_name', 'ward_name');
+        $filter = new Zend_Filter_StripTags();
+        foreach ($arrParam as $key => $value) {
+            if (array_key_exists($key, $param_filter)) {
+                $arrParam[$key] = $filter->filter($arrParam[$key]);
+                $arrParam[$key] = preg_replace("/[^a-z0-9A-Z_[:space:]ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂ ưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]/u", "",  $arrParam[$key]);
+            }else if ($key == 'password'){
+                $arrParam[$key] = $filter->filter($arrParam[$key]);
+                $arrParam[$key] = preg_replace("/[^a-z0-9A-Z_\x{00C0}-\x{00FF}\x{1EA0}-\x{1EFF}]/u", "",$arrParam[$key]);
+            }
+        }
+        return $arrParam;
     }
 }

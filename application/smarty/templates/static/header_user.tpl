@@ -9,10 +9,12 @@
                 <li><a href="#"><i class="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li>
             </ul>
             <ul class="header-links pull-right">
-                <li><a href="#"><i class="fa fa-user-plus"></i> Đăng Ký</a></li>
-                <li><a href="#"><i class="fa fa-user-o"></i> Đăng Nhập</a></li>
-                {if isset($user_login) }
-                    <li><a href="#"><i class="fa fa-sign-out"></i>Đăng Xuất</a></li>
+                {if empty($user) }
+                    <li><a href="{$this->url(['controller' => 'index', 'action' => 'register'])}"><i
+                                class="fa fa-user-plus"></i> Đăng Ký</a></li>
+                    <li><a href="{$this->url(['controller' => 'index', 'action' => 'login'])}"><i class="fa fa-user-o"></i> Đăng Nhập</a></li>
+                {else}
+                    <li><a href="{$this->url(['controller' => 'index', 'action' => 'logout'])}"><i class="fa fa-sign-out"></i>Đăng Xuất</a></li>
                 {/if}
             </ul>
         </div>
@@ -122,8 +124,9 @@
         <div id="responsive-nav">
             <!-- NAV -->
             <ul class="main-nav nav navbar-nav">
-                <li class="active"><a href="{$this->url(['controller' => 'index', 'action' => 'index'])}">Trang chủ</a></li>
-               {foreach $list_category as $category}
+                <li class="active"><a href="{$this->url(['controller' => 'index', 'action' => 'index'])}">Trang chủ</a>
+                </li>
+                {foreach $list_category as $category}
                     <li><a href="#">{$category.category_name}</a></li>
                 {/foreach}
             </ul>
