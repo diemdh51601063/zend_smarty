@@ -34,14 +34,27 @@
             <tr style="text-align: center">
                 <td>{$item.id}</td>
                 <td style="text-align: left">{$item.name}</td>
-                <td>
-                    {if isset($item.price) }
-                        {$item.price|number_format:0:".":","}VNĐ
-                    {/if}
+                <td style="text-align: left">
+                    {$item.price|number_format:0:".":"."} VNĐ
                 </td>
                 <td>{$item.quantily}</td>
-                <td></td>
-                <td></td>
+
+                <td>
+                    {foreach $list_category as $category}
+                        {if $category.id == $item.category_id}
+                            {$category.category_name}
+                        {/if}
+                    {/foreach}
+                </td>
+
+                <td >
+                    {foreach $list_brand as $brand}
+                        {if $brand.id == $item.brand_id}
+                            {$brand.brand_name}
+                        {/if}
+                    {/foreach}
+                </td>
+
                 <td>
                     <a href="{{$this->url(['controller' => 'product', 'action' => 'update'])}}?id={$item.id}">
                         <button class="btn btn-primary button_width" style="margin-right: 10px"><i class="fa fa-edit"></i>

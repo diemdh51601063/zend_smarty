@@ -102,7 +102,7 @@ class Model_Brand extends Zend_Db_Table
         $check_fkey = $product->select()->where('brand_id = ?', $id);
         $check_product_in_brand = $product->fetchRow($check_fkey);
         $table = new Model_Product();
-        $select = $table->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
+        /*$select = $table->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
             ->setIntegrityCheck(false);
         $select->where('bug_status = ?', 'NEW')
             ->join(
@@ -112,7 +112,7 @@ class Model_Brand extends Zend_Db_Table
             )
             ->where('accounts.account_name = ?', 'Bob');
 
-        $rows = $table->fetchAll($select);
+        $rows = $table->fetchAll($select);*/
         if (!empty($check_product_in_brand)) {
         } else {
             $where = 'id = ' . $id;

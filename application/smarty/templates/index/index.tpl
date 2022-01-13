@@ -89,7 +89,7 @@
 
                                         <div class="product-body">
                                             <h3 class="product-name" style="height: 50px;"><a href="{{$this->url(['controller' => 'index', 'action' => 'detail'])}}?id={$item.id}">{$item.name}</a></h3>
-                                            <h4 class="product-price">{$item.price}</h4>
+                                            <h4 class="product-price">{$item.price|number_format:0:".":"."} VNĐ</h4>
                                         </div>
 
                                         <div class="add-to-cart">
@@ -148,7 +148,7 @@
 
                                         <div class="product-body">
                                             <h3 class="product-name" style="height: 50px;"><a href="#">{$item.name}</a></h3>
-                                            <h4 class="product-price">{$item.price}</h4>
+                                            <h4 class="product-price">{$item.price|number_format:0:".":"."} VNĐ</h4>
                                         </div>
 
                                         <div class="add-to-cart">

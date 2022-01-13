@@ -65,7 +65,8 @@ class Model_Customer extends Zend_Db_Table
                         Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng nhập email !!!'
                     ),
                     array(
-                        Zend_Validate_EmailAddress::INVALID => '* Sai định dạng email !!!!'
+                        Zend_Validate_EmailAddress::INVALID => '* Không nhận dạng được email !!!!',
+                        Zend_Validate_EmailAddress::INVALID_FORMAT => '* Sai định dạng email !!!!',
                     ),
 
                 )
@@ -82,7 +83,7 @@ class Model_Customer extends Zend_Db_Table
                 ),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
-                        Zend_Validate_Digits::NOT_DIGITS => '* Vui lòng nhập số !!!'
+                        Zend_Validate_Digits::NOT_DIGITS => '* Số điện thoại không đúng định dạng !!!'
                     ),
                     array(
                         Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng nhập số điện thoại !!!'
@@ -196,24 +197,19 @@ class Model_Customer extends Zend_Db_Table
     {
         $input = new Zend_Filter_Input($this->_filter, $this->_validate, $arrParam, $this->_option);
         $result = null;
-        try {
-            if ($input->isValid()) {
-                $encode = new Ext_Encode();
-                $arrParam['password'] = $encode->encode_md5($arrParam['password']);
-                $row = $this->createRow($arrParam);
-                $row->save();
-                $result['status'] = true;
-                $result['customer'] = $row;
-            } else {
-                if ($input->hasInvalid() || $input->hasMissing()) {
-                    $messages = $input->getMessages();
-                    $result = $messages;
-                }
+        if ($input->isValid()) {
+            $encode = new Ext_Encode();
+            $arrParam['password'] = $encode->encode_md5($arrParam['password']);
+            $row = $this->createRow($arrParam);
+            $row->save();
+            $result['status'] = true;
+            $result['customer'] = $row;
+        } else {
+            if ($input->hasInvalid() || $input->hasMissing()) {
+                $messages = $input->getMessages();
+                $result = $messages;
             }
-            return $result;
-        } catch (Exception $e) {
-            var_dump($e);
-            die;
         }
+        return $result;
     }
 }

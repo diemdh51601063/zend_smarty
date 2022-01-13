@@ -1091,6 +1091,7 @@ textarea.input {
   left: 0px;
   top: 0px;
   width: 60px;
+  margin-left: 10px;
 }
 
 .product-widget .product-img>img {
@@ -1114,7 +1115,7 @@ textarea.input {
 }
 
 .product-widget .product-body .product-name>a {
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .product-widget .product-body .product-name>a:hover, .product-widget .product-body .product-name>a:focus {
@@ -1146,9 +1147,9 @@ textarea.input {
   text-align: center;
   font-size: 10px;
   padding: 0;
-  background: #1e1f29;
+  background: transparent;
   border: none;
-  color: #FFF;
+  color: #D10024;
 }
 
 /*----------------------------*\

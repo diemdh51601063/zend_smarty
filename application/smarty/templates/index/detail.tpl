@@ -64,7 +64,7 @@
                 <div class="product-details">
                     <h2 class="product-name">{$detail_product.name}</h2>
                     <div>
-                        <h3 class="product-price">{$detail_product.price}VND</h3>
+                        <h3 class="product-price">{$detail_product.price|number_format:0:".":"."} VNĐ</h3>
                         {*<span class="product-available">In Stock</span>*}
                     </div>
                     {*<p>{$detail_product.description}</p>*}
@@ -72,18 +72,18 @@
                     <div class="add-to-cart">
                         <div class="qty-label">
                             <div class="input-number">
-                                <input type="number" value="0">
+                                <input type="number" value="0" id="number_product">
                                 <span class="qty-up">+</span>
                                 <span class="qty-down">-</span>
                             </div>
                         </div>
-                        <button class="add-to-cart-btn" value="{$detail_product.id}"><i class="fa fa-shopping-cart"></i></button>
+                        <button id="addCart" class="add-to-cart-btn" value="{$detail_product.id}"><i class="fa fa-shopping-cart"></i></button>
                     </div>
 
                     <ul class="product-links">
                         <li>Danh mục:</li>
                         {foreach $list_category as $category}
-                            {if $category.id == $detail_product.id}
+                            {if $category.id == $detail_product.category_id}
                                 <li><a href="#">{$category.category_name}</a></li>
                             {/if}
                         {/foreach}
@@ -140,7 +140,7 @@
                                         <tr>
                                             <th>Danh Mục</th>
                                             {foreach $list_category as $category}
-                                                {if $category.id == $detail_product.id}
+                                                {if $category.id == $detail_product.category_id}
                                                     <td>{$category.category_name}</td>
                                                 {/if}
                                             {/foreach}
@@ -148,7 +148,7 @@
                                         <tr>
                                             <th>Thương Hiệu</th>
                                             {foreach $list_brand as $brand}
-                                                {if $brand.id == $detail_product.id}
+                                                {if $brand.id == $detail_product.brand_id}
                                                     <td>{$brand.brand_name}</td>
                                                 {/if}
                                             {/foreach}
@@ -230,26 +230,6 @@
             </div>
             <!-- /product -->
 
-            <!-- product -->
-            <div class="col-md-3 col-xs-6">
-                <div class="product">
-                    <div class="product-img">
-                        <img src="../../asset/user/img/product02.png" alt="">
-                        {*<div class="product-label">
-                            <span class="new">NEW</span>
-                        </div>*}
-                    </div>
-                    <div class="product-body">
-                        <p class="product-category">Category</p>
-                        <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                        <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                    </div>
-                    <div class="add-to-cart">
-                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-                    </div>
-                </div>
-            </div>
-            <!-- /product -->
         </div>
         <!-- /row -->
     </div>
@@ -276,4 +256,26 @@
             });
         }
     }
+
+    $('#addCart').click(function (){
+        var number_product = $('#number_product').val();
+        var id_product = $('#addCart').val();
+        //var product_type_id = '';
+        if(number_product > 0){
+            $.ajax({
+                type: 'post',
+                url: "/customer/addcart?product_id="+id_product+"&number_product="+number_product,
+                dataType: 'json',
+
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (status) {
+                    console.log(status);
+                }
+            });
+        }
+    })
+
+
 </script>

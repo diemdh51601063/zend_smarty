@@ -11,10 +11,12 @@
             <ul class="header-links pull-right">
                 {if empty($user) }
                     <li><a href="{$this->url(['controller' => 'index', 'action' => 'register'])}"><i
-                                class="fa fa-user-plus"></i> Đăng Ký</a></li>
-                    <li><a href="{$this->url(['controller' => 'index', 'action' => 'login'])}"><i class="fa fa-user-o"></i> Đăng Nhập</a></li>
+                                    class="fa fa-user-plus"></i> Đăng Ký</a></li>
+                    <li><a href="{$this->url(['controller' => 'index', 'action' => 'login'])}"><i
+                                    class="fa fa-user-o"></i> Đăng Nhập</a></li>
                 {else}
-                    <li><a href="{$this->url(['controller' => 'index', 'action' => 'logout'])}"><i class="fa fa-sign-out"></i>Đăng Xuất</a></li>
+                    <li><a href="{$this->url(['controller' => 'index', 'action' => 'logout'])}"><i
+                                    class="fa fa-sign-out"></i>Đăng Xuất</a></li>
                 {/if}
             </ul>
         </div>
@@ -61,31 +63,41 @@
                             <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                 <i class="fa fa-shopping-cart"></i>
                                 <span>Giỏ hàng</span>
+                                {if empty($cart)}
                                 <div class="qty">0</div>
+                                {else}
+                                    <div class="qty">{$cart|@count}</div>
+                                {/if}
                             </a>
 
                             <div class="cart-dropdown">
                                 <div class="cart-list">
-
-
-                                    <div class="product-widget">
-                                        <div class="product-img">
-                                            <img src="../../asset/user/img/product01.png" alt="">
+                                    {if empty($cart)}
+                                        <div class="product-widget">
+                                            <p>Không có sản phẩm !!!!</p>
                                         </div>
-                                        <div class="product-body">
-                                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                            <h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
-                                        </div>
-                                        <button class="delete"><i class="fa fa-close"></i></button>
+                                    {else}
+                                        {foreach $cart as $item}
+                                            <div class="product-widget">
+                                                <div class="product-img">
+                                                    <img src="../../asset/images/products/{$item.image}" alt="">
+                                                </div>
+                                                <div class="product-body">
+                                                    <h3 class="product-name"><a href="#">{$item.name}</a></h3>
+                                                    <h4 class="product-price"><small style="font-weight: 600">{$item.total_in_cart} x </small>{$item.price|number_format:0:".":"."}
+                                                        VNĐ</h4>
+                                                </div>
+                                                <button onclick="deleteProductCart({$item.id})" class="delete"><i class="fa fa-close" style="font-size: 18px"></i></button>
+                                            </div>
+                                        {/foreach}
+                                    {/if}
+                                </div>
+                                {if !empty($cart)}
+                                    <div class="cart-summary">
+                                        <small><b>Có {$cart|@count} sản phẩm trong giỏ hàng</b></small>
+                                        <h5>Tổng cộng: </h5>
                                     </div>
-
-                                </div>
-
-                                <div class="cart-summary">
-                                    <small>có ... sản phẩm</small>
-                                    <h5>Tổng cộng: </h5>
-                                </div>
-
+                                {/if}
                                 <div class="cart-btns">
                                     <a href="#">Giỏ hàng</a>
                                     <a href="{$this->url(['controller' => 'index', 'action' => 'checkout'])}">Đặt hàng
@@ -95,15 +107,6 @@
                             </div>
                         </div>
                         <!-- /Cart -->
-
-                        <!-- Menu Toogle -->
-                        <div class="menu-toggle">
-                            <a href="#">
-                                <i class="fa fa-bars"></i>
-                                <span>Menu</span>
-                            </a>
-                        </div>
-                        <!-- /Menu Toogle -->
                     </div>
                 </div>
                 <!-- /ACCOUNT -->
@@ -137,3 +140,22 @@
     <!-- /container -->
 </nav>
 <!-- /NAVIGATION -->
+
+
+
+<script>
+    function deleteProductCart(product_id){
+        $.ajax({
+            type: 'post',
+            url: "/customer/delcart?product_id="+product_id,
+            dataType: 'json',
+
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (status) {
+                console.log(status);
+            }
+        });
+    }
+</script>

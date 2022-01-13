@@ -72,6 +72,16 @@ class AdminController extends Zend_Controller_Action
         }
         $this->view->assign('title', $this_section);
         $this->view->assign('listItem', $list_product);
+
+        $brand_model = new Model_Brand();
+        $list_brand = $brand_model->getListItem();
+
+        $category_model = new Model_Category();
+        $list_category = $category_model->getListItem();
+
+        $this->view->assign('list_category', $list_category);
+
+        $this->view->assign('list_brand', $list_brand);
     }
 
     public function categoryAction()

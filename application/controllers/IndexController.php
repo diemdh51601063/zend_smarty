@@ -1,11 +1,10 @@
 <?php
-
+require_once 'Ext/EnCode.php';
 class IndexController extends Zend_Controller_Action
 {
     protected $_arrParam;
     protected $_currentController;
     protected $_actionMain;
-    protected $_userSessionNamespace;
 
     public function init()
     {
@@ -13,13 +12,9 @@ class IndexController extends Zend_Controller_Action
         $this->_currentController = '/' . $this->_arrParam['controller'];
         $this->_actionMain = '/' . $this->_arrParam['controller'] . '/index';
 
-        $this->_userSessionNamespace = new Zend_Session_Namespace('userSessionNamespace');
-        $this->_userSessionNamespace->setExpirationSeconds(3600);
-
         $this->view->arrParam = $this->_arrParam;
         $this->view->currentController = $this->_currentController;
         $this->view->actionMain = $this->_actionMain;
-        $this->view->user = $this->_userSessionNamespace->user;
 
         $category_model = new Model_Category();
         $list_category = $category_model->getListItem();
@@ -28,6 +23,17 @@ class IndexController extends Zend_Controller_Action
         $brand_model = new Model_Brand();
         $list_brand = $brand_model->getListItem();
         $this->view->assign('list_brand', $list_brand);
+
+        if (Zend_Session::sessionExists() == true) {
+            if (isset($_SESSION['userSessionNamespace'])) {
+                if(!empty($_SESSION['userSessionNamespace']['user'])){
+                    $this->view->user = $_SESSION['userSessionNamespace']['user'];
+                }
+                if(!empty($_SESSION['userSessionNamespace']['cart'])){
+                    $this->view->cart = $_SESSION['userSessionNamespace']['cart'];
+                }
+            }
+        }
     }
 
     public function indexAction()

@@ -53,12 +53,12 @@ $layout = Zend_Layout::startMvc(
 );
 $layout->setViewSuffix('tpl');
 Zend_Session::start();
-$front->dispatch();
-// try{
-    
-// }catch (Exception $e){
-//     var_dump($e);
-// }
+
+try{
+    $front->dispatch();
+}catch (Exception $e){
+    var_dump($e);
+}
 
 
 
