@@ -5,7 +5,7 @@ class IndexController extends Zend_Controller_Action
     protected $_arrParam;
     protected $_currentController;
     protected $_actionMain;
-    protected $_userSessionNamespace;
+   // protected $_userSessionNamespace;
 
     public function init()
     {
@@ -26,12 +26,11 @@ class IndexController extends Zend_Controller_Action
         $this->view->assign('list_brand', $list_brand);
 
         $this->_userSessionNamespace = new Zend_Session_Namespace('userSessionNamespace');
-        $this->_userSessionNamespace->setExpirationSeconds(3600);
-
-        if(!empty($this->_userSessionNamespace->user)){
+       // $this->_userSessionNamespace->setExpirationSeconds(3600);
+        if(isset($this->_userSessionNamespace->user)){
             $this->view->user = $this->_userSessionNamespace->user;
         }
-        if(!empty($this->_userSessionNamespace->cart)){
+        if(isset($this->_userSessionNamespace->cart)){
             $this->view->cart = $this->_userSessionNamespace->cart;
         }
     }
@@ -47,7 +46,7 @@ class IndexController extends Zend_Controller_Action
                 $list_product[$key]['list_image'] = $product_image_model->getListImageOfProduct($product['id']);
             }
         } catch (Exception $e) {
-            ($e);
+            var_dump($e->getMessage());
         }
         $this_section = 'content indexActions';
         $this->view->assign('hello', $this_section);
@@ -65,7 +64,7 @@ class IndexController extends Zend_Controller_Action
                 $list_product[$key]['list_image'] = $product_image_model->getListImageOfProduct($product['id']);
             }
         } catch (Exception $e) {
-            ($e);
+            var_dump($e->getMessage());
         }
         $this_section = 'content indexActions';
         $this->view->assign('hello', $this_section);
@@ -119,7 +118,7 @@ class IndexController extends Zend_Controller_Action
                 if (empty($check_exist['id'])) {
                     $register = $customer_model->registerUser($this->_arrParam);
                     if (isset($register['status']) && ($register['status'] === true)) {
-                        $this->_userSessionNamespace->user = $register['user'];
+                        $this->userSessionNamespace->user = $register['user'];
                         $data = $register['customer'];
                         $this->redirect('/index');
                     } else {
@@ -151,8 +150,8 @@ class IndexController extends Zend_Controller_Action
             try {
                 $model = new Model_Customer();
                 $login = $model->logIn($login_name, $password);
-                if ($login != '') {
-                    $this->_userSessionNamespace->user = $login;
+                if ($login['id'] != '') {
+                    $this->userSessionNamespace->user = $login;
                     $this->redirect($this->_actionMain);
                 } else {
                     $message_error = 'Sai thông tin đăng nhập !!!!';

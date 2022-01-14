@@ -125,6 +125,7 @@
     });
 
 
+    /* submit formmmmm
     function onSubmitFormRegister(url) {
         var pw = $("#password").val();
         var cf_pw = $("#confirm_password").val();
@@ -152,6 +153,8 @@
             return false;
         }
     }
+end submit formmmmmm*/
+
 
     $('#confirm_password').change(function () {
         var pw = $('#password').val();
@@ -188,12 +191,13 @@
 
             success: function (data) {
                 if (data.result == false) {
+                    $('#email').next('span').remove();
                     $('#email').focus();
                     $('#email').after('<span class="text-danger font-weight-bold">' + data.message + '</span>')
                 } else {
                     if (data.result.status === undefined) {
                         $.each(data.result, function (key, value) {
-                            console.log(key + ':' + value);
+                            $('.input').next('span').remove();
                             $('.input').each(function () {
                                 if ($(this).prop('id') == key) {
                                     var id_div_input = '#' + key;

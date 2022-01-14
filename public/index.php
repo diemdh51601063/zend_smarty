@@ -5,8 +5,8 @@ include_once '../define.php';
 require_once 'Zend/Application.php';
 require_once 'Zend/Controller/Front.php';
 require_once 'Zend/Controller/Action/Helper/ViewRenderer.php';
-require_once 'Zend/Controller/Router/Route.php';
-require_once 'Zend/Controller/Router/Rewrite.php';
+//require_once 'Zend/Controller/Router/Route.php';
+//require_once 'Zend/Controller/Router/Rewrite.php';
 require_once 'Zend/Session.php';
 
 
@@ -53,12 +53,12 @@ $layout = Zend_Layout::startMvc(
 );
 $layout->setViewSuffix('tpl');
 Zend_Session::start();
+$front->dispatch();
+/*try{
 
-try{
-    $front->dispatch();
 }catch (Exception $e){
     var_dump($e);
-}
+}*/
 
 
 

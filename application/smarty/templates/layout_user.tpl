@@ -60,6 +60,7 @@
     <script src="../../asset/user/js/nouislider.min.js"></script>
     <script src="../../asset/user/js/jquery.zoom.min.js"></script>
     <script src="../../asset/user/js/main.js"></script>
+    <script src="../../asset/user/js/script.js"></script>
 
 </body>
 

@@ -199,7 +199,7 @@
 </div>
 <!-- /SECTION -->
 
-<!-- Section -->
+{*<!-- Section -->
 <div class="section">
     <!-- container -->
     <div class="container">
@@ -235,10 +235,13 @@
     </div>
     <!-- /container -->
 </div>
-<!-- /Section -->
+<!-- /Section -->*}
 
 <script>
     var list_image_type_product = {$list_image_type_product|@json_encode};
+
+    var a = '';
+
 
     function changeImage(type_id){
         var list_image_replace = [];
@@ -257,10 +260,16 @@
         }
     }
 
+    {literal}
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+    {/literal}
+
     $('#addCart').click(function (){
         var number_product = $('#number_product').val();
         var id_product = $('#addCart').val();
-        //var product_type_id = '';
+        var product_type_id = '';
         if(number_product > 0){
             $.ajax({
                 type: 'post',
@@ -268,7 +277,28 @@
                 dataType: 'json',
 
                 success: function (data) {
-                    console.log(data);
+                    $('#number_product').val(0);
+                    $('.cart-list').children('div').remove();
+                    var total = 0;
+                    var length = 0;
+                    console.log(data.result)
+                    $.each(data.result, function (k, v) {
+                        length = length+1;
+                        total = total + (v.number_product * v.price);
+                        $(".cart-list").append('<div class="product-widget cartList" id="'+v.id+'">'+
+                        '<div class="product-img">'+
+                            '<img src="../../asset/images/products/'+v.image+'" alt=""> </div>'+
+                        '<div class="product-body">'+
+                            '<h3 class="product-name"><a href="#">'+v.name+'</a></h3>'+
+                           '<h4 class="product-price"><small style="font-weight: 600">'+v.number_product+' x </small>'+ numberWithCommas(v.price) +' VNĐ</h4>'+
+                        '</div>'+
+                        '<button onclick="deleteProductCart('+v.id+')" class="delete"><i class="fa fa-close" style="font-size: 18px"></i></button> </div>')
+                    });
+                    $('.cart-summary').replaceWith('<div class="cart-summary">'+
+                        '<small><b>Có ' + length + 'sản phẩm trong giỏ hàng</b></small>'+
+                    '<h5>Tổng cộng: '+ numberWithCommas(total) + ' VNĐ</h5></div>');
+
+                    $('#card_quantily').replaceWith('<div class="qty" id="card_quantily">'+length+'</div>')
                 },
                 error: function (status) {
                     console.log(status);

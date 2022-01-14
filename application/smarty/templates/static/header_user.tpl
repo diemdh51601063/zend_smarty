@@ -64,12 +64,11 @@
                                 <i class="fa fa-shopping-cart"></i>
                                 <span>Giỏ hàng</span>
                                 {if empty($cart)}
-                                <div class="qty">0</div>
+                                    <div class="qty">0</div>
                                 {else}
-                                    <div class="qty">{$cart|@count}</div>
+                                    <div class="qty" id="card_quantily">{$cart|@count}</div>
                                 {/if}
                             </a>
-
                             <div class="cart-dropdown">
                                 <div class="cart-list">
                                     {if empty($cart)}
@@ -77,17 +76,22 @@
                                             <p>Không có sản phẩm !!!!</p>
                                         </div>
                                     {else}
+                                        {assign var="total" value="0"}
                                         {foreach $cart as $item}
-                                            <div class="product-widget">
+                                            <div class="product-widget cartList" id="{$item.id}">
                                                 <div class="product-img">
                                                     <img src="../../asset/images/products/{$item.image}" alt="">
                                                 </div>
                                                 <div class="product-body">
                                                     <h3 class="product-name"><a href="#">{$item.name}</a></h3>
-                                                    <h4 class="product-price"><small style="font-weight: 600">{$item.total_in_cart} x </small>{$item.price|number_format:0:".":"."}
+                                                    <h4 class="product-price"><small
+                                                                style="font-weight: 600">{$item.number_product}
+                                                            x </small>{$item.price|number_format:0:".":"."}
                                                         VNĐ</h4>
                                                 </div>
-                                                <button onclick="deleteProductCart({$item.id})" class="delete"><i class="fa fa-close" style="font-size: 18px"></i></button>
+                                                <button onclick="deleteProductCart({$item.id})" class="delete"><i
+                                                            class="fa fa-close" style="font-size: 18px"></i></button>
+                                                {$total=$total+($item.price*$item.number_product)}
                                             </div>
                                         {/foreach}
                                     {/if}
@@ -95,7 +99,7 @@
                                 {if !empty($cart)}
                                     <div class="cart-summary">
                                         <small><b>Có {$cart|@count} sản phẩm trong giỏ hàng</b></small>
-                                        <h5>Tổng cộng: </h5>
+                                        <h5>Tổng cộng: {$total|number_format:0:".":"."} VNĐ</h5>
                                     </div>
                                 {/if}
                                 <div class="cart-btns">
@@ -142,20 +146,7 @@
 <!-- /NAVIGATION -->
 
 
-
 <script>
-    function deleteProductCart(product_id){
-        $.ajax({
-            type: 'post',
-            url: "/customer/delcart?product_id="+product_id,
-            dataType: 'json',
 
-            success: function (data) {
-                console.log(data);
-            },
-            error: function (status) {
-                console.log(status);
-            }
-        });
-    }
+
 </script>

@@ -12,7 +12,7 @@
                         <img src="../../asset/user/img/shop01.png" alt="">
                     </div>
                     <div class="shop-body">
-                        <h3>Laptop<br>Collection</h3>
+                        <h3>Laptop</h3>
                         <a href="{$this->url(['controller' => 'index', 'action' => 'view'])}" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
@@ -26,7 +26,7 @@
                         <img src="../../asset/user/img/shop03.png" alt="">
                     </div>
                     <div class="shop-body">
-                        <h3>Accessories<br>Collection</h3>
+                        <h3>Accessories</h3>
                         <a href="{$this->url(['controller' => 'index', 'action' => 'view'])}" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                         <img src="../../asset/user/img/shop02.png" alt="">
                     </div>
                     <div class="shop-body">
-                        <h3>Cameras<br>Collection</h3>
+                        <h3>Cameras</h3>
                         <a href="{$this->url(['controller' => 'index', 'action' => 'view'])}" class="cta-btn">Shop now <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>

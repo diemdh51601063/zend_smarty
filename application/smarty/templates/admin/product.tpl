@@ -95,7 +95,7 @@
 
 function formatPrice(price) {
     return String(price).replace(/(.)(?=(\d{3})+$)/g, '$1.');
-  }
+}
 
     let id = '';
     function setIDProductToHide(id_product) {
