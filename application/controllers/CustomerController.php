@@ -18,14 +18,15 @@ class CustomerController extends Zend_Controller_Action
         $this->view->currentController = $this->_currentController;
         $this->view->actionMain = $this->_actionMain;
 
-        $this->_userSessionNamespace = new Zend_Session_Namespace('userSessionNamespace');
-        $this->_userSessionNamespace->setExpirationSeconds(3600);
-
-        if(!empty($this->_userSessionNamespace->user)){
-            $this->view->user = $this->_userSessionNamespace->user;
-        }
-        if(!empty($this->_userSessionNamespace->cart)){
-            $this->view->cart = $this->_userSessionNamespace->cart;
+        if (Zend_Session::sessionExists() == true) {
+            if (isset($_SESSION['userSessionNamespace'])) {
+                if(!empty($_SESSION['userSessionNamespace']['user'])){
+                    $this->view->user = $_SESSION['userSessionNamespace']['user'];
+                }
+                if(!empty($_SESSION['userSessionNamespace']['cart'])){
+                    $this->view->cart = $_SESSION['userSessionNamespace']['cart'];
+                }
+            }
         }
     }
 

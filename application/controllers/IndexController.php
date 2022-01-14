@@ -5,6 +5,7 @@ class IndexController extends Zend_Controller_Action
     protected $_arrParam;
     protected $_currentController;
     protected $_actionMain;
+    protected $_userSessionNamespace;
 
     public function init()
     {
@@ -24,15 +25,14 @@ class IndexController extends Zend_Controller_Action
         $list_brand = $brand_model->getListItem();
         $this->view->assign('list_brand', $list_brand);
 
-        if (Zend_Session::sessionExists() == true) {
-            if (isset($_SESSION['userSessionNamespace'])) {
-                if(!empty($_SESSION['userSessionNamespace']['user'])){
-                    $this->view->user = $_SESSION['userSessionNamespace']['user'];
-                }
-                if(!empty($_SESSION['userSessionNamespace']['cart'])){
-                    $this->view->cart = $_SESSION['userSessionNamespace']['cart'];
-                }
-            }
+        $this->_userSessionNamespace = new Zend_Session_Namespace('userSessionNamespace');
+        $this->_userSessionNamespace->setExpirationSeconds(3600);
+
+        if(!empty($this->_userSessionNamespace->user)){
+            $this->view->user = $this->_userSessionNamespace->user;
+        }
+        if(!empty($this->_userSessionNamespace->cart)){
+            $this->view->cart = $this->_userSessionNamespace->cart;
         }
     }
 
