@@ -14,6 +14,13 @@
     h3 {
         text-align: center;
     }
+
+    .td-limit {
+        max-width: 150px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
 </style>
 <h3>{$this->title}</h3>
 <table id="table_product" class="display nowrap" style="width: 100%">
@@ -33,8 +40,12 @@
             {* {$item.list_image|@var_dump} *}
             <tr style="text-align: center">
                 <td>{$item.id}</td>
-                <td style="text-align: left">{$item.name}</td>
-                <td style="text-align: left">
+                <td class="td-limit" style="text-align: left">
+                    <a href="{{$this->url(['controller' => 'product', 'action' => 'update'])}}?id={$item.id}">
+                        {$item.name}
+                    </a>
+                </td>
+                <td>
                     {$item.price|number_format:0:".":"."} VNĐ
                 </td>
                 <td>{$item.quantily}</td>
@@ -47,7 +58,7 @@
                     {/foreach}
                 </td>
 
-                <td >
+                <td>
                     {foreach $list_brand as $brand}
                         {if $brand.id == $item.brand_id}
                             {$brand.brand_name}
@@ -61,14 +72,14 @@
                         </button>
                     </a>
                     {if $item.status == 1 }
-                        <button onclick="setIDProductToHide({$item.id})" class="btn btn-danger button_width"
-                            data-toggle="modal" data-target="#hideProductModal"><i class="fa fa-eye-slash"></i>
+                        <button onclick="setIDProductToHide({$item.id})" class="btn btn-danger button_width" data-toggle="modal"
+                            data-target="#hideProductModal"><i class="fa fa-eye-slash"></i>
                         </button>
                     {else}
                         <a href="{{$this->url(['controller' => 'product', 'action' => 'show'])}}?id={$item.id}">
-                        <button class="btn btn-success button_width"><i class="fa fa-eye"></i></button>
-                    {/if}
-                            {*<button onclick="deleteProduct({$item.id})" id="hideProduct" class="btn btn-danger button_width">Xóa</button>*}
+                            <button class="btn btn-success button_width"><i class="fa fa-eye"></i></button>
+                        {/if}
+                        {*<button onclick="deleteProduct({$item.id})" id="hideProduct" class="btn btn-danger button_width">Xóa</button>*}
                 </td>
             </tr>
         {/foreach}
@@ -92,12 +103,12 @@
 
 <script type="text/javascript" charset="UTF-8" src="../../asset/admin/js/table_product.js"></script>
 <script>
-
-function formatPrice(price) {
-    return String(price).replace(/(.)(?=(\d{3})+$)/g, '$1.');
-}
+    function formatPrice(price) {
+        return String(price).replace(/(.)(?=(\d{3})+$)/g, '$1.');
+    }
 
     let id = '';
+
     function setIDProductToHide(id_product) {
         id = id_product;
         $("#hideProduct").attr('href', '{{$this->url(['controller' => 'product', 'action' => 'hide'])}}?id='+id);
@@ -106,13 +117,13 @@ function formatPrice(price) {
     function deleteProduct(id) {
         $.ajax({
             type: 'post',
-            url: '/product/delete?id='+id,
+            url: '/product/delete?id=' + id,
             dataType: 'json',
-            success: function (data) {
+            success: function(data) {
                 console.log(data.result);
-                $('#table_product').DataTable().row($('#hideProduct').parents('tr') ).remove().draw();
+                $('#table_product').DataTable().row($('#hideProduct').parents('tr')).remove().draw();
             },
-            error: function (status) {
+            error: function(status) {
                 console.log(status);
             }
         });

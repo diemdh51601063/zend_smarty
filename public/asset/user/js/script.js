@@ -1,14 +1,12 @@
-function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
 
-function deleteProductCart(product_id) {
+
+function deleteProductCart(cart_item_id) {
     $.ajax({
         type: 'post',
-        url: "/customer/delcart?product_id=" + product_id,
+        url: "/customer/delcart?cart_item_id=" + cart_item_id,
         dataType: 'json',
         success: function (data) {
-            document.getElementById(product_id).remove();
+            document.getElementById(cart_item_id).remove();
             if (data.result !== '') {
                 var length = 0;
                 var total = 0;
@@ -17,7 +15,7 @@ function deleteProductCart(product_id) {
                     total = total + (v.number_product * v.price);
                 });
                 $('.cart-summary').replaceWith('<div class="cart-summary">' +
-                    '<small><b>Có ' + length + 'sản phẩm trong giỏ hàng</b></small>' +
+                    '<small><b>Có ' + length + ' sản phẩm trong giỏ hàng</b></small>' +
                     '<h5>Tổng cộng: ' + numberWithCommas(total) + ' VNĐ</h5></div>');
 
                 $('#card_quantily').replaceWith('<div class="qty" id="card_quantily">' + length + '</div>')
@@ -31,5 +29,9 @@ function deleteProductCart(product_id) {
             console.log(status);
         }
     });
+}
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 

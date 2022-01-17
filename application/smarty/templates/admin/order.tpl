@@ -25,15 +25,12 @@
     </thead>
     <tbody>
         {foreach $list_order as $item}
-            {if $item.status == $type_list}
                 <tr style="text-align: center">
                     <td>{$item.id}</td>
                     <td>{$item.order_name}</td>
                     <td>{$item.order_phone}</td>
                     <td>{$item.regist_date}</td>
-                    <td><button class="btn btn-info" style="padding-right: 10px">Duyệt</button> <button class="btn btn-danger">Hủy</button></td>
-                </tr>
-            {/if}
+                    <td><button class="btn btn-info" onclick="acceptOrder({$item.id})" style="padding-right: 10px">Duyệt</button> <button onclick="cancelOrder({$item.id})" class="btn btn-danger">Hủy</button></td>
         {/foreach}
     </tbody>
 </table>

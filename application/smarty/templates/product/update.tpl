@@ -163,7 +163,7 @@
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Hình ảnh</label>
             <div class="col-sm-10">
-                <input type="file" class="form-control-file" id="product_image" name="product_image[]" accept="image/*" multiple>
+                <input type="file" class="form-control-file" id="product_image" name="product_image[]" multiple accept="image/png, image/gif, image/jpeg">
                 {if isset($error_image)}
                     {foreach $error_image as $err}
                         <span class="err_input my-3">{$err}</span><br>
@@ -208,26 +208,26 @@
                             <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">Màu sắc <span class="text-danger">*</span></label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="detail_color" name="detail_color[{$type_product.id}]" value="{$type_product.color}">
+                                    <input type="text" class="form-control" id="detail_color" name="detail_color[{$type_product.id}]" value="{$type_product.color}" maxlength="30" minlength="2">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">Giá <span class="text-danger">*</span></label>
                                 <div class="col-sm-8">
-                                    <input type="number" class="form-control" id="detail_price" name="detail_price[{$type_product.id}]" value="{$type_product.price}">
+                                    <input type="number" class="form-control" id="detail_price" name="detail_price[{$type_product.id}]" value="{$type_product.price}" required min="0">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-4 col-form-label">Số lượng <span class="text-danger">*</span></label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="detail_quantily" name="detail_quantily[{$type_product.id}]" value="{$type_product.quantily}">
+                                    <input type="number" class="form-control" id="detail_quantily" name="detail_quantily[{$type_product.id}]" value="{$type_product.quantily}" required min="0">
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-8">
                             <label>Hình ảnh phân loại</label>
                             <input type="file" onChange=getImage(this) class="form-control-file detail_image"
-                                id="{$type_product.id}" name="detail_image_{$type_product.id}[]" multiple>
+                                id="{$type_product.id}" name="detail_image_{$type_product.id}[]" multiple accept="image/png, image/gif, image/jpeg">
                             <div id="filearray_{$type_product.id}"></div>
                         </div>
                     </div>
@@ -380,25 +380,25 @@
                         '<div class="form-group row">' +
                             '<label class="col-sm-4 col-form-label">Màu sắc<span class="text-danger">*</span></label>' +
                             '<div class="col-sm-8">' +
-                            '<input type="text" required class="form-control" id="detail_color" name="new_detail_color['+x+']" required>' +
+                            '<input type="text" required class="form-control" id="detail_color" name="new_detail_color['+x+']" required maxlength="30" minlength="2">' +
                             '</div>' +
                         '</div>' +
                         '<div class="form-group row">' +
                             '<label class="col-sm-4 col-form-label">Giá<span class="text-danger">*</span></label>' +
                             '<div class="col-sm-8">' +
-                            '<input type="number" required class="form-control" id="detail_price" name="new_detail_price['+x+']" required>' +
+                            '<input type="number" required class="form-control" id="detail_price" name="new_detail_price['+x+']" required min="0">' +
                             '</div>' +
                         '</div>' +
                         '<div class="form-group row">' +
                             '<label class="col-sm-4 col-form-label">Số lượng<span class="text-danger">*</span></label>' +
                             '<div class="col-sm-8">' +
-                            '<input type="text" required class="form-control" id="detail_quantily" name="new_detail_quantily['+x+']" required>' +
+                            '<input type="number" required class="form-control" id="detail_quantily" name="new_detail_quantily['+x+']" required min="0">' +
                             '</div>' +
                         '</div>' +
                     '</div>' +
                     '<div class="col-sm-8">' +
                         '<label>Hình ảnh phân loại</label>' +
-                        '<input type="file" onChange=getImage(this) class="form-control-file detail_image" id="'+x+'" name="new_detail_image_'+x+'[]" multiple>' +                      
+                        '<input type="file" onChange=getImage(this) class="form-control-file detail_image" id="'+x+'" name="new_detail_image_'+x+'[]" multiple accept="image/png, image/gif, image/jpeg">' +                      
                         '<div id="filearray_'+x+'"></div>'+
                     '</div>' +
                 '</div></div>'
@@ -420,25 +420,25 @@
                             '<div class="form-group row">' +
                                 '<label class="col-sm-4 col-form-label">Màu sắc<span class="text-danger">*</span></label>' +
                                 '<div class="col-sm-8">' +
-                                '<input type="text" required class="form-control" id="detail_color" name="new_detail_color['+x+']">' +
+                                '<input type="text" required class="form-control" id="detail_color" name="new_detail_color['+x+']" maxlength="30" minlength="2">' +
                                 '</div>' +
                             '</div>' +
                             '<div class="form-group row">' +
                                 '<label class="col-sm-4 col-form-label">Giá<span class="text-danger">*</span></label>' +
                                 '<div class="col-sm-8">' +
-                                '<input type="number" required class="form-control" id="detail_price" name="new_detail_price['+x+']">' +
+                                '<input type="number" required class="form-control" id="detail_price" name="new_detail_price['+x+']" required min="0">' +
                                 '</div>' +
                             '</div>' +
                             '<div class="form-group row">' +
                                 '<label class="col-sm-4 col-form-label">Số lượng<span class="text-danger">*</span></label>' +
                                 '<div class="col-sm-8">' +
-                                '<input type="text" required class="form-control" id="detail_quantily" name="new_detail_quantily['+x+']">' +
+                                '<input type="number" required class="form-control" id="detail_quantily" name="new_detail_quantily['+x+']" required min="0">' +
                                 '</div>' +
                             '</div>' +
                         '</div>' +
                         '<div class="col-sm-8">' +
                             '<label>Hình ảnh phân loại</label>' +
-                            '<input type="file" onChange=getImage(this) class="form-control-file detail_image" id="'+x+'" name="new_detail_image_'+x+'[]" multiple>' +                      
+                            '<input type="file" onChange=getImage(this) class="form-control-file detail_image" id="'+x+'" name="new_detail_image_'+x+'[]" multiple accept="image/png, image/gif, image/jpeg">' +                      
                             '<div id="filearray_'+x+'"></div>'+
                         '</div>' +
                     '</div></div>'

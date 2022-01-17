@@ -53,6 +53,7 @@ $layout = Zend_Layout::startMvc(
 );
 $layout->setViewSuffix('tpl');
 Zend_Session::start();
+$userSessionNamespace = new Zend_Session_Namespace('userSessionNamespace');
 $front->dispatch();
 /*try{
 

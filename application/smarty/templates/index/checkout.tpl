@@ -21,168 +21,267 @@
 <div class="section">
     <!-- container -->
     <div class="container">
-        <!-- row -->
-        <div class="row">
-            <div class="col-md-7">
-                <!-- Billing Details -->
-                <div class="billing-details">
-                    <div class="section-title">
-                        <h3 class="title">Billing address</h3>
-                    </div>
-                    <div class="form-group">
-                        <input class="input" type="text" name="first-name" placeholder="First Name">
-                    </div>
-                    <div class="form-group">
-                        <input class="input" type="email" name="email" placeholder="Email">
-                    </div>
-                    <div class="form-group">
-                        <input class="input" type="tel" name="tel" placeholder="Telephone">
-                    </div>
-                    <div class="form-group">
-                        <input class="input" type="text" name="country" placeholder="Country">
-                    </div>
-                    <div class="form-group">
-                        <input class="input" type="text" name="zip-code" placeholder="ZIP Code">
+        <!-- Billing Details -->
+        {if isset($customer_info)}
+            <form method="post" id="formCheckout" onsubmit="checkout(event)">
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="billing-details">
+                            <div class="section-title">
+                                <h3 class="title">THÔNG TIN GIAO HÀNG</h3>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Tên khách hàng:</label>
+                                <input class="input" type="text" id="order_name" name="order_name" placeholder="Họ"
+                                    maxlength="50" minlength="2"
+                                    value="{$customer_info.first_name} {$customer_info.last_name}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Email:</label>
+                                <input class="input" name="order_email" id="order_email" placeholder="Email"
+                                    value="{$customer_info.email}" required>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label>Mã vùng điện thoại:</label>
+                                    <input class="input" type="tel" name="country_code" id="country_code"
+                                        placeholder="Mã vùng" value="84" readonly>
+                                </div>
+                                <div class="col-sm-8">
+                                    <label>Số điện thoại:</label>
+                                    <input class="input" type="phone" name="order_phone" id="order_phone" placeholder="Số điện thoại"
+                                        maxlength="11" minlength="10" value="{$customer_info.phone}" required>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <label>Quốc gia:</label>
+                                <input class="input" type="text" name="country" id="country" placeholder="Country"
+                                    value="Việt Nam" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>Thành phố:</label>
+                                <select class="input" id="city_code" name="city_code" required>
+                                    <option value="">Chọn thành phố</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Quận/Huyện:</label>
+                                <select class="input" id="district_code" name="district_code" required>
+                                    <option value="">Chọn quận/huyện</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Phường/xã:</label>
+                                <select class="input" id="ward_code" name="ward_code" value="{$customer_info.ward_code}"
+                                    required>
+                                    <option value="">Chọn phường/xã</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Địa chỉ:</label>
+                                <input class="input" type="text" id="address" name="address" placeholder="Địa chỉ" required
+                                    value="{$customer_info.address}">
+                            </div>
+                            <div class="form-group">
+                                <label>Ghi chú:</label>
+                                <textarea class="input" placeholder="Ghi chú"></textarea>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <select class="form-control" id="city_id" name="city_id">
-                            <option value="">Chọn thành phố</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control" id="province_id" name="province_id">
-                            <option value="">Chọn quận/huyện</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control" id="ward_id" name="ward_id">
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <input class="input" type="text" name="address" placeholder="Address">
-                    </div>
-
-                    <div class="order-notes">
-                        <textarea class="input" placeholder="Notes"></textarea>
-                    </div>
-
-                </div>
-                <!-- /Billing Details -->
-            </div>
-
-            <!-- Order Details -->
-            <div class="col-md-5 order-details">
-                <div class="section-title text-center">
-                    <h3 class="title">Your Order</h3>
-                </div>
-                <div class="order-summary">
-                    <div class="order-col">
-                        <div><strong>PRODUCT</strong></div>
-                        <div><strong>TOTAL</strong></div>
-                    </div>
-                    <div class="order-products">
-                        <div class="order-col">
-                            <div>1x Product Name Goes Here</div>
-                            <div>$980.00</div>
+                    <!-- Order Details -->
+                    {assign var="total" value="0"}
+                    <div class="col-md-5 order-details">
+                        <div class="section-title text-center">
+                            <h3 class="title">ĐƠN HÀNG CỦA BẠN</h3>
                         </div>
-                        <div class="order-col">
-                            <div>2x Product Name Goes Here</div>
-                            <div>$980.00</div>
+                        <div class="order-summary">
+                            <div class="order-col">
+                                <div><strong>SẢN PHẨM</strong></div>
+                                <div><strong>TỔNG CỘNG</strong></div>
+                            </div>
+                            <div class="order-products">
+                                {foreach $list_product_in_cart as $product_in_cart}
+                                    <div class="order-col">
+                                        <div>{$product_in_cart.number_product} x {$product_in_cart.name} </div>
+                                        <div>{$product_in_cart.price|number_format:0:".":"."} VNĐ</div>
+                                    </div>
+                                    {$total=$total+($product_in_cart.price * $product_in_cart.number_product)}
+                                {/foreach}
+                            </div>
+                            <div class="order-col">
+                                <div>Phí giao hàng</div>
+                                <div><strong>MIỄN PHÍ</strong></div>
+                            </div>
+                            <div class="order-col">
+                                <div><strong>TỔNG CỘNG</strong></div>
+                                <div><strong class="order-total">{$total|number_format:0:".":"."} VNĐ</strong></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="order-col">
-                        <div>Shiping</div>
-                        <div><strong>FREE</strong></div>
-                    </div>
-                    <div class="order-col">
-                        <div><strong>TOTAL</strong></div>
-                        <div><strong class="order-total">$2940.00</strong></div>
-                    </div>
-                </div>
-                <div class="payment-method">
-                    <div class="input-radio">
-                        <input type="radio" name="payment" id="payment-1">
-                        <label for="payment-1">
-                            <span></span>
-                            Direct Bank Transfer
-                        </label>
-                        <div class="caption">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua.</p>
+                        <div class="payment-method">
+                            <div class="input-radio">
+                                <input type="radio" name="payment" id="payment-1" checked>
+                                <label for="payment-1">
+                                    <span></span>
+                                    Thanh toán khi nhận hàng
+                                </label>
+                                <div class="caption">
+                                    <p>Sau khi nhận hàng và kiểm tra hàng đầy đủ, khách hàng sẽ thanh toán cho nhân viên
+                                        giao hàng hoặc đối tác giao hàng.</p>
+                                </div>
+                            </div>
+                            <div class="input-radio">
+                                <input type="radio" name="payment" id="payment-2">
+                                <label for="payment-2">
+                                    <span></span>
+                                    Thanh toán thông qua ứng dụng Internet Banking
+                                </label>
+                                <div class="caption">
+                                    <p>Hiện tại hệ thống chưa hỗ trợ việc thanh toán thông qua các ứng dụng Internet
+                                        Banking. Mong khách hàng thông cảm vì sự bất tiện này.</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="input-radio">
-                        <input type="radio" name="payment" id="payment-2">
-                        <label for="payment-2">
-                            <span></span>
-                            Cheque Payment
-                        </label>
-                        <div class="caption">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua.</p>
+                        <div class="input-checkbox">
+                            <input type="checkbox" id="terms">
+                            <label for="terms">
+                                <span></span>
+                                Tôi đã đọc và đồng ý các điều kiện, quy định của cửa hàng.
+                            </label>
                         </div>
-                    </div>
-                    <div class="input-radio">
-                        <input type="radio" name="payment" id="payment-3">
-                        <label for="payment-3">
-                            <span></span>
-                            Paypal System
-                        </label>
-                        <div class="caption">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua.</p>
+                        <div class="form-group text-center">
+                            <button id="checkout_btn" type="submit" class="primary-btn btn-block order-submit">Đặt
+                                hàng</button>
                         </div>
                     </div>
                 </div>
-                <div class="input-checkbox">
-                    <input type="checkbox" id="terms">
-                    <label for="terms">
-                        <span></span>
-                        I've read and accept the <a href="#">terms & conditions</a>
-                    </label>
-                </div>
-                <a id="checkout_btn" href="#" class="primary-btn order-submit">Place order</a>
-            </div>
-            <!-- /Order Details -->
+            </form>
         </div>
-        <!-- /row -->
-    </div>
-    <!-- /container -->
+    {/if}
+    <!-- /Order Details -->
 </div>
-<!-- /SECTION -->
+<!-- /container -->
+
 
 <script>
-    $(document).ready(function () {
+    var city_code_input = {$customer_info.city_code};
+    var district_code_input = {$customer_info.district_code};
+    var ward_code_input = {$customer_info.ward_code};
+    var total = {$total};
+    $(document).ready(function() {
         var link_city = 'https://api.mysupership.vn/v1/partner/areas/province';
-        $.getJSON(link_city, function (data) {
-            $.each(data.results, function (key, val) {
-                $('#city_id').append(new Option(val.name, val.code))
+        $.getJSON(link_city, function(data) {
+            $.each(data.results, function(key, val) {
+                $('#city_code').append(new Option(val.name, val.code));
+                $('#city_code').val(city_code_input);
             });
         });
-    });
-
-    $('#city_id').change(function () {
-        var city_code = $(this).children("option:selected").val();
-        var link_district = 'https://api.mysupership.vn/v1/partner/areas/district?province=' + city_code;
-
-        $.getJSON(link_district, function (data) {
-            $.each(data.results, function (key, val) {
-                $('#province_id').append(new Option(val.name, val.code))
+        var link_district = 'https://api.mysupership.vn/v1/partner/areas/district?province=' +
+            city_code_input;
+        $('#district_code').not(':first').remove();
+        $.getJSON(link_district, function(data) {
+            $.each(data.results, function(key, val) {
+                $('#district_code').append(new Option(val.name, val.code));
+                $('#district_code').val(district_code_input);
             });
         });
-    });
+        var link_ward = 'https://api.mysupership.vn/v1/partner/areas/commune?district=' +
+            district_code_input;
+        $('#ward_code').not(':first').remove();
+        $.getJSON(link_ward, function(data) {
+            $.each(data.results, function(key, val) {
+                $('#ward_code').append(new Option(val.name, val.code));
+                $('#ward_code').val(ward_code_input);
+            });
+        });
 
-    $('#province_id').change(function () {
-        var district_code = $(this).children("option:selected").val();
-        var link_ward = 'https://api.mysupership.vn/v1/partner/areas/commune?district=' + district_code;
 
-        $.getJSON(link_ward, function (data) {
-            $.each(data.results, function (key, val) {
-                $('#ward_id').append(new Option(val.name, val.code))
+        $('#city_code').change(function() {
+            var city_code = $(this).children("option:selected").val();
+            var link_district = 'https://api.mysupership.vn/v1/partner/areas/district?province=' +
+                city_code;
+            $('#district_code').not(':first').remove();
+            $.getJSON(link_district, function(data) {
+                $.each(data.results, function(key, val) {
+                    $('#district_code').append(new Option(val.name, val.code))
+                });
+            });
+        });
+
+        $('#district_code').change(function() {
+            var district_code = $(this).children("option:selected").val();
+            var link_ward = 'https://api.mysupership.vn/v1/partner/areas/commune?district=' +
+                district_code;
+            $('#ward_code').not(':first').remove();
+            $.getJSON(link_ward, function(data) {
+                $.each(data.results, function(key, val) {
+                    $('#ward_code').append(new Option(val.name, val.code))
+                });
             });
         });
     })
 
+    function checkout(e) {
+        e.preventDefault();
 
+        $("<input />").attr("type", "hidden")
+            .attr("name", "city_name")
+            .attr("value", $("#city_code option:selected").text())
+            .appendTo("#formCheckout");
+
+        $("<input />").attr("type", "hidden")
+            .attr("name", "district_name")
+            .attr("value", $("#district_code option:selected").text())
+            .appendTo("#formCheckout");
+
+        $("<input />").attr("type", "hidden")
+            .attr("name", "ward_name")
+            .attr("value", $("#ward_code option:selected").text())
+            .appendTo("#formCheckout");
+        $("<input />").attr("type", "hidden")
+            .attr("name", "delivery_cost")
+            .attr("value", 0)
+            .appendTo("#formCheckout");
+        $("<input />").attr("type", "hidden")
+            .attr("name", "total")
+            .attr("value", total)
+            .appendTo("#formCheckout");
+
+        var fdata = $('#formCheckout').serializeArray();
+        $.ajax({
+            type: 'post',
+            url: "/customer/checkout",
+            dataType: 'json',
+            data: fdata,
+
+            success: function(data) {
+                console.log(data.result);
+                if (data.result.status === undefined) {
+                    $('.input').nextAll('span').remove();
+                    $('.input').nextAll('br').remove();
+                    $('.input').removeClass('input_error');
+                    $.each(data.result, function(key, input_error) {
+                        $('.input').each(function() {
+                            if ($(this).prop('id') == key) {
+                                var id_div_input = '#' + key;
+                                $(id_div_input).addClass('input_error');
+                                $.each(input_error, function(k, v) {
+                                    console.log(k + ':' + v);
+                                    $(id_div_input).after(
+                                        '<br><span class="text-danger font-weight-bold">' +
+                                        v + '</span>');
+                                })
+                            }
+                        });
+                    });
+                }
+            },
+            error: function(status) {
+                console.log(status);
+            }
+        });
+    }
 </script>

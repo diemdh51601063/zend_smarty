@@ -9,14 +9,14 @@
                 <li><a href="#"><i class="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li>
             </ul>
             <ul class="header-links pull-right">
-                {if empty($user) }
+                {if empty($customer) }
                     <li><a href="{$this->url(['controller' => 'index', 'action' => 'register'])}"><i
-                                    class="fa fa-user-plus"></i> Đăng Ký</a></li>
-                    <li><a href="{$this->url(['controller' => 'index', 'action' => 'login'])}"><i
-                                    class="fa fa-user-o"></i> Đăng Nhập</a></li>
+                                class="fa fa-user-plus"></i> Đăng Ký</a></li>
+                    <li><a href="{$this->url(['controller' => 'index', 'action' => 'login'])}"><i class="fa fa-user-o"></i>
+                            Đăng Nhập</a></li>
                 {else}
                     <li><a href="{$this->url(['controller' => 'index', 'action' => 'logout'])}"><i
-                                    class="fa fa-sign-out"></i>Đăng Xuất</a></li>
+                                class="fa fa-sign-out"></i>Đăng Xuất</a></li>
                 {/if}
             </ul>
         </div>
@@ -77,21 +77,22 @@
                                         </div>
                                     {else}
                                         {assign var="total" value="0"}
-                                        {foreach $cart as $item}
-                                            <div class="product-widget cartList" id="{$item.id}">
+                                        {foreach from=$cart key=key item=item}
+                                            <div class="product-widget cartList" id="{$key}">
                                                 <div class="product-img">
                                                     <img src="../../asset/images/products/{$item.image}" alt="">
                                                 </div>
                                                 <div class="product-body">
                                                     <h3 class="product-name"><a href="#">{$item.name}</a></h3>
+                                                    <small><b>{$item.type_product_color}</b></small>
                                                     <h4 class="product-price"><small
-                                                                style="font-weight: 600">{$item.number_product}
+                                                            style="font-weight: 600">{$item.number_product}
                                                             x </small>{$item.price|number_format:0:".":"."}
                                                         VNĐ</h4>
                                                 </div>
-                                                <button onclick="deleteProductCart({$item.id})" class="delete"><i
-                                                            class="fa fa-close" style="font-size: 18px"></i></button>
-                                                {$total=$total+($item.price*$item.number_product)}
+                                                <button onclick="deleteProductCart({$key})" class="delete"><i
+                                                        class="fa fa-close" style="font-size: 18px"></i></button>
+                                                {$total=$total+($item.price * $item.number_product)}
                                             </div>
                                         {/foreach}
                                     {/if}
@@ -103,50 +104,37 @@
                                     </div>
                                 {/if}
                                 <div class="cart-btns">
-                                    <a href="#">Giỏ hàng</a>
-                                    <a href="{$this->url(['controller' => 'index', 'action' => 'checkout'])}">Đặt hàng
-                                        <i class="fa fa-arrow-circle-right"></i></a>
+                                    {if empty($customer) }
+                                        <a href="{$this->url(['controller' => 'index', 'action' => 'login'])}">Đặt hàng
+                                            <i class="fa fa-arrow-circle-right"></i></a>
+                                    {else}
+                                        <a href="{$this->url(['controller' => 'index', 'action' => 'checkout'])}">Đặt hàng
+                                            <i class="fa fa-arrow-circle-right"></i></a>
+                                    {/if}
                                 </div>
-
                             </div>
                         </div>
-                        <!-- /Cart -->
                     </div>
                 </div>
-                <!-- /ACCOUNT -->
             </div>
-            <!-- row -->
         </div>
-        <!-- container -->
     </div>
-    <!-- /MAIN HEADER -->
 </header>
-<!-- /HEADER -->
 
-<!-- NAVIGATION -->
 <nav id="navigation">
-    <!-- container -->
     <div class="container">
-        <!-- responsive-nav -->
         <div id="responsive-nav">
-            <!-- NAV -->
             <ul class="main-nav nav navbar-nav">
                 <li class="active"><a href="{$this->url(['controller' => 'index', 'action' => 'index'])}">Trang chủ</a>
                 </li>
-                {foreach $list_category as $category}
-                    <li><a href="#">{$category.category_name}</a></li>
+                {foreach $list_brand as $brand}
+                    {if $brand.id < 10}
+                        <li><a id="{$brand.id}" onclick="addActive({$brand.id})"
+                                href="{{$this->url(['controller' => 'index', 'action' => 'view'])}}?brand_id={$brand.id}">{$brand.brand_name}</a>
+                        </li>
+                    {/if}
                 {/foreach}
             </ul>
-            <!-- /NAV -->
         </div>
-        <!-- /responsive-nav -->
     </div>
-    <!-- /container -->
 </nav>
-<!-- /NAVIGATION -->
-
-
-<script>
-
-
-</script>

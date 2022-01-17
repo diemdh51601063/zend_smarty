@@ -50,13 +50,13 @@
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Tên Sản Phẩm <span class="text-danger">*</span></label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="name" name="name" required>
+                <input type="text" class="form-control" id="name" name="name" required  maxlength="30" minlength="2">
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Mã Sản Phẩm</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="product_code" name="product_code">
+                <input type="text" class="form-control" id="product_code" name="product_code" maxlength="10" minlength="2">
             </div>
         </div>
         <div class="form-group row">
@@ -75,7 +75,7 @@
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Giá <span class="text-danger">*</span></label>
                     <div class="col-sm-8">
-                        <input type="number" class="form-control" id="price" name="price" required>
+                        <input type="number" class="form-control" id="price" name="price" required min="0">
                     </div>
                 </div>
 
@@ -102,15 +102,14 @@
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Điều khiển <span class="text-danger">*</span></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="control" name="control" required>
+                        <input type="text" class="form-control" id="control" name="control" required  value="abc">
                     </div>
                 </div>
 
             </div>
             <div class="col-sm-6">
                 <div class="form-group row">
-                    <label class="col-sm-3 col-form-label text-right">Thương Hiệu <span
-                                class="text-danger">*</span></label>
+                    <label class="col-sm-3 col-form-label text-right">Thương Hiệu <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
                         <select class="form-control" id="brand_id" name="brand_id" required>
                             {foreach $listBrand as $brand}
@@ -121,10 +120,9 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-3 col-form-label text-right">Số lượng <span
-                                class="text-danger">*</span></label>
+                    <label class="col-sm-3 col-form-label text-right">Số lượng <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
-                        <input type="number" class="form-control" id="quantily" name="quantily" required>
+                        <input type="number" class="form-control" id="quantily" name="quantily" required value="150">
                     </div>
                 </div>
 
@@ -161,7 +159,7 @@
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Hình ảnh</label>
             <div class="col-sm-10">
-                <input type="file" class="form-control-file" id="product_image" name="product_image[]" multiple>
+                <input type="file" class="form-control-file" id="product_image" name="product_image[]" multiple accept="image/png, image/gif, image/jpeg">
                 {if isset($error_image)}
                     {foreach $error_image as $err}
                         <span class="err_input my-3">{$err}</span><br>
@@ -275,30 +273,51 @@
                 '<div class="form-group row">' +
                 '<label class="col-sm-4 col-form-label">Màu sắc<span class="text-danger">*</span></label>' +
                 '<div class="col-sm-8">' +
-                '<input type="text" required class="form-control" id="detail_color" name="detail_color[' + x + ']" required>' +
+                '<input type="text" required class="form-control" id="detail_color" name="detail_color[' + x + ']" required maxlength="30" minlength="2">' +
                 '</div>' +
                 '</div>' +
                 '<div class="form-group row">' +
                 '<label class="col-sm-4 col-form-label">Giá<span class="text-danger">*</span></label>' +
                 '<div class="col-sm-8">' +
-                '<input type="number" required class="form-control" id="detail_price" name="detail_price[' + x + ']" required>' +
+                '<input type="number" required class="form-control" id="detail_price" name="detail_price[' + x + ']" required min=0>' +
                 '</div>' +
                 '</div>' +
                 '<div class="form-group row">' +
                 '<label class="col-sm-4 col-form-label">Số lượng<span class="text-danger">*</span></label>' +
                 '<div class="col-sm-8">' +
-                '<input type="text" required class="form-control" id="detail_quantily" name="detail_quantily[' + x + ']" required>' +
+                '<input type="number" class="form-control item_quantily" id="detail_quantily" name="detail_quantily[' + x + ']" required min=0>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
                 '<div class="col-sm-8">' +
                 '<label>Hình ảnh phân loại</label>' +
-                '<input type="file" onChange=getImage(this) class="form-control-file detail_image" id="' + x + '" name="detail_image_' + x + '[]" multiple>' +
+                '<input type="file" onChange=getImage(this) class="form-control-file detail_image" id="' + x + '" name="detail_image_' + x + '[]" multiple accept="image/png, image/gif, image/jpeg">' +
                 '<div id="filearray_' + x + '"></div>' +
                 '</div>' +
                 '</div></div>'
             );
         }
+        if ($('.item_quantily')[0]){
+                $('.item_quantily').each(function () {
+                    var total=0;
+                    var inputs = $('.item_quantily')
+                    for(var i = 0; i < inputs.length; i++){
+                        $(inputs[i]).change(function(){
+                            total=parseInt(total) + parseInt($(this).val());
+                            if(total == $('#quantily').val()){
+                               
+                                console.log($('#quantily').val());
+                            }else{
+                                
+                                console.log(total);
+                                console.log('wddg');
+                                total=0;
+                            }
+                        })
+
+                    }
+                });
+            } 
     });
 
     function getImage(div_input) {
@@ -385,4 +404,5 @@
             })
         //}
     }
+    
 </script>

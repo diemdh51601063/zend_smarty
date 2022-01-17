@@ -18,39 +18,37 @@
     .input_error {
         border: 1px solid red;
     }
-
 </style>
 
 <div class="container">
     <h3 class="text-center">{$content}</h3>
-    <form class="registration-container" method="post" id="formRegister"
-          onsubmit="register(event)">
+    <form class="registration-container" method="post" id="formRegister" onsubmit="register(event)">
         <div class="form-group">
             <label>Họ:</label>
-            <input class="input" type="text" id="first_name" name="first_name" placeholder="Họ" required>
+            <input class="input" type="text" id="first_name" name="first_name" placeholder="Họ" maxlength="50" minlength="2">
         </div>
         <div class="form-group">
             <label>Tên:</label>
-            <input class="input" type="text" id="last_name" name="last_name" placeholder="Tên" required>
+            <input class="input" type="text" id="last_name" name="last_name" placeholder="Tên" maxlength="50" minlength="2">
         </div>
         <div class="form-group">
             <label>Email:</label>
-            <input class="input" type="email" name="email" id="email" placeholder="Email" required>
+            <input class="input" type="email" name="email" id="email" placeholder="Email">
         </div>
         <div class="form-group row">
             <div class="col-sm-4">
                 <label>Mã vùng điện thoại:</label>
-                <input class="input" type="tel" name="country_code" id="country_code" placeholder="Mã vùng" value="84" required>
+                <input class="input" type="tel" name="country_code" id="country_code" placeholder="Mã vùng" value="84">
             </div>
             <div class="col-sm-8">
                 <label>Số điện thoại:</label>
-                <input class="input" type="tel" name="phone" id="phone" placeholder="Số điện thoại" required>
+                <input class="input" type="phone" name="phone" id="phone" placeholder="Số điện thoại" maxlength="11" minlength="10">
             </div>
 
         </div>
         <div class="form-group">
             <label>Quốc gia:</label>
-            <input class="input" type="text" name="country" id="country" placeholder="Country" value="Việt Nam" required>
+            <input class="input" type="text" name="country" id="country" placeholder="Country" value="Việt Nam" readonly>
         </div>
         <div class="form-group">
             <label>Thành phố:</label>
@@ -67,6 +65,7 @@
         <div class="form-group">
             <label>Phường/xã:</label>
             <select class="input" id="ward_code" name="ward_code" required>
+                <option value="">Chọn phường/xã</option>
             </select>
         </div>
         <div class="form-group">
@@ -75,12 +74,11 @@
         </div>
         <div class="form-group">
             <label>Nhập mật khẩu:</label>
-            <input class="input" type="password" name="password" id="password" placeholder="Mật khẩu" required>
+            <input class="input" type="password" name="password" id="password" placeholder="Mật khẩu" maxlength="20" minlength="5" required>
         </div>
         <div class="form-group">
             <label>Nhập lại mật khẩu:</label>
-            <input class="input" type="password" id="confirm_password" name="confirm_password"
-                   placeholder="Nhập lại mật khẩu" required>
+            <input class="input" type="password" id="confirm_password" name="confirm_password" placeholder="Nhập lại mật khẩu" required>
         </div>
         <div class="form-group text-center">
             <button type="submit" class="btn btn-registration">Đăng ký</button>
@@ -90,34 +88,32 @@
 <div id="show"></div>
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         var link_city = 'https://api.mysupership.vn/v1/partner/areas/province';
-        $.getJSON(link_city, function (data) {
-            $.each(data.results, function (key, val) {
+        $.getJSON(link_city, function(data) {
+            $.each(data.results, function(key, val) {
                 $('#city_code').append(new Option(val.name, val.code))
             });
         });
 
 
-        $('#city_code').change(function () {
+        $('#city_code').change(function() {
             var city_code = $(this).children("option:selected").val();
-            var link_district = 'https://api.mysupership.vn/v1/partner/areas/district?province=' +
-                city_code;
-            $('#district_code').children().remove();
-            $.getJSON(link_district, function (data) {
-                $.each(data.results, function (key, val) {
+            var link_district = 'https://api.mysupership.vn/v1/partner/areas/district?province=' + city_code;
+            $('#district_code').not(':first').remove();
+            $.getJSON(link_district, function(data) {
+                $.each(data.results, function(key, val) {
                     $('#district_code').append(new Option(val.name, val.code))
                 });
             });
         });
 
-        $('#district_code').change(function () {
+        $('#district_code').change(function() {
             var district_code = $(this).children("option:selected").val();
-            var link_ward = 'https://api.mysupership.vn/v1/partner/areas/commune?district=' +
-                district_code;
-            $('#ward_code').children().remove();
-            $.getJSON(link_ward, function (data) {
-                $.each(data.results, function (key, val) {
+            var link_ward = 'https://api.mysupership.vn/v1/partner/areas/commune?district=' + district_code;
+            $('#ward_code').not(':first').remove();
+            $.getJSON(link_ward, function(data) {
+                $.each(data.results, function(key, val) {
                     $('#ward_code').append(new Option(val.name, val.code))
                 });
             });
@@ -156,12 +152,12 @@
 end submit formmmmmm*/
 
 
-    $('#confirm_password').change(function () {
+    $('#confirm_password').change(function() {
         var pw = $('#password').val();
         $('#confirm_password').next('span').remove();
         if ($('#confirm_password').val() !== pw) {
-            $('#confirm_password').after('<span class="text-danger">Mật khẩu không trùng khớp</span>');
-        }else{
+            $('#confirm_password').after('<span class="text-danger font-weight-bold">* Mật khẩu không trùng khớp</span>');
+        } else {
             $('#confirm_password').next('span').remove();
         }
     });
@@ -189,21 +185,32 @@ end submit formmmmmm*/
             dataType: 'json',
             data: fdata,
 
-            success: function (data) {
+            success: function(data) {
                 if (data.result == false) {
-                    $('#email').next('span').remove();
-                    $('#email').focus();
-                    $('#email').after('<span class="text-danger font-weight-bold">' + data.message + '</span>')
+                    if(data.message != undefined){
+                        $('#email').nextAll('span').remove();
+                        $('#email').focus();
+                        $('#email').after('<span class="text-danger font-weight-bold">' + data.message + '</span>');
+                    }
+                    if(data.message_pw != undefined){
+                        $('#password').nextAll('span').remove();
+                        $('#password').focus();
+                        $('#password').after('<span class="text-danger font-weight-bold">' + data.message_pw + '</span>');
+                    }
                 } else {
                     if (data.result.status === undefined) {
-                        $.each(data.result, function (key, value) {
-                            $('.input').next('span').remove();
-                            $('.input').each(function () {
+                        console.log(data.result);
+                        $('.input').nextAll('span').remove();
+                        $('.input').nextAll('br').remove();
+                        $('.input').removeClass('input_error');
+                        $.each(data.result, function(key, input_error) {
+                            $('.input').each(function() {
                                 if ($(this).prop('id') == key) {
                                     var id_div_input = '#' + key;
-                                    $.each(value, function (k, v) {
-                                        $(id_div_input).addClass('input_error');
-                                        $(id_div_input).after('<span class="text-danger font-weight-bold"">' + v + '</span><br>');
+                                    $(id_div_input).addClass('input_error');
+                                    $.each(input_error, function(k, v) {
+                                        console.log(k + ':' + v);
+                                        $(id_div_input).after('<br><span class="text-danger font-weight-bold">' + v + '</span>');
                                     })
                                 }
                             });
@@ -211,7 +218,7 @@ end submit formmmmmm*/
                     }
                 }
             },
-            error: function (status) {
+            error: function(status) {
                 console.log(status);
             }
         });

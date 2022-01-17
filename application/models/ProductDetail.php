@@ -19,9 +19,19 @@ class Model_ProductDetail extends Zend_Db_Table
         $this->_validate = array(
             'color' => array(
                 new Zend_Validate_NotEmpty(),
+                new Zend_Validate_StringLength(
+                    array(
+                        'min' => 2,
+                        'max' => 20
+                    )
+                ),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
                         Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng nhập màu sắc phân loại sản phẩm!!!'
+                    ),
+                    array(
+                        Zend_Validate_StringLength::TOO_LONG => '* Màu sắc phân loại sản phẩm tối đa 30 kí tự !!!',
+                        Zend_Validate_StringLength::TOO_SHORT => '* Màu sắc phân loại sản phẩm tối thiểu 2 kí tự !!!'
                     )
                 )
             ),

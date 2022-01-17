@@ -15,7 +15,7 @@ class BrandController extends Zend_Controller_Action
         $this->_actionMain = '/' . $this->_arrParam['controller'] . '/index';
 
         $this->_arrParam = $this->filterInput($this->_arrParam);
-        
+
         $this->view->arrParam = $this->_arrParam;
         $this->view->currentController = $this->_currentController;
         $this->view->actionMain = $this->_actionMain;
@@ -156,12 +156,13 @@ class BrandController extends Zend_Controller_Action
             if ($fileInfo['name'] != '') {
                 $path_info = pathinfo($fileInfo['name']);
                 $file_name = $path_info['filename'];
+                $file_name = preg_replace('/[^a-z0-9_-]/', '', $file_name);
                 $ext = $path_info['extension'];
                 $new_name = substr(md5(uniqid(rand(1, 6))), 0, 8) . '-' . $file_name . '.' . $ext;
                 $file_adapter->addFilter('Rename', $path . '/' . $new_name);
-               if($file_adapter->receive($fileInfo['name'])){
-                   $brand_image[] = $new_name;
-               }
+                if ($file_adapter->receive($fileInfo['name'])) {
+                    $brand_image[] = $new_name;
+                }
             }
         }
         $messages = $file_adapter->getMessages();

@@ -46,30 +46,31 @@ class Model_ProductInCart extends Zend_Db_Table
         );
     }
 
-    public function addProductInCart($arrParam)
+    public function addProductInCart($add_product_cart_param)
     {
         $result = null;
-        $input = new Zend_Filter_Input($this->_filter, $this->_validate, $arrParam, $this->_option);
+        $add_product_cart_param['quantily'] = $add_product_cart_param['number_product'];
+        unset($add_product_cart_param['number_product']);
+        $input = new Zend_Filter_Input($this->_filter, $this->_validate, $add_product_cart_param, $this->_option);
         if ($input->isValid()) {
             $where_get_cart = '';
-            if(empty($arrParam['product_detail_id'])){
-                $where_get_cart = 'cart_id = '.$arrParam['id'].' AND product_id = '.$arrParam['product_id'];
-            }else{
-                $where_get_cart = 'cart_id = '.$arrParam['id'].' AND product_id = '.$arrParam['product_id'].' AND product_detail_id = '.$arrParam['type_id'];
+            if (empty($add_product_cart_param['type_product_id'])) {
+                $where_get_cart = 'cart_id = ' . $add_product_cart_param['cart_id'] . ' AND product_id = ' . $add_product_cart_param['product_id'];
+            } else {
+                $where_get_cart = 'cart_id = ' . $add_product_cart_param['cart_id'] . ' AND product_id = ' . $add_product_cart_param['product_id'] . ' AND product_detail_id = ' . $add_product_cart_param['type_product_id'];
             }
             $add = null;
             $product_in_cart = $this->fetchRow($where_get_cart);
-            if(!empty($product_in_cart->id)){
-                $product_in_cart->quantily = $arrParam['number_product'] + $product_in_cart->quantily;
+            if (!empty($product_in_cart->id)) {
+                $product_in_cart->quantily = $add_product_cart_param['quantily'] + $product_in_cart->quantily;
                 $product_in_cart->update_date = date('Y-m-d H:i:s');
                 $product_in_cart->save();
                 $add = $product_in_cart;
-            }else{
-                $new_product_in_cart = $this->createRow($arrParam);
+            } else {
+                $new_product_in_cart = $this->createRow($add_product_cart_param);
                 $new_product_in_cart->save();
                 $add = $new_product_in_cart;
             }
-
             $result['status'] = true;
             $result['cart_item'] = $add;
         } else {
@@ -81,26 +82,31 @@ class Model_ProductInCart extends Zend_Db_Table
         return $result;
     }
 
-    public function deleteProductInCartUser($arrParam)
+    public function deleteProductInCartUser($delete_param)
     {
-        $where = 'id = ' . $arrParam['id'];
+        $where = 'product_id = ' . $delete_param['product_id'] . ' AND cart_id = ' . $delete_param['cart_id'];
+        if (!empty($delete_param['type_product_id'])) {
+            $where = $where . ' AND product_detail_id = ' . $delete_param['type_product_id'];
+        }
         $this->delete($where);
     }
 
-    public function deleteListItem($list)
+    public function getAllProductInCart($cart_id)
     {
-        if (!empty($list)) {
-            foreach ($list as $image_id) {
-                $where = 'id = ' . $image_id;
-                $detail_image = $this->fetchRow($where);
-                if ($detail_image['image'] !== "") {
-                    $product_image = PRODUCT_IMAGE_PATH . '/' . $detail_image['image'];
-                    if (file_exists($product_image)) {
-                        unlink($product_image);
-                    }
-                }
-                $this->delete($where);
+        /*$sql= "SELECT product_id, quantily as number_product, product_detail_id FROM cart_products WHERE cart_id = ". $cart_id;
+        $db = $this->getDefaultAdapter();
+        $db->setFetchMode(Zend_Db::FETCH_OBJ);
+        $product_in_cart = $db->query($sql)->fetchAll();
+        foreach($product_in_cart as $index=> $product){
+            if($product->product_detail_id != NULL){
+                $sql_detail = "SELECT color FROM product_details WHERE product_details.id = ". $product->product_detail_id;
+                $query = $db->query($sql_detail)->fetchObject();
+                $product_in_cart[$index]->color = $query->color;
             }
         }
+        return $product_in_cart;*/
+        $where = "cart_id = " . $cart_id;
+        $result = $this->fetchAll($where)->toArray();
+        return $result;
     }
 }

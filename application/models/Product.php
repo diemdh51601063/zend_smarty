@@ -7,10 +7,14 @@ class Model_Product extends Zend_Db_Table
     protected $_filter = null;
     protected $_validate = null;
     protected $_option = null;
+    protected $db = null;
 
 
     public function init()
     {
+        $this->_db = $this->getDefaultAdapter();
+        $this->_db->setFetchMode(Zend_Db::FETCH_OBJ);
+
         $this->_filter = array(
             'id' => array('Int'),
         );
@@ -18,9 +22,17 @@ class Model_Product extends Zend_Db_Table
         $this->_validate = array(
             'name' => array(
                 new Zend_Validate_NotEmpty(),
+                new Zend_Validate_StringLength(
+                    array(
+                        'min' => 5
+                    )
+                ),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
                         Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng nhập tên sản phẩm !!!'
+                    ),
+                    array(
+                        Zend_Validate_StringLength::TOO_SHORT => '* Tên sản phẩm có tối thiểu 5 kí tự !!!'
                     )
                 )
             ),
@@ -87,7 +99,7 @@ class Model_Product extends Zend_Db_Table
                         Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng nhập số lượng sản phẩm !!!'
                     ),
                     array(
-                        Zend_Validate_GreaterThan::NOT_GREATER => '* Vui lòng nhập số lượng sản phẩm hợp lệ !!!',
+                        Zend_Validate_GreaterThan::NOT_GREATER => '* Số lượng sản phẩm phải lớn hơn 0 !!!',
                     ),
                     array(
                         Zend_Validate_Digits::NOT_DIGITS => '* Nhập số !!!'
@@ -124,10 +136,17 @@ class Model_Product extends Zend_Db_Table
         );
     }
 
-    public function getListItem()
+    public function getListItem($arrParam)
     {
         $order = "id ASC";
-        $list_result = $this->fetchAll(null, $order)->toArray();
+        $where = "status = 1";
+        if(!empty($arrParam['brand_id'])){
+            $where =  $where .' AND brand_id = ' . $arrParam['brand_id'];
+        }
+        if(!empty($arrParam['category_id'])){
+            $where =  $where . ' AND category_id = ' . $arrParam['category_id'];
+        }
+        $list_result = $this->fetchAll($where, $order)->toArray();
         return $list_result;
     }
 

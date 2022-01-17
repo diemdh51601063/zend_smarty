@@ -31,7 +31,7 @@
             <div class="col-md-5 col-md-push-2">
                 <div id="product-main-img">
                     {foreach $image_product as $image }
-                        <div class="product-preview">
+                        <div class="product-preview" id="changeimg">
                             <img src="../../asset/images/products/{$image.image}" alt="">
                         </div>
                     {/foreach}
@@ -44,7 +44,7 @@
 
             <!-- Product thumb imgs -->
             <div class="col-md-2  col-md-pull-5">
-                <div id="product-imgs">
+                <div id="product-imgs" id="changeimgmain">
                     {foreach $image_product as $image }
                         <div class="product-preview">
                             <img src="../../asset/images/products/{$image.image}" alt="">
@@ -93,7 +93,7 @@
                         <ul class="product-links">
                             {foreach $list_type_product as $type}
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="{$type.id}" value="{$type.id}">
+                                    <input onchange="changeImage({$type.id})" class="form-check-input" type="radio" name="product_type_id" id="{$type.id}" value="{$type.id}">
                                     <label class="form-check-label" for="{$type.id}">
                                         {$type.color}
                                     </label>
@@ -250,12 +250,16 @@
                 list_image_replace.push(value.image);
             }
         });
+        console.log(list_image_replace)
         if(list_image_replace !== ''){
             $('#product-imgs').children('.product-preview').remove();
             $('#product-main-img').children('.product-preview').remove();
             $.each(list_image_replace, function (k, v){
-                $('#product-preview').append('<div class="product-preview"><img src="../../asset/images/products/'+v+'" alt=""></div>');
+                //$('#product-preview').append('<div class="product-preview"><img src="../../asset/images/products/'+v+'" alt=""></div>');
                 $('#product-imgs').append('<div class="product-preview"><img src="../../asset/images/products/'+v+'" alt=""></div>');
+
+                $('#product-main-img').append('<div class="product-preview" id="changeimg">'+
+                '<img src="../../asset/images/products/'+v+'" alt="">'+'</div>');
             });
         }
     }
@@ -270,35 +274,42 @@
         var number_product = $('#number_product').val();
         var id_product = $('#addCart').val();
         var product_type_id = '';
+        if($('input[name="product_type_id"]:checked').val() != undefined){
+            var product_type_id = $('input[name="product_type_id"]:checked').val();
+        }
+        
         if(number_product > 0){
             $.ajax({
                 type: 'post',
-                url: "/customer/addcart?product_id="+id_product+"&number_product="+number_product,
+                url: "/customer/addcart?product_id="+id_product+"&number_product="+number_product+"&type_product_id="+product_type_id,
                 dataType: 'json',
 
                 success: function (data) {
                     $('#number_product').val(0);
                     $('.cart-list').children('div').remove();
                     var total = 0;
-                    var length = 0;
-                    console.log(data.result)
+                    var length_cart = Object.keys(data.result).length;
+                    console.log(length_cart)
+                    var num_product = 0;
+
+                    $('#card_quantily').replaceWith('<div class="qty" id="card_quantily">'+ length_cart +'</div>')
+
                     $.each(data.result, function (k, v) {
-                        length = length+1;
+                        num_product = parseInt(num_product) + parseInt(v.number_product);
                         total = total + (v.number_product * v.price);
                         $(".cart-list").append('<div class="product-widget cartList" id="'+v.id+'">'+
                         '<div class="product-img">'+
                             '<img src="../../asset/images/products/'+v.image+'" alt=""> </div>'+
                         '<div class="product-body">'+
-                            '<h3 class="product-name"><a href="#">'+v.name+'</a></h3>'+
+                            '<h3 class="product-name">'+v.name+'</h3>'+
+                            '<h4>'+v.type_product_color+'</h4>'+
                            '<h4 class="product-price"><small style="font-weight: 600">'+v.number_product+' x </small>'+ numberWithCommas(v.price) +' VNĐ</h4>'+
                         '</div>'+
                         '<button onclick="deleteProductCart('+v.id+')" class="delete"><i class="fa fa-close" style="font-size: 18px"></i></button> </div>')
                     });
                     $('.cart-summary').replaceWith('<div class="cart-summary">'+
-                        '<small><b>Có ' + length + 'sản phẩm trong giỏ hàng</b></small>'+
+                        '<small><b>Có ' + num_product + ' sản phẩm trong giỏ hàng</b></small>'+
                     '<h5>Tổng cộng: '+ numberWithCommas(total) + ' VNĐ</h5></div>');
-
-                    $('#card_quantily').replaceWith('<div class="qty" id="card_quantily">'+length+'</div>')
                 },
                 error: function (status) {
                     console.log(status);

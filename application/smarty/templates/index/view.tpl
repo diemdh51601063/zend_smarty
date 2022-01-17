@@ -34,27 +34,6 @@
                     </div>
                 </div>
 
-                {*<!-- Price -->
-                <div class="aside">
-                    <h3 class="aside-title">Price</h3>
-                    <div class="price-filter">
-                        <div id="price-slider"></div>
-                        <div class="input-number price-min">
-                            <input id="price-min" type="number">
-                            <span class="qty-up">+</span>
-                            <span class="qty-down">-</span>
-                        </div>
-                        <span>-</span>
-                        <div class="input-number price-max">
-                            <input id="price-max" type="number">
-                            <span class="qty-up">+</span>
-                            <span class="qty-down">-</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- /Price -->*}
-
-                <!-- select brand -->
                 <div class="aside">
                     <h3 class="aside-title">Brand</h3>
                     <div class="checkbox-filter">
@@ -85,7 +64,9 @@
                                     <p class="product-category">{$category.category_name}</p>
                                 {/if}
                             {/foreach}
-                            <h3 class="product-name"><a href="{{$this->url(['controller' => 'index', 'action' => 'detail'])}}?id={$list_product[0].id}">{$list_product[0].name}</a></h3>
+                            <h3 class="product-name"><a
+                                    href="{{$this->url(['controller' => 'index', 'action' => 'detail'])}}?id={$list_product[0].id}">{$list_product[0].name}</a>
+                            </h3>
                             <h4 class="product-price">{$list_product[0].price}</h4>
                         </div>
                     </div>
@@ -116,49 +97,36 @@
                         </label>
                     </div>
                 </div>
-                <!-- /store top filter -->
 
-                <!-- store products -->
                 <div class="row">
-                    <!-- product -->
                     {foreach $list_product as $product}
-                        <div class="col-md-4 col-xs-6">
-                            <div class="product">
-                                <div class="product-img">
-                                    {if !empty($product.list_image[0].image)}
-                                        <img class="img_product_fix" src="../../asset/images/products/{$product.list_image[0].image}" alt="">
-                                    {/if}
-                                </div>
-                                <div class="product-body">
-                                    <h3 class="product-name name_product_fix"><a
+                        {if $product.list_image|@count != 0 }
+                            <div class="col-md-4 col-xs-6">
+                                <div class="product">
+                                    <div class="product-img">
+                                        {if !empty($product.list_image[0].image)}
+                                            <img class="img_product_fix"
+                                                src="../../asset/images/products/{$product.list_image[0].image}" alt="">
+                                        {/if}
+                                    </div>
+                                    <div class="product-body">
+                                        <h3 class="product-name name_product_fix"><a
                                                 href="{{$this->url(['controller' => 'index', 'action' => 'detail'])}}?id={$product.id}">{$product.name}</a>
-                                    </h3>
-                                    <h4 class="product-price">{$product.price}</h4>
-                                </div>
-                                <div class="add-to-cart">
-                                    <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart
-                                    </button>
+                                        </h3>
+                                        <h4 class="product-price">{$product.price}</h4>
+                                    </div>
+                                    <div class="add-to-cart">
+                                        <a
+                                            href="{{$this->url(['controller' => 'index', 'action' => 'detail'])}}?id={$product.id}">
+                                            <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i></button>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        {/if}
                     {/foreach}
                 </div>
-                <!-- /store products -->
-
-                <!-- store bottom filter -->
-                {*<div class="store-filter clearfix">
-                    <span class="store-qty">Showing 20-100 products</span>
-                    <ul class="store-pagination">
-                        <li class="active">1</li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
-                    </ul>
-                </div>*}
-                <!-- /store bottom filter -->
             </div>
-            <!-- /STORE -->
         </div>
         <!-- /row -->
     </div>

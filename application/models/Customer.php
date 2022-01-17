@@ -96,9 +96,19 @@ class Model_Customer extends Zend_Db_Table
 
             'password' => array(
                 new Zend_Validate_NotEmpty(),
+                new Zend_Validate_StringLength(
+                    array(
+                        'min' => 5,
+                        'max' => 20
+                    )
+                ),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
                         Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng nhập mật khẩu !!!'
+                    ),
+                    array(
+                        Zend_Validate_StringLength::TOO_LONG => '* Mật khẩu phải có ít nhất 5 kí tự !!!!',
+                        Zend_Validate_StringLength::TOO_SHORT => '* Mật khẩu chỉ được có tối đa 20 kí tự !!!!'
                     )
                 )
             ),
@@ -209,6 +219,13 @@ class Model_Customer extends Zend_Db_Table
                 $result = $messages;
             }
         }
+        return $result;
+    }
+
+    public function getCustomer($customer_id){
+        $where = "id = " . $customer_id;
+        $result=$this->fetchRow($where);
+        unset($result['password']);
         return $result;
     }
 }

@@ -49,7 +49,9 @@ class Model_Brand extends Zend_Db_Table
 
     public function getListItem()
     {
-        $list_result = $this->fetchAll()->toArray();
+        $order = "id ASC";
+        $where = "status = 1";
+        $list_result = $this->fetchAll($where, $order)->toArray();
         return $list_result;
     }
 
