@@ -177,24 +177,24 @@ class ProductController extends Zend_Controller_Action
 
                     if (!empty($_FILES)) {
                         $list_image = $this->getUploadImages();
-                        //echo "<pre>";
-                        //print_r($list_image);
                         if (isset($list_image['status']) && ($list_image['status'] === false)) {
                             $upload_image = false;
                         } else {
                             foreach ($list_image as $key => $img) {
                                 if (strstr($key, 'product_image_') != '') {
                                     $list_product_image[] = $list_image[$key];
-                                } else if (strstr($key, 'new_detail_image_') != '') {
-                                    $a = explode("_", substr($key, 17));
-                                    $k = $a[0];
-                                    $i = $a[1];
-                                    $list_new_detail_product_image[$k][$i] = $list_image[$key];
                                 } else {
-                                    $a = explode("_", substr($key, 17));
-                                    $k = $a[0];
-                                    $i = $a[1];
-                                    $list_detail_product_image[$k][$i] = $list_image[$key];
+                                    if (strstr($key, 'new_detail_image_') != '') {
+                                        $a = explode("_", substr($key, 17));
+                                        $k = $a[0];
+                                        $i = $a[1];
+                                        $list_new_detail_product_image[$k][$i] = $list_image[$key];
+                                    } else {
+                                        $a = explode("_", substr($key, 13));
+                                        $k = $a[0];
+                                        $i = $a[1];
+                                        $list_detail_product_image[$k][$i] = $list_image[$key];
+                                    }
                                 }
                             }
                         }
@@ -244,7 +244,12 @@ class ProductController extends Zend_Controller_Action
                             //         $list_detail_error_input[$i] = $new_product_detail;
                             //     }
                             // }
-                            $list_new_detail = $this->addDetailTypeProduct($id_product, count($list_type_product), $this->_arrParam, $list_new_detail_product_image);
+                            $list_new_detail = $this->addDetailTypeProduct(
+                                $id_product,
+                                count($list_type_product),
+                                $this->_arrParam,
+                                $list_new_detail_product_image
+                            );
                         }
 
                         $this->redirect('/admin/product');
@@ -362,7 +367,11 @@ class ProductController extends Zend_Controller_Action
         $product_detail_model = new Model_ProductDetail();
         $product_image_model = new Model_ProductImage();
         $result = true;
-        for ($i = $count_type_current + 1; $i <= count($array_input_detail['new_detail_color']) + $count_type_current; $i++) {
+        for (
+            $i = $count_type_current + 1; $i <= count(
+            $array_input_detail['new_detail_color']
+        ) + $count_type_current; $i++
+        ) {
             $add_detail_param['product_id'] = $id_product;
             $add_detail_param['color'] = $this->_arrParam['new_detail_color'][$i];
             $add_detail_param['price'] = $this->_arrParam['new_detail_price'][$i];

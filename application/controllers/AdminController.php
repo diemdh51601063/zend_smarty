@@ -1,5 +1,7 @@
 <?php
+
 require_once 'Ext/EnCode.php';
+
 class AdminController extends Zend_Controller_Action
 {
     protected $_arrParam;
@@ -48,7 +50,7 @@ class AdminController extends Zend_Controller_Action
                     $this->redirect($this->_actionMain);
                 } else {
                     $message_error = 'Sai thông tin đăng nhập !!!!';
-                    $this->view->assign('message_error',$message_error);
+                    $this->view->assign('message_error', $message_error);
                 }
             } catch (Exception $e) {
                 var_dump($e->getMessage());
@@ -62,7 +64,7 @@ class AdminController extends Zend_Controller_Action
         $list_product = [];
         try {
             $product_model = new Model_Product();
-            $list_product = $product_model->getListItem();
+            $list_product = $product_model->getListItem($this->_arrParam);
             foreach ($list_product as $key => $product) {
                 $product_image_model = new Model_ProductImage();
                 $list_product[$key]['list_image'] = $product_image_model->getListImageOfProduct($product['id']);
@@ -89,6 +91,13 @@ class AdminController extends Zend_Controller_Action
         $this_title = 'Danh Sách Danh Mục';
         $category_model = new Model_Category();
         $list_category = $category_model->getListItem();
+        $product_model = new Model_Product();
+        foreach ($list_category as $key => $category) {
+            $list_product_in_category = $product_model->getListItem(array(
+                'category_id' => $category['id']
+            ));
+            $list_category[$key]['number_product'] = count($list_product_in_category);
+        }
         $this->view->assign('title', $this_title);
         $this->view->assign('list_category', $list_category);
     }
@@ -98,6 +107,13 @@ class AdminController extends Zend_Controller_Action
         $this_title = 'Danh Sách Thương Hiệu';
         $brand_model = new Model_Brand();
         $list_brand = $brand_model->getListItem();
+        $product_model = new Model_Product();
+        foreach ($list_brand as $key => $brand) {
+            $list_product_in_category = $product_model->getListItem(array(
+                'brand_id' => $brand['id']
+            ));
+            $list_brand[$key]['number_product'] = count($list_product_in_category);
+        }
         $this->view->assign('title', $this_title);
         $this->view->assign('list_brand', $list_brand);
     }
@@ -120,7 +136,8 @@ class AdminController extends Zend_Controller_Action
         $this->view->assign('list_order', $list_order);
     }
 
-    public function logoutAction(){
+    public function logoutAction()
+    {
         $this->_adminSessionNamespace->unsetAll();
         $this->redirect('/' . $this->_arrParam['controller'] . '/login');
     }

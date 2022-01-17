@@ -107,6 +107,7 @@
 
         $('#brand_image').change(function () {
             $('.brand_image_file').children("span").remove();
+            $('.brand_image_file').append('<input type="hidden" class="form-control" id="delete_brand_image" name="delete_brand_image" value="1" >');
             $('.upload_image').children("span").remove();
             var filereader = new FileReader();
             filereader.onload = function (e) {
@@ -118,6 +119,7 @@
                         "#files");
                 $(".remove").click(function () {
                     $(this).parent(".pip").remove();
+                    $('#brand_image').val('');
                 });
             };
             filereader.readAsDataURL(this.files[0]);

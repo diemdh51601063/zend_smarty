@@ -248,7 +248,7 @@
 
 <script>
     $(document).ready(function() {
-        if($('#number_type').val() === 0){
+        if($('#number_type').val() == 0){
             $('#div_multiple_type').addClass('d-none');
         }
         {if isset($error_value) }

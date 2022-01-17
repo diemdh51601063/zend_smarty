@@ -180,7 +180,6 @@ class BrandController extends Zend_Controller_Action
             if (($key == "brand_name") || ($key == "description")) {
                 $arrParam[$key] = $filter->filter($arrParam[$key]);
                 $arrParam[$key] = preg_replace("/[^a-z0-9A-Z_[:space:]ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂ ưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]/u", "",  $arrParam[$key]);
-                //$arrParam[$key] = preg_replace(,  $arrParam[$key]);
             }
         }
         return $arrParam;

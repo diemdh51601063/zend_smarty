@@ -139,12 +139,15 @@ class Model_Product extends Zend_Db_Table
     public function getListItem($arrParam)
     {
         $order = "id ASC";
-        $where = "status = 1";
-        if(!empty($arrParam['brand_id'])){
-            $where =  $where .' AND brand_id = ' . $arrParam['brand_id'];
+        $where = " id > 0 ";
+        if (!empty($arrParam['status'])) {
+            $where = $where . " AND status =  " . $arrParam['status'];
         }
-        if(!empty($arrParam['category_id'])){
-            $where =  $where . ' AND category_id = ' . $arrParam['category_id'];
+        if (!empty($arrParam['brand_id'])) {
+            $where = $where . ' AND brand_id = ' . $arrParam['brand_id'];
+        }
+        if (!empty($arrParam['category_id'])) {
+            $where = $where . ' AND category_id = ' . $arrParam['category_id'];
         }
         $list_result = $this->fetchAll($where, $order)->toArray();
         return $list_result;
@@ -240,10 +243,10 @@ class Model_Product extends Zend_Db_Table
         $product_detail = new Model_ProductDetail();
         $product_image = new Model_ProductImage();
 
-        $where_delete_detail = 'product_id = '.$id;
+        $where_delete_detail = 'product_id = ' . $id;
         $product_detail->delete($where_delete_detail);
 
-        $where_delete_image = 'product_id = '.$id;
+        $where_delete_image = 'product_id = ' . $id;
         $product_image->delete($where_delete_image);
         //$check_fkey_image = $product_image->select()->where('product_id = ?', $id);
         //$check_image = $product_image->fetchAll($check_fkey_image);
@@ -251,9 +254,26 @@ class Model_Product extends Zend_Db_Table
         //$check_fkey_detail = $product_detail->select()->where('product_id = ?', $id);
         //$check_detail = $product_detail->fetchAll($check_fkey_detail);
 
-        if($row->delete($where)){
+        if ($row->delete($where)) {
             $result = true;
         }
         return $result;
+    }
+
+    public function searchItem($arr_param)
+    {
+        try {
+            $where = " status = 1 ";
+            if (!empty($arr_param['category_id'])) {
+                $where = $where . " AND category_id = " . $arr_param['category_id'];
+            }
+            if (!empty($arr_param['name'])) {
+                $where = $where . " AND name  LIKE '%" . $arr_param['name'] . "%'";
+            }
+            $list_result = $this->fetchAll($where)->toArray();
+            return $list_result;
+        } catch (Exception $e) {
+            var_dump($e->getMessage());
+        }
     }
 }

@@ -26,7 +26,7 @@
                                 <label for="category-1">
                                     <span></span>
                                     {$category.category_name}
-                                    <small>(0)</small>
+                                    <small>( {$category.number_product} )</small>
                                 </label>
                             </div>
                         {/foreach}
@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="aside">
-                    <h3 class="aside-title">Brand</h3>
+                    <h3 class="aside-title">Thương Hiệu</h3>
                     <div class="checkbox-filter">
                         {foreach $list_brand as $brand}
                             <div class="input-checkbox">
@@ -43,7 +43,7 @@
                                 <label for="brand">
                                     <span></span>
                                     {$brand.brand_name}
-                                    <small>(0)</small>
+                                    <small>( {$brand.number_product} )</small>
                                 </label>
                             </div>
                         {/foreach}
@@ -53,7 +53,7 @@
 
                 <!-- list product -->
                 <div class="aside">
-                    <h3 class="aside-title">Top selling</h3>
+                    <h3 class="aside-title">Bán Chạy</h3>
                     <div class="product-widget">
                         <div class="product-img">
                             <img src="../../asset/images/products/{$list_product[0].list_image[0].image}" alt="">
@@ -67,7 +67,7 @@
                             <h3 class="product-name"><a
                                     href="{{$this->url(['controller' => 'index', 'action' => 'detail'])}}?id={$list_product[0].id}">{$list_product[0].name}</a>
                             </h3>
-                            <h4 class="product-price">{$list_product[0].price}</h4>
+                            <h4 class="product-price">{$list_product[0].price|number_format:0:".":"."} VNĐ</h4>
                         </div>
                     </div>
                 </div>
@@ -92,7 +92,7 @@
                             Hiển thị:
                             <select class="input-select" name="quantily_product">
                                 <option value="18">18</option>
-                                <option value="36"></option>
+                                <option value="36">36</option>
                             </select>
                         </label>
                     </div>
@@ -113,7 +113,7 @@
                                         <h3 class="product-name name_product_fix"><a
                                                 href="{{$this->url(['controller' => 'index', 'action' => 'detail'])}}?id={$product.id}">{$product.name}</a>
                                         </h3>
-                                        <h4 class="product-price">{$product.price}</h4>
+                                        <h4 class="product-price">{$product.price|number_format:0:".":"."} VNĐ</h4>
                                     </div>
                                     <div class="add-to-cart">
                                         <a

@@ -29,9 +29,9 @@
             <th>STT</th>
             <th>Tên Sản Phẩm</th>
             <th>Giá</th>
-            <th>Số lượng</th>
-            <th>Danh mục</th>
-            <th>Thương hiệu</th>
+            <th>Số Lượng</th>
+            <th>Danh Mục</th>
+            <th>Thương Hiệu</th>
             <th></th>
         </tr>
     </thead>
@@ -91,7 +91,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="hideProductModallabel">Ẩn Sản Phẩm Khỏi Trang Người Dùng?</h5>
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
@@ -103,10 +102,6 @@
 
 <script type="text/javascript" charset="UTF-8" src="../../asset/admin/js/table_product.js"></script>
 <script>
-    function formatPrice(price) {
-        return String(price).replace(/(.)(?=(\d{3})+$)/g, '$1.');
-    }
-
     let id = '';
 
     function setIDProductToHide(id_product) {

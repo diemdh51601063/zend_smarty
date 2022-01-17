@@ -1,25 +1,25 @@
 
-<!-- BREADCRUMB -->
-<div id="breadcrumb" class="section">
-    <!-- container -->
-    <div class="container">
-        <!-- row -->
-        <div class="row">
-            <div class="col-md-12">
-                <ul class="breadcrumb-tree">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">All Categories</a></li>
-                    <li><a href="#">Accessories</a></li>
-                    <li><a href="#">Headphones</a></li>
-                    <li class="active">Product name goes here</li>
-                </ul>
-            </div>
-        </div>
-        <!-- /row -->
-    </div>
-    <!-- /container -->
-</div>
-<!-- /BREADCRUMB -->
+{*<!-- BREADCRUMB -->*}
+{*<div id="breadcrumb" class="section">*}
+{*    <!-- container -->*}
+{*    <div class="container">*}
+{*        <!-- row -->*}
+{*        <div class="row">*}
+{*            <div class="col-md-12">*}
+{*                <ul class="breadcrumb-tree">*}
+{*                    <li><a href="#">Home</a></li>*}
+{*                    <li><a href="#">All Categories</a></li>*}
+{*                    <li><a href="#">Accessories</a></li>*}
+{*                    <li><a href="#">Headphones</a></li>*}
+{*                    <li class="active">Product name goes here</li>*}
+{*                </ul>*}
+{*            </div>*}
+{*        </div>*}
+{*        <!-- /row -->*}
+{*    </div>*}
+{*    <!-- /container -->*}
+{*</div>*}
+{*<!-- /BREADCRUMB -->*}
 
 <!-- SECTION -->
 <div class="section">
@@ -93,7 +93,7 @@
                         <ul class="product-links">
                             {foreach $list_type_product as $type}
                                 <div class="form-check">
-                                    <input onchange="changeImage({$type.id})" class="form-check-input" type="radio" name="product_type_id" id="{$type.id}" value="{$type.id}">
+                                    <input class="form-check-input" type="radio" name="product_type_id" id="{$type.id}" value="{$type.id}">
                                     <label class="form-check-label" for="{$type.id}">
                                         {$type.color}
                                     </label>

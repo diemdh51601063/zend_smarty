@@ -186,11 +186,19 @@ end submit formmmmmm*/
             data: fdata,
 
             success: function(data) {
+                if(data.result == true){
+
+                }
                 if (data.result == false) {
-                    if(data.message != undefined){
+                    if(data.message_email != undefined){
                         $('#email').nextAll('span').remove();
                         $('#email').focus();
-                        $('#email').after('<span class="text-danger font-weight-bold">' + data.message + '</span>');
+                        $('#email').after('<span class="text-danger font-weight-bold">' + data.message_email + '</span>');
+                    }
+                    if(data.message_phone != undefined){
+                        $('#phone').nextAll('span').remove();
+                        $('#phone').focus();
+                        $('#phone').after('<span class="text-danger font-weight-bold">' + data.message_phone + '</span>');
                     }
                     if(data.message_pw != undefined){
                         $('#password').nextAll('span').remove();
@@ -199,7 +207,6 @@ end submit formmmmmm*/
                     }
                 } else {
                     if (data.result.status === undefined) {
-                        console.log(data.result);
                         $('.input').nextAll('span').remove();
                         $('.input').nextAll('br').remove();
                         $('.input').removeClass('input_error');

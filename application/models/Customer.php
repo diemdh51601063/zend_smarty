@@ -1,4 +1,5 @@
 <?php
+
 require_once 'Ext/EnCode.php';
 
 class Model_Customer extends Zend_Db_Table
@@ -196,11 +197,24 @@ class Model_Customer extends Zend_Db_Table
         return $list_result;
     }
 
-    public function checkExistCustomer($arrParam){
-        $where = "email = '" . $arrParam['email'] . "' OR phone ='" . $arrParam['phone'] . "'";
-        $customer = $this->fetchRow($where);
-        return $customer;
+    public function checkExistEmail($email)
+    {
+        $check = null;
+        $where = " email LIKE  '" . $email . "'";
+        $row = $this->fetchRow($where);
+        $check = $row['id'];
+        return $check;
     }
+
+    public function checkExistPhone($phone)
+    {
+        $check = null;
+        $where = " phone LIKE '" . $phone . "'";
+        $row = $this->fetchRow($where);
+        $check = $row['id'];
+        return $check;
+    }
+
 
     public function registerUser($arrParam)
     {
@@ -212,7 +226,7 @@ class Model_Customer extends Zend_Db_Table
             $row = $this->createRow($arrParam);
             $row->save();
             $result['status'] = true;
-            $result['customer'] = $row;
+            $result['customer_id'] = $row['id'];
         } else {
             if ($input->hasInvalid() || $input->hasMissing()) {
                 $messages = $input->getMessages();
@@ -222,9 +236,10 @@ class Model_Customer extends Zend_Db_Table
         return $result;
     }
 
-    public function getCustomer($customer_id){
+    public function getCustomer($customer_id)
+    {
         $where = "id = " . $customer_id;
-        $result=$this->fetchRow($where);
+        $result = $this->fetchRow($where);
         unset($result['password']);
         return $result;
     }

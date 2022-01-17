@@ -16,12 +16,26 @@ class IndexController extends Zend_Controller_Action
         $this->view->currentController = $this->_currentController;
         $this->view->actionMain = $this->_actionMain;
 
+        $product_model = new Model_Product();
         $category_model = new Model_Category();
         $list_category = $category_model->getListItem();
+        foreach ($list_category as $key => $category) {
+            $list_product_in_category = $product_model->getListItem(array(
+                'category_id' => $category['id']
+            ));
+            $list_category[$key]['number_product'] = count($list_product_in_category);
+        }
         $this->view->assign('list_category', $list_category);
+
 
         $brand_model = new Model_Brand();
         $list_brand = $brand_model->getListItem();
+        foreach ($list_brand as $key => $brand) {
+            $list_product_in_category = $product_model->getListItem(array(
+                'brand_id' => $brand['id']
+            ));
+            $list_brand[$key]['number_product'] = count($list_product_in_category);
+        }
         $this->view->assign('list_brand', $list_brand);
 
         $this->_userSessionNamespace = new Zend_Session_Namespace('userSessionNamespace');
@@ -39,6 +53,7 @@ class IndexController extends Zend_Controller_Action
         $list_product = [];
         try {
             $product_model = new Model_Product();
+            $this->_arrParam['status'] = 1;
             $list_product = $product_model->getListItem($this->_arrParam);
             foreach ($list_product as $key => $product) {
                 $product_image_model = new Model_ProductImage();

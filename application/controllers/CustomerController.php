@@ -58,28 +58,36 @@ class CustomerController extends Zend_Controller_Action
             $this->_arrParam['cart_id'] = $customer_cart_model->getCustomerCart($customer_id);
             $product_in_cart_model->addProductInCart($this->_arrParam);
         }
-
         if (!empty($_SESSION['userSessionNamespace']['cart'])) {
             $key_type_id = '';
             $key_product_id = '';
+            var_dump($_SESSION['userSessionNamespace']['cart']);
+
             foreach ($_SESSION['userSessionNamespace']['cart'] as $key => $value) {
-                if ((!empty($this->_arrParam['type_product_id']))) {
-                    if (($value['type_product_id'] === $this->_arrParam['type_product_id']) && ($value['product_id'] === $product_id)) {
+                if ($this->_arrParam['type_product_id'] !== '') {
+                    if (($value['type_product_id'] == $this->_arrParam['type_product_id']) && ($value['product_id'] == $product_id)) {
                         $key_type_id = $key;
                     }
-                } else if (empty($this->_arrParam['type_product_id'])) {
-                    if ($value['product_id'] === $product_id) {
-                        $key_product_id = $key;
+                } else {
+                    if (empty($this->_arrParam['type_product_id'])) {
+                        if ($value['product_id'] == $product_id) {
+                            $key_product_id = $key;
+                        }
                     }
                 }
             }
-            if (!empty($type_id)) {
+
+            if (!empty($key_type_id)) {
                 $_SESSION['userSessionNamespace']['cart'][$key_type_id]['number_product'] += $number_product;
-            } else if (!empty($key_product_id)) {
-                $_SESSION['userSessionNamespace']['cart'][$key_product_id]['number_product'] += $number_product;
             } else {
-                $this->addProductToCart($product_id, $this->_arrParam['type_product_id'], $number_product);
+                if (!empty($key_product_id)) {
+                    $_SESSION['userSessionNamespace']['cart'][$key_product_id]['number_product'] += $number_product;
+                } else {
+                    $this->addProductToCart($product_id, $this->_arrParam['type_product_id'], $number_product);
+                }
             }
+            var_dump($_SESSION['userSessionNamespace']['cart']);
+            die;
         } else {
             $this->addProductToCart($product_id, $this->_arrParam['type_product_id'], $number_product);
         }
@@ -124,7 +132,7 @@ class CustomerController extends Zend_Controller_Action
                 $new_order = $order_model->addItem($this->_arrParam);
                 if (isset($new_order['status']) && ($new_order['status'] === true)) {
                     $order_id = $new_order['order_id'];
-                    $order_detail_model =  new Model_OrderDetail();
+                    $order_detail_model = new Model_OrderDetail();
                     $customer_cart_model = new Model_Cart();
                     $cart_id = $customer_cart_model->getCustomerCart($customer_id);
 
@@ -158,8 +166,6 @@ class CustomerController extends Zend_Controller_Action
             } catch (Exception $e) {
                 var_dump($e->getMessage());
             }
-
-            
         }
     }
 
@@ -169,8 +175,9 @@ class CustomerController extends Zend_Controller_Action
         $customer_model = new Model_Customer();
         if ($this->_request->isPost()) {
             try {
-                $check_exist = $customer_model->checkExistCustomer($this->_arrParam);
-                if (empty($check_exist['id'])) {
+                $check_mail_exist = $customer_model->checkExistEmail($this->_arrParam['email']);
+                $check_phone_exist = $customer_model->checkExistPhone($this->_arrParam['phone']);
+                if ((empty($check_mail_exist)) && (empty($check_phone_exist))) {
                     $usernameValidator = new Zend_Validate_Regex('/^[a-zA-Z0-9_!@#$&*\/]+$/');
                     if (!$usernameValidator->isValid($this->_arrParam['password'])) {
                         $data = array(
@@ -180,7 +187,8 @@ class CustomerController extends Zend_Controller_Action
                     } else {
                         $register = $customer_model->registerUser($this->_arrParam);
                         if (isset($register['status']) && ($register['status'] === true)) {
-                            $this->_userSessionNamespace->user = $register['customer'];
+                            $_SESSION['userSessionNamespace']['customer']['id'] = $register['customer_id'];
+                            $data = $register;
                         }
                         $data = array(
                             'result' => $register
@@ -188,9 +196,14 @@ class CustomerController extends Zend_Controller_Action
                     }
                 } else {
                     $data = array(
-                        'result' => false,
-                        'message_email' => "* Email hoặc Số điện thoại đã được đăng ký !!!!"
+                        'result' => false
                     );
+                    if (!empty($check_mail_exist)) {
+                        $data['message_email'] = "* Email đã được đăng ký !!!!";
+                    }
+                    if (!empty($check_phone_exist)) {
+                        $data['message_phone'] = "* Số điện thoại đã được đăng ký !!!!";
+                    }
                 }
                 $this->_helper->json($data);
             } catch (Exception $e) {
@@ -201,7 +214,10 @@ class CustomerController extends Zend_Controller_Action
 
     public function filterInput($arrParam)
     {
-        $param_filter = array_fill_keys(array('first_name', 'last_name', 'address', 'city_name', 'district_name', 'ward_name'), null);
+        $param_filter = array_fill_keys(
+            array('first_name', 'last_name', 'address', 'city_name', 'district_name', 'ward_name'),
+            null
+        );
         $filter = new Zend_Filter_StripTags();
         foreach ($arrParam as $key => $value) {
             if (array_key_exists($key, $param_filter)) {
@@ -215,7 +231,6 @@ class CustomerController extends Zend_Controller_Action
         }
         return $arrParam;
     }
-
 
 
     public function addProductToCart($product_id, $type_product_id, $number_product)
@@ -276,5 +291,23 @@ class CustomerController extends Zend_Controller_Action
             $color = $product['color'];
         }
         return $color;
+    }
+
+    public function searchAction()
+    {
+        $product_model = new Model_Product();
+        if ($this->_request->isPost()) {
+            try {
+                $search_result = $product_model->searchItem($this->_arrParam);
+//                echo"<pre>";
+//                print_r($search_result);
+//                echo"</pre>";
+//                die;
+                $data = $search_result;
+                $this->_helper->json($data);
+            } catch (Exception $e) {
+                var_dump($e->getMessage());
+            }
+        }
     }
 }
