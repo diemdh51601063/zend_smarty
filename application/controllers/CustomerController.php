@@ -58,39 +58,41 @@ class CustomerController extends Zend_Controller_Action
             $this->_arrParam['cart_id'] = $customer_cart_model->getCustomerCart($customer_id);
             $product_in_cart_model->addProductInCart($this->_arrParam);
         }
-        if (!empty($_SESSION['userSessionNamespace']['cart'])) {
-            $key_type_id = '';
-            $key_product_id = '';
-            var_dump($_SESSION['userSessionNamespace']['cart']);
-
+        $key_type_id = '';
+        $key_product_id = '';
+        if (empty($_SESSION['userSessionNamespace']['cart'])) {
+            $this->addProductToCart($product_id, $this->_arrParam['type_product_id'], $number_product);
+        }         
+        else {
             foreach ($_SESSION['userSessionNamespace']['cart'] as $key => $value) {
                 if ($this->_arrParam['type_product_id'] !== '') {
                     if (($value['type_product_id'] == $this->_arrParam['type_product_id']) && ($value['product_id'] == $product_id)) {
                         $key_type_id = $key;
                     }
-                } else {
-                    if (empty($this->_arrParam['type_product_id'])) {
+                } else if (empty($this->_arrParam['type_product_id'])) {
                         if ($value['product_id'] == $product_id) {
                             $key_product_id = $key;
                         }
-                    }
                 }
             }
-
-            if (!empty($key_type_id)) {
+            // echo"<pre>";
+            // var_dump($key_type_id);
+            // var_dump($key_product_id);
+            // var_dump($_SESSION['userSessionNamespace']['cart']);
+           
+            if(($key_type_id === '') && ($key_product_id === '')){
+                //var_dump('empty');
+                $this->addProductToCart($product_id, $this->_arrParam['type_product_id'], $number_product);
+            }else if (!empty($key_type_id)) {
+                //var_dump('type');
                 $_SESSION['userSessionNamespace']['cart'][$key_type_id]['number_product'] += $number_product;
-            } else {
-                if (!empty($key_product_id)) {
-                    $_SESSION['userSessionNamespace']['cart'][$key_product_id]['number_product'] += $number_product;
-                } else {
-                    $this->addProductToCart($product_id, $this->_arrParam['type_product_id'], $number_product);
-                }
+            } else{
+                //var_dump('product');
+                $_SESSION['userSessionNamespace']['cart'][$key_product_id]['number_product'] += $number_product; 
             }
-            var_dump($_SESSION['userSessionNamespace']['cart']);
-            die;
-        } else {
-            $this->addProductToCart($product_id, $this->_arrParam['type_product_id'], $number_product);
+            
         }
+
         $data = array(
             'result' => $_SESSION['userSessionNamespace']['cart']
         );
@@ -253,7 +255,7 @@ class CustomerController extends Zend_Controller_Action
         if (empty($_SESSION['userSessionNamespace']['cart'])) {
             $count = 0;
         } else {
-            $count = count($_SESSION['userSessionNamespace']['cart']) + 1;
+            $count = count($_SESSION['userSessionNamespace']['cart']);
         }
 
         $product = array(

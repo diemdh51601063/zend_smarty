@@ -80,7 +80,7 @@
                         <div id="tab1" class="tab-pane active">
                             <div class="products-slick" data-nav="#slick-nav-1">
                                 <!-- product -->
-                                {foreach $listItem as $item}
+                                {foreach $list_product as $item}
                                     {if $item.list_image|@count != 0 }
                                         <div class="product">
                                             <div class="product-img">
@@ -92,14 +92,16 @@
                                             </div>
 
                                             <div class="product-body">
-                                                <h3 class="product-name" style="height: 50px;"><a
+                                                <h3 class="product-name"><a
                                                         href="{{$this->url(['controller' => 'index', 'action' => 'detail'])}}?id={$item.id}">{$item.name}</a>
                                                 </h3>
                                                 <h4 class="product-price">{$item.price|number_format:0:".":"."} VNĐ</h4>
                                             </div>
 
                                             <div class="add-to-cart">
-                                                <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i></button>
+                                                <a href="{{$this->url(['controller' => 'index', 'action' => 'detail'])}}?id={$item.id}">
+                                                    <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i></button>
+                                                </a>
                                             </div>
                                         </div>
                                         <!-- /product -->
@@ -144,7 +146,7 @@
                         <div id="tab2" class="tab-pane fade in active">
                             <div class="products-slick" data-nav="#slick-nav-2">
                                 <!-- product -->
-                                {foreach $listItem as $item}
+                                {foreach $list_product as $item}
                                     {if $item.list_image|@count != 0 }
                                         <div class="product">
                                             <div class="product-img">
@@ -153,12 +155,14 @@
                                             </div>
 
                                             <div class="product-body">
-                                                <h3 class="product-name" style="height: 50px;"><a href="{{$this->url(['controller' => 'index', 'action' => 'detail'])}}?id={$item.id}">{$item.name}</a></h3>
+                                                <h3 class="product-name"><a href="{{$this->url(['controller' => 'index', 'action' => 'detail'])}}?id={$item.id}">{$item.name}</a></h3>
                                                 <h4 class="product-price">{$item.price|number_format:0:".":"."} VNĐ</h4>
                                             </div>
 
                                             <div class="add-to-cart">
-                                                <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i></button>
+                                            <a href="{{$this->url(['controller' => 'index', 'action' => 'detail'])}}?id={$item.id}">
+                                            <button class="add-to-cart-btn"><i class="fa fa-shopping-cart fa-10x"></i></button>
+                                            </a>
                                             </div>
                                         </div>
                                     {/if}

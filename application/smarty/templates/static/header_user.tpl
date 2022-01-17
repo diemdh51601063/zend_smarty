@@ -44,7 +44,10 @@
                 <div class="col-md-6">
                     <div class="header-search">
                         <form method="post" id="formSearch" onsubmit="searchProduct(event)">
-                            <select class="input-select" name="category_id">
+                            <select class="input-select" name="category_id" style="max-width: 200px;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            overflow: hidden;">
                                 {foreach $list_category as $category}
                                     <option value="{$category.id}">{$category.category_name}</option>
                                 {/foreach}
@@ -64,11 +67,13 @@
                             <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                 <i class="fa fa-shopping-cart"></i>
                                 <span>Giỏ hàng</span>
-                                {if empty($cart)}
-                                    <div class="qty">0</div>
-                                {else}
-                                    <div class="qty" id="card_quantily">{$cart|@count}</div>
-                                {/if}
+                                <div class="qty" id="card_quantily">
+                                    {if empty($cart)}
+                                        0
+                                    {else}
+                                        {$cart|@count}    
+                                    {/if}
+                                </div>
                             </a>
                             <div class="cart-dropdown">
                                 <div class="cart-list">
@@ -94,19 +99,18 @@
                                         {/foreach}
                                     {/if}
                                 </div>
-                                {if !empty($cart)}
-                                    <div class="cart-summary">
+                                <div class="cart-summary" id="cart-summary">
+                                {if !empty($cart)}                               
                                         <small><b>Có {$cart|@count} sản phẩm trong giỏ hàng</b></small>
                                         <h5>Tổng cộng: {$total|number_format:0:".":"."} VNĐ</h5>
-                                    </div>
                                 {/if}
+                                </div>
                                 <div class="cart-btns">
                                     {if empty($customer) }
                                         <a href="{$this->url(['controller' => 'index', 'action' => 'login'])}">Đặt hàng
                                             <i class="fa fa-arrow-circle-right"></i></a>
                                     {else}
-                                        <a href="{$this->url(['controller' => 'index', 'action' => 'checkout'])}">Đặt
-                                            hàng
+                                        <a href="{$this->url(['controller' => 'index', 'action' => 'checkout'])}">Đặt hàng
                                             <i class="fa fa-arrow-circle-right"></i></a>
                                     {/if}
                                 </div>
@@ -127,8 +131,7 @@
                 </li>
                 {foreach $list_brand as $brand}
                     {if $brand.id < 10}
-                        <li><a id="{$brand.id}" onclick="addActive({$brand.id})"
-                               href="{{$this->url(['controller' => 'index', 'action' => 'view'])}}?brand_id={$brand.id}">{$brand.brand_name}</a>
+                        <li><a href="{{$this->url(['controller' => 'index', 'action' => 'view'])}}?brand_id={$brand.id}">{$brand.brand_name}</a>
                         </li>
                     {/if}
                 {/foreach}
@@ -172,10 +175,10 @@
                             '<h4 class="product-price">'+numberWithCommas(value.price) +' VNĐ</h4>'+
                         '</div>'+
                         '<div class="add-to-cart">' +
-                            '<a href="index/detail?id='+value.id+">'+
+                            '<a href="index/detail?id='+value.id+'">'+
                                 '<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i></button>'+
                             '</a>'+
-                       '</div></div></div>');*/
+                       '</div></div></div>');
                     })
                 }
             },

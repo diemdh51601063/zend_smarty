@@ -122,7 +122,7 @@
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label text-right">Số lượng <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
-                        <input type="number" class="form-control" id="quantily" name="quantily" required value="150">
+                        <input type="number" class="form-control" id="quantily" name="quantily" required>
                     </div>
                 </div>
 
@@ -265,6 +265,10 @@
     $('#div_multiple_type').change(function () {
         $('#detail_type').children('div').remove();
         var number_input = $('#number_type').val();
+        var price_default = $('#price').val();
+        $('#price').on('change', function () {
+            price_default = $('#price').val();
+        });
         for (x = 1; x <= number_input; x++) {
             $('#detail_type').append(
                 '<div class="form-group border rounded"> <div><label class="ml-2">Thông tin phân loại ' + x + '</label></div>' +
@@ -285,7 +289,7 @@
                 '<div class="form-group row">' +
                 '<label class="col-sm-4 col-form-label">Số lượng<span class="text-danger">*</span></label>' +
                 '<div class="col-sm-8">' +
-                '<input type="number" class="form-control item_quantily" id="detail_quantily" name="detail_quantily[' + x + ']" required min=0>' +
+                '<input type="number" class="form-control item_quantily" id="detail_quantily" name="detail_quantily[' + x + ']" required min=0 value="'+price_default+'" readonly>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +

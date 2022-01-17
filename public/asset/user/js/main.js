@@ -111,7 +111,7 @@
 
 		down.on('click', function () {
 			var value = parseInt($input.val()) - 1;
-			value = value < 1 ? 1 : value;
+			value = value < 1 ? 0 : value;
 			$input.val(value);
 			$input.change();
 			updatePriceSlider($this , value)

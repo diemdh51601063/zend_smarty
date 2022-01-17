@@ -54,6 +54,7 @@ class IndexController extends Zend_Controller_Action
         try {
             $product_model = new Model_Product();
             $this->_arrParam['status'] = 1;
+            $this->_arrParam['order_by'] = " regist_date DESC ";
             $list_product = $product_model->getListItem($this->_arrParam);
             foreach ($list_product as $key => $product) {
                 $product_image_model = new Model_ProductImage();
@@ -62,9 +63,7 @@ class IndexController extends Zend_Controller_Action
         } catch (Exception $e) {
             var_dump($e->getMessage());
         }
-        $this_section = 'content indexActions';
-        $this->view->assign('hello', $this_section);
-        $this->view->assign('listItem', $list_product);
+        $this->view->assign('list_product', $list_product);
     }
 
     public function viewAction()

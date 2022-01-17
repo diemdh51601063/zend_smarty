@@ -149,6 +149,9 @@ class Model_Product extends Zend_Db_Table
         if (!empty($arrParam['category_id'])) {
             $where = $where . ' AND category_id = ' . $arrParam['category_id'];
         }
+        if(!empty($arrParam['order_by'])){
+            $order = $arrParam['order_by'];
+        }
         $list_result = $this->fetchAll($where, $order)->toArray();
         return $list_result;
     }

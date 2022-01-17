@@ -18,6 +18,53 @@
     .input_error {
         border: 1px solid red;
     }
+
+    .modal {
+        display: none;
+        /* Hidden by default */
+        position: fixed;
+        /* Stay in place */
+        z-index: 1;
+        /* Sit on top */
+        padding-top: 100px;
+        /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%;
+        /* Full width */
+        height: 100%;
+        /* Full height */
+        overflow: auto;
+        /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0);
+        /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.4);
+        /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+
+    /* The Close Button */
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
 </style>
 
 <div class="container">
@@ -25,11 +72,13 @@
     <form class="registration-container" method="post" id="formRegister" onsubmit="register(event)">
         <div class="form-group">
             <label>Họ:</label>
-            <input class="input" type="text" id="first_name" name="first_name" placeholder="Họ" maxlength="50" minlength="2">
+            <input class="input" type="text" id="first_name" name="first_name" placeholder="Họ" maxlength="50"
+                minlength="2">
         </div>
         <div class="form-group">
             <label>Tên:</label>
-            <input class="input" type="text" id="last_name" name="last_name" placeholder="Tên" maxlength="50" minlength="2">
+            <input class="input" type="text" id="last_name" name="last_name" placeholder="Tên" maxlength="50"
+                minlength="2">
         </div>
         <div class="form-group">
             <label>Email:</label>
@@ -42,13 +91,15 @@
             </div>
             <div class="col-sm-8">
                 <label>Số điện thoại:</label>
-                <input class="input" type="phone" name="phone" id="phone" placeholder="Số điện thoại" maxlength="11" minlength="10">
+                <input class="input" type="phone" name="phone" id="phone" placeholder="Số điện thoại" maxlength="11"
+                    minlength="10">
             </div>
 
         </div>
         <div class="form-group">
             <label>Quốc gia:</label>
-            <input class="input" type="text" name="country" id="country" placeholder="Country" value="Việt Nam" readonly>
+            <input class="input" type="text" name="country" id="country" placeholder="Country" value="Việt Nam"
+                readonly>
         </div>
         <div class="form-group">
             <label>Thành phố:</label>
@@ -74,18 +125,30 @@
         </div>
         <div class="form-group">
             <label>Nhập mật khẩu:</label>
-            <input class="input" type="password" name="password" id="password" placeholder="Mật khẩu" maxlength="20" minlength="5" required>
+            <input class="input" type="password" name="password" id="password" placeholder="Mật khẩu" maxlength="20"
+                minlength="5" required>
         </div>
         <div class="form-group">
             <label>Nhập lại mật khẩu:</label>
-            <input class="input" type="password" id="confirm_password" name="confirm_password" placeholder="Nhập lại mật khẩu" required>
+            <input class="input" type="password" id="confirm_password" name="confirm_password"
+                placeholder="Nhập lại mật khẩu" required>
         </div>
         <div class="form-group text-center">
             <button type="submit" class="btn btn-registration">Đăng ký</button>
         </div>
     </form>
 </div>
-<div id="show"></div>
+<button id="myBtn">Open Modal</button>
+
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p>Some text in the Modal..</p>
+  </div>
+
+</div>
 
 <script>
     $(document).ready(function() {
@@ -99,7 +162,8 @@
 
         $('#city_code').change(function() {
             var city_code = $(this).children("option:selected").val();
-            var link_district = 'https://api.mysupership.vn/v1/partner/areas/district?province=' + city_code;
+            var link_district = 'https://api.mysupership.vn/v1/partner/areas/district?province=' +
+                city_code;
             $('#district_code').not(':first').remove();
             $.getJSON(link_district, function(data) {
                 $.each(data.results, function(key, val) {
@@ -110,7 +174,8 @@
 
         $('#district_code').change(function() {
             var district_code = $(this).children("option:selected").val();
-            var link_ward = 'https://api.mysupership.vn/v1/partner/areas/commune?district=' + district_code;
+            var link_ward = 'https://api.mysupership.vn/v1/partner/areas/commune?district=' +
+                district_code;
             $('#ward_code').not(':first').remove();
             $.getJSON(link_ward, function(data) {
                 $.each(data.results, function(key, val) {
@@ -156,7 +221,8 @@ end submit formmmmmm*/
         var pw = $('#password').val();
         $('#confirm_password').next('span').remove();
         if ($('#confirm_password').val() !== pw) {
-            $('#confirm_password').after('<span class="text-danger font-weight-bold">* Mật khẩu không trùng khớp</span>');
+            $('#confirm_password').after(
+                '<span class="text-danger font-weight-bold">* Mật khẩu không trùng khớp</span>');
         } else {
             $('#confirm_password').next('span').remove();
         }
@@ -186,24 +252,27 @@ end submit formmmmmm*/
             data: fdata,
 
             success: function(data) {
-                if(data.result == true){
-
+                if (data.result == true) {
+                    window.location = '/index';
                 }
                 if (data.result == false) {
-                    if(data.message_email != undefined){
+                    if (data.message_email != undefined) {
                         $('#email').nextAll('span').remove();
                         $('#email').focus();
-                        $('#email').after('<span class="text-danger font-weight-bold">' + data.message_email + '</span>');
+                        $('#email').after('<span class="text-danger font-weight-bold">' + data
+                            .message_email + '</span>');
                     }
-                    if(data.message_phone != undefined){
+                    if (data.message_phone != undefined) {
                         $('#phone').nextAll('span').remove();
                         $('#phone').focus();
-                        $('#phone').after('<span class="text-danger font-weight-bold">' + data.message_phone + '</span>');
+                        $('#phone').after('<span class="text-danger font-weight-bold">' + data
+                            .message_phone + '</span>');
                     }
-                    if(data.message_pw != undefined){
+                    if (data.message_pw != undefined) {
                         $('#password').nextAll('span').remove();
                         $('#password').focus();
-                        $('#password').after('<span class="text-danger font-weight-bold">' + data.message_pw + '</span>');
+                        $('#password').after('<span class="text-danger font-weight-bold">' + data
+                            .message_pw + '</span>');
                     }
                 } else {
                     if (data.result.status === undefined) {
@@ -217,7 +286,9 @@ end submit formmmmmm*/
                                     $(id_div_input).addClass('input_error');
                                     $.each(input_error, function(k, v) {
                                         console.log(k + ':' + v);
-                                        $(id_div_input).after('<br><span class="text-danger font-weight-bold">' + v + '</span>');
+                                        $(id_div_input).after(
+                                            '<br><span class="text-danger font-weight-bold">' +
+                                            v + '</span>');
                                     })
                                 }
                             });
@@ -229,5 +300,29 @@ end submit formmmmmm*/
                 console.log(status);
             }
         });
+    }
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
     }
 </script>

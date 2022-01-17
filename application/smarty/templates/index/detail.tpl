@@ -65,19 +65,17 @@
                     <h2 class="product-name">{$detail_product.name}</h2>
                     <div>
                         <h3 class="product-price">{$detail_product.price|number_format:0:".":"."} VNĐ</h3>
-                        {*<span class="product-available">In Stock</span>*}
                     </div>
-                    {*<p>{$detail_product.description}</p>*}
 
                     <div class="add-to-cart">
                         <div class="qty-label">
                             <div class="input-number">
-                                <input type="number" value="0" id="number_product">
+                                <input type="number" value="0" id="number_product" min=0>
                                 <span class="qty-up">+</span>
                                 <span class="qty-down">-</span>
                             </div>
                         </div>
-                        <button id="addCart" class="add-to-cart-btn" value="{$detail_product.id}"><i class="fa fa-shopping-cart"></i></button>
+                        <button id="addCart" onclick="addProductToCart({$detail_product.id})" class="add-to-cart-btn" value="{$detail_product.id}"><i class="fa fa-shopping-cart"></i></button>
                     </div>
 
                     <ul class="product-links">
@@ -237,6 +235,16 @@
 </div>
 <!-- /Section -->*}
 
+<div id="modalWarning" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" id="closeWarning">&times;</span>
+    <p>Some text in the Modal..</p>
+  </div>
+
+</div>
+
 <script>
     var list_image_type_product = {$list_image_type_product|@json_encode};
 
@@ -269,54 +277,5 @@
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
     {/literal}
-
-    $('#addCart').click(function (){
-        var number_product = $('#number_product').val();
-        var id_product = $('#addCart').val();
-        var product_type_id = '';
-        if($('input[name="product_type_id"]:checked').val() != undefined){
-            var product_type_id = $('input[name="product_type_id"]:checked').val();
-        }
-        
-        if(number_product > 0){
-            $.ajax({
-                type: 'post',
-                url: "/customer/addcart?product_id="+id_product+"&number_product="+number_product+"&type_product_id="+product_type_id,
-                dataType: 'json',
-
-                success: function (data) {
-                    $('#number_product').val(0);
-                    $('.cart-list').children('div').remove();
-                    var total = 0;
-                    var length_cart = Object.keys(data.result).length;
-                    console.log(length_cart)
-                    var num_product = 0;
-
-                    $('#card_quantily').replaceWith('<div class="qty" id="card_quantily">'+ length_cart +'</div>')
-
-                    $.each(data.result, function (k, v) {
-                        num_product = parseInt(num_product) + parseInt(v.number_product);
-                        total = total + (v.number_product * v.price);
-                        $(".cart-list").append('<div class="product-widget cartList" id="'+v.id+'">'+
-                        '<div class="product-img">'+
-                            '<img src="../../asset/images/products/'+v.image+'" alt=""> </div>'+
-                        '<div class="product-body">'+
-                            '<h3 class="product-name">'+v.name+'</h3>'+
-                            '<h4>'+v.type_product_color+'</h4>'+
-                           '<h4 class="product-price"><small style="font-weight: 600">'+v.number_product+' x </small>'+ numberWithCommas(v.price) +' VNĐ</h4>'+
-                        '</div>'+
-                        '<button onclick="deleteProductCart('+v.id+')" class="delete"><i class="fa fa-close" style="font-size: 18px"></i></button> </div>')
-                    });
-                    $('.cart-summary').replaceWith('<div class="cart-summary">'+
-                        '<small><b>Có ' + num_product + ' sản phẩm trong giỏ hàng</b></small>'+
-                    '<h5>Tổng cộng: '+ numberWithCommas(total) + ' VNĐ</h5></div>');
-                },
-                error: function (status) {
-                    console.log(status);
-                }
-            });
-        }
-    })
-
 
 </script>
