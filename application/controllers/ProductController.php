@@ -38,13 +38,6 @@ class ProductController extends Zend_Controller_Action
         $this->view->assign('listCategory', $list_category);
         $this->view->assign('listBrand', $list_brand);
         if ($this->_request->isPost()) {
-            // echo "<pre>";
-            // print_r($this->_arrParam);
-            // print_r($_FILES);
-            // $list_image = $this->getUploadImages();
-            // print_r($list_image);
-            // echo "</pre>";
-            // die;
             $upload_image = true;
             $list_image = null;
             $product_model = new Model_Product();
@@ -199,11 +192,7 @@ class ProductController extends Zend_Controller_Action
                             }
                         }
                     }
-                    // print_r($list_product_image);
-                    // print_r($list_detail_product_image);
-                    // print_r($list_new_detail_product_image);
-                    // echo "</pre>";
-                    // die;
+                    
                     if ($upload_image === true) {
                         if ($list_product_image != '') {
                             $add_img_param['product_id'] = $id_product;
@@ -228,22 +217,8 @@ class ProductController extends Zend_Controller_Action
                             $edit_detail_param['quantily'] = $this->_arrParam['detail_quantily'][$type_product['id']];
                             $product_detail_model->editItem($edit_detail_param);
                         }
+                        $list_new_detail = true;
                         if (isset($this->_arrParam['new_detail_color'])) {
-                            // for ($i = count($list_type_product) + 1; $i <= count($this->_arrParam['new_detail_color']) + count($list_type_product); $i++) {
-                            //     $add_detail_param['product_id'] = $id_product;
-                            //     $add_detail_param['color'] = $this->_arrParam['new_detail_color'][$i];
-                            //     $add_detail_param['price'] = $this->_arrParam['new_detail_price'][$i];
-                            //     $add_detail_param['quantily'] = $this->_arrParam['new_detail_quantily'][$i];
-                            //     $new_product_detail = $product_detail_model->addItem($add_detail_param);
-                            //     if (!empty($new_product_detail['product_detail_type_id'])) {
-                            //         $add_detail_image['product_id'] = $id_product;
-                            //         $add_detail_image['product_detail_id'] = $new_product_detail['product_detail_type_id'];
-                            //         $add_detail_image['list_detail_image'] = $list_new_detail_product_image[$i];
-                            //         $product_image_model->addImageDetailProduct($add_detail_image);
-                            //     } else {
-                            //         $list_detail_error_input[$i] = $new_product_detail;
-                            //     }
-                            // }
                             $list_new_detail = $this->addDetailTypeProduct(
                                 $id_product,
                                 count($list_type_product),
@@ -251,8 +226,11 @@ class ProductController extends Zend_Controller_Action
                                 $list_new_detail_product_image
                             );
                         }
-
-                        $this->redirect('/admin/product');
+                        if($list_new_detail !== true){
+                            $this->view->assign('error_detail', $list_new_detail);
+                        }else{
+                            $this->redirect('/admin/product');
+                        }
                     } else {
                         $this->view->assign('error_image', $list_image['error']);
                     }
@@ -280,12 +258,6 @@ class ProductController extends Zend_Controller_Action
         $product_model = new Model_Product();
         $product_model->showItem($this->_arrParam);
         $this->redirect('/admin/product');
-    }
-
-    public function detailAction()
-    {
-        $title = 'Thông Tin Chi Tiết Sản Phẩm';
-        $this->view->assign('title', $title);
     }
 
     public function getUploadImages()
@@ -367,11 +339,9 @@ class ProductController extends Zend_Controller_Action
         $product_detail_model = new Model_ProductDetail();
         $product_image_model = new Model_ProductImage();
         $result = true;
-        for (
-            $i = $count_type_current + 1; $i <= count(
-            $array_input_detail['new_detail_color']
-        ) + $count_type_current; $i++
-        ) {
+        $start = $count_type_current + 1;
+        $loop = count($array_input_detail['new_detail_color']) + $count_type_current;
+        for ($i = $start; $i <= $loop; $i++) {
             $add_detail_param['product_id'] = $id_product;
             $add_detail_param['color'] = $this->_arrParam['new_detail_color'][$i];
             $add_detail_param['price'] = $this->_arrParam['new_detail_price'][$i];

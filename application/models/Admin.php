@@ -16,7 +16,7 @@ class Model_Admin extends Zend_Db_Table{
     }
 
     public function getItemDetail($arrParam){
-        $where = 'actor_id = '.$arrParam['id'];
+        $where = 'id = '.$arrParam['id'];
         $detail = $this->fetchRow($where);
         return $detail;
     }
@@ -30,18 +30,12 @@ class Model_Admin extends Zend_Db_Table{
     }
 
     public function editItem($arrParam){
-        $where = 'actor_id = '.$arrParam['id'];
+        $where = 'id = '.$arrParam['id'];
         $row = $this->fetchRow($where);
         $row->first_name = $arrParam['first_name'];
         $row->last_name = $arrParam['last_name'];
         $row->last_update = "2021-12-06 11:00:30";
         $row->save();
     }
-
-    public function deleteItem($arrParam){
-        $where = 'actor_id = '.$arrParam['id'];
-        $this->delete($where);
-    }
-
     
 }

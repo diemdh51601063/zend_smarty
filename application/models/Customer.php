@@ -225,27 +225,14 @@ class Model_Customer extends Zend_Db_Table
         return $list_result;
     }
 
-//    public function checkExistEmail($email)
-//    {
-//        $check = null;
-//        $where = " email =  '" . $email . "'";
-//        $row = $this->fetchRow($where);
-//        $check = $row['id'];
-//        return $check;
-//    }
-//
-//    public function checkExistPhone($phone)
-//    {
-//        $is_exist = false;
-//        $check = null;
-//        if(!empty($phone)){
-//            $where = " phone LIKE '%" . $phone . "'";
-//            $row = $this->fetchRow($where);
-//            $check = $row['id'];
-//        }
-//
-//        return $check;
-//    }
+    public function checkCustomerExist($email, $phone)
+    {
+        $id_exist = null;
+        $where = " email =  '" . $email . "' AND phone = '" . $phone . "'";
+        $row = $this->fetchRow($where);
+        $id_exist = $row['id'];
+        return $id_exist;
+    }
 
 
     public function registerUser($arrParam)

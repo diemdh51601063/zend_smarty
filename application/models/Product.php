@@ -12,9 +12,6 @@ class Model_Product extends Zend_Db_Table
 
     public function init()
     {
-        $this->_db = $this->getDefaultAdapter();
-        $this->_db->setFetchMode(Zend_Db::FETCH_OBJ);
-
         $this->_filter = array(
             'id' => array('Int'),
         );

@@ -62,8 +62,7 @@
 </table>
 
 
-<div class="modal fade" id="hideBrandModal" tabindex="-1" role="dialog" aria-labelledby="hideBrandModallabel"
-     aria-hidden="true">
+<div class="modal fade" id="hideBrandModal" tabindex="-1" role="dialog" aria-labelledby="hideBrandModallabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">

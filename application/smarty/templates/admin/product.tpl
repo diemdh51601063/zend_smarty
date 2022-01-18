@@ -36,8 +36,7 @@
         </tr>
     </thead>
     <tbody>
-        {foreach $listItem as $item}
-            {* {$item.list_image|@var_dump} *}
+        {foreach $list_product as $item}
             <tr style="text-align: center">
                 <td>{$item.id}</td>
                 <td class="td-limit" style="text-align: left">
@@ -78,15 +77,14 @@
                     {else}
                         <a href="{{$this->url(['controller' => 'product', 'action' => 'show'])}}?id={$item.id}">
                             <button class="btn btn-success button_width"><i class="fa fa-eye"></i></button>
-                        {/if}
-                        {*<button onclick="deleteProduct({$item.id})" id="hideProduct" class="btn btn-danger button_width">Xóa</button>*}
+                        </a>
+                    {/if}
                 </td>
             </tr>
         {/foreach}
     </tbody>
 </table>
-<div class="modal fade" id="hideProductModal" tabindex="-1" role="dialog" aria-labelledby="hideProductModallabel"
-    aria-hidden="true">
+<div class="modal fade" id="hideProductModal" tabindex="-1" role="dialog" aria-labelledby="hideProductModallabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -109,6 +107,7 @@
         $("#hideProduct").attr('href', '{{$this->url(['controller' => 'product', 'action' => 'hide'])}}?id='+id);
     }
 
+    /* ajax delete with datatable
     function deleteProduct(id) {
         $.ajax({
             type: 'post',
@@ -122,5 +121,5 @@
                 console.log(status);
             }
         });
-    }
+    } */
 </script>

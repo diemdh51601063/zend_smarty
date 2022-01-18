@@ -73,7 +73,7 @@ class AdminController extends Zend_Controller_Action
             var_dump($e->getMessage());
         }
         $this->view->assign('title', $this_section);
-        $this->view->assign('listItem', $list_product);
+        $this->view->assign('list_product', $list_product);
 
         $brand_model = new Model_Brand();
         $list_brand = $brand_model->getListItem();
@@ -93,9 +93,11 @@ class AdminController extends Zend_Controller_Action
         $list_category = $category_model->getListItem();
         $product_model = new Model_Product();
         foreach ($list_category as $key => $category) {
-            $list_product_in_category = $product_model->getListItem(array(
-                'category_id' => $category['id']
-            ));
+            $list_product_in_category = $product_model->getListItem(
+                array(
+                    'category_id' => $category['id']
+                )
+            );
             $list_category[$key]['number_product'] = count($list_product_in_category);
         }
         $this->view->assign('title', $this_title);
@@ -109,9 +111,11 @@ class AdminController extends Zend_Controller_Action
         $list_brand = $brand_model->getListItem();
         $product_model = new Model_Product();
         foreach ($list_brand as $key => $brand) {
-            $list_product_in_category = $product_model->getListItem(array(
-                'brand_id' => $brand['id']
-            ));
+            $list_product_in_category = $product_model->getListItem(
+                array(
+                    'brand_id' => $brand['id']
+                )
+            );
             $list_brand[$key]['number_product'] = count($list_product_in_category);
         }
         $this->view->assign('title', $this_title);
@@ -135,6 +139,18 @@ class AdminController extends Zend_Controller_Action
         $this->view->assign('title', $this_section);
         $this->view->assign('list_order', $list_order);
     }
+
+    public function cancelorderAction()
+    {
+        if ($this->_request->isPost()) {
+            $order_model = new Model_Order();
+            
+            $this->_arrParam['admin_id'] = $this->_adminSessionNamespace->admin['id'];
+            
+            $list_order = $order_model->cancelOrder($this->_arrParam);
+        }
+    }
+
 
     public function logoutAction()
     {

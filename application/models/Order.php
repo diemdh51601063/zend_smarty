@@ -205,7 +205,9 @@ class Model_Order extends Zend_Db_Table
 
     public function getListItem()
     {
-        $list_result = $this->fetchAll()->toArray();
+        $db = $this->getDefaultAdapter();
+        $sql = " SELECT id, order_name, order_phone, order_email, DATE(regist_date) as regist_date, lpad(extract(hour from regist_date)::text, 2, '0') as hour, extract(minute from regist_date) as minute FROM orders ; ";
+        $list_result = $db->query($sql);
         return $list_result;
     }
 
@@ -216,7 +218,7 @@ class Model_Order extends Zend_Db_Table
         return $detail;
     }
 
-    public function editItem($arrParam)
+    public function confirmOrder($arrParam)
     {
         $where = 'id = ' . $arrParam['id'];
         $row = $this->fetchRow($where);
@@ -224,6 +226,19 @@ class Model_Order extends Zend_Db_Table
         $row->confirm_admin_id = $arrParam['confirm_admin_id'];
         $row->confirm_date = date('Y-m-d H:i:s');
         $row->update_date = date('Y-m-d H:i:s');
+        $row->save();
+    }
+
+    public function cancelOrder($arrParam)
+    {
+        $where = 'id = ' . $arrParam['id'];
+        $row = $this->fetchRow($where);
+        $row->status = $arrParam['status'];
+        $row->confirm_admin_id = $arrParam['confirm_admin_id'];
+        $row->confirm_date = date('Y-m-d H:i:s');
+        $row->update_date = date('Y-m-d H:i:s');
+        $row->status = 0;
+        $row->cancel_reason = $arrParam['cancel_reason'];
         $row->save();
     }
 }
