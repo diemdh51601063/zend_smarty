@@ -60,6 +60,12 @@ class Model_Customer extends Zend_Db_Table
             'email' => array(
                 new Zend_Validate_NotEmpty(),
                 new Zend_Validate_EmailAddress(),
+                new Zend_Validate_Db_NoRecordExists(
+                    array(
+                        'table' => 'customers',
+                        'field' => 'email'
+                    )
+                ),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
                         Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng nhập email !!!'
@@ -68,13 +74,21 @@ class Model_Customer extends Zend_Db_Table
                         Zend_Validate_EmailAddress::INVALID => '* Không nhận dạng được email !!!!',
                         Zend_Validate_EmailAddress::INVALID_FORMAT => '* Sai định dạng email !!!!',
                     ),
-
+                    array(
+                        Zend_Validate_Db_NoRecordExists::ERROR_RECORD_FOUND => '* Email đã được đăng ký !!!!'
+                    )
                 )
             ),
 
             'phone' => array(
                 new Zend_Validate_Digits,
                 new Zend_Validate_NotEmpty(),
+                new Zend_Validate_Db_NoRecordExists(
+                    array(
+                        'table' => 'customers',
+                        'field' => 'phone'
+                    )
+                ),
                 new Zend_Validate_StringLength(
                     array(
                         'min' => 10,
@@ -89,9 +103,13 @@ class Model_Customer extends Zend_Db_Table
                         Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng nhập số điện thoại !!!'
                     ),
                     array(
+                        Zend_Validate_Db_NoRecordExists::ERROR_RECORD_FOUND => '* Số điện thoại đã được đăng ký !!!!'
+                    ),
+                    array(
                         Zend_Validate_StringLength::TOO_LONG => '* Số điện thoại có tối đa 11 kí tự !!!',
                         Zend_Validate_StringLength::TOO_SHORT => '* Số điện thoại có tối thiểu 10 kí tự !!!'
                     )
+
                 )
             ),
 
@@ -103,13 +121,17 @@ class Model_Customer extends Zend_Db_Table
                         'max' => 20
                     )
                 ),
+                new Zend_Validate_Regex('/^[a-zA-Z0-9_!@#$&*\/]+$/'),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
                         Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng nhập mật khẩu !!!'
                     ),
                     array(
-                        Zend_Validate_StringLength::TOO_LONG => '* Mật khẩu phải có ít nhất 5 kí tự !!!!',
-                        Zend_Validate_StringLength::TOO_SHORT => '* Mật khẩu chỉ được có tối đa 20 kí tự !!!!'
+                        Zend_Validate_StringLength::TOO_LONG => '* Mật khẩu chỉ được có tối đa 20 kí tự !!!!',
+                        Zend_Validate_StringLength::TOO_SHORT => '* Mật khẩu phải có ít nhất 5 kí tự !!!!'
+                    ),
+                    array(
+                        Zend_Validate_Regex::NOT_MATCH => '* Mật khẩu chỉ bao gồm chữ không dấu, số và các kí tự: @, #, $, &, !, _ , /, \ !!!!'
                     )
                 )
             ),
@@ -186,9 +208,15 @@ class Model_Customer extends Zend_Db_Table
 
     public function logIn($email, $password)
     {
+        $result_login = null;
         $where = "email = '" . $email . "' AND password ='" . $password . "'";
         $customer = $this->fetchRow($where);
-        return $customer;
+        if (!empty($customer)) {
+            $result_login['customer_id'] = $customer['id'];
+            $result_login['first_name'] = $customer['first_name'];
+            $result_login['last_name'] = $customer['last_name'];
+        }
+        return $result_login;
     }
 
     public function getListItem()
@@ -197,43 +225,56 @@ class Model_Customer extends Zend_Db_Table
         return $list_result;
     }
 
-    public function checkExistEmail($email)
-    {
-        $check = null;
-        $where = " email LIKE  '" . $email . "'";
-        $row = $this->fetchRow($where);
-        $check = $row['id'];
-        return $check;
-    }
-
-    public function checkExistPhone($phone)
-    {
-        $check = null;
-        $where = " phone LIKE '" . $phone . "'";
-        $row = $this->fetchRow($where);
-        $check = $row['id'];
-        return $check;
-    }
+//    public function checkExistEmail($email)
+//    {
+//        $check = null;
+//        $where = " email =  '" . $email . "'";
+//        $row = $this->fetchRow($where);
+//        $check = $row['id'];
+//        return $check;
+//    }
+//
+//    public function checkExistPhone($phone)
+//    {
+//        $is_exist = false;
+//        $check = null;
+//        if(!empty($phone)){
+//            $where = " phone LIKE '%" . $phone . "'";
+//            $row = $this->fetchRow($where);
+//            $check = $row['id'];
+//        }
+//
+//        return $check;
+//    }
 
 
     public function registerUser($arrParam)
     {
-        $input = new Zend_Filter_Input($this->_filter, $this->_validate, $arrParam, $this->_option);
-        $result = null;
-        if ($input->isValid()) {
-            $encode = new Ext_Encode();
-            $arrParam['password'] = $encode->encode_md5($arrParam['password']);
-            $row = $this->createRow($arrParam);
-            $row->save();
-            $result['status'] = true;
-            $result['customer_id'] = $row['id'];
-        } else {
-            if ($input->hasInvalid() || $input->hasMissing()) {
-                $messages = $input->getMessages();
-                $result = $messages;
+        try {
+            $input = new Zend_Filter_Input($this->_filter, $this->_validate, $arrParam, $this->_option);
+            $result = null;
+            if ($input->isValid()) {
+                $encode = new Ext_Encode();
+                $arrParam['password'] = $encode->encode_md5($arrParam['password']);
+                $row = $this->createRow($arrParam);
+                $row->save();
+
+                $tmp['customer_id'] = $row['id'];
+                $tmp['first_name'] = $row['first_name'];
+                $tmp['last_name'] = $row['last_name'];
+
+                $result['status'] = true;
+                $result['customer'] = $tmp;
+            } else {
+                if ($input->hasInvalid() || $input->hasMissing()) {
+                    $messages = $input->getMessages();
+                    $result = $messages;
+                }
             }
+            return $result;
+        } catch (Exception $e) {
+            //var_dump($e->getMessage());
         }
-        return $result;
     }
 
     public function getCustomer($customer_id)

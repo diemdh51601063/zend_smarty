@@ -41,6 +41,10 @@
                 </div>
             </div>
             <!-- /Product main img -->
+            {assign var="type_product" value="0"}
+                {if ($list_type_product|@count) > 0 }
+                    {$type_product = $list_type_product|@count}
+                {/if}
 
             <!-- Product thumb imgs -->
             <div class="col-md-2  col-md-pull-5">
@@ -51,10 +55,10 @@
                         </div>
                     {/foreach}
 
-                   {* <div class="product-preview">
-                        <img src="../../asset/user/img/product03.png" alt="">
-                    </div>
-                    *}
+                    {* <div class="product-preview">
+                         <img src="../../asset/user/img/product03.png" alt="">
+                     </div>
+                     *}
                 </div>
             </div>
             <!-- /Product thumb imgs -->
@@ -67,7 +71,7 @@
                         <h3 class="product-price">{$detail_product.price|number_format:0:".":"."} VNĐ</h3>
                     </div>
 
-                    <div class="add-to-cart">
+                    <div class="add-to-cart" id="add_number_product">
                         <div class="qty-label">
                             <div class="input-number">
                                 <input type="number" value="0" id="number_product" min=0>
@@ -75,7 +79,8 @@
                                 <span class="qty-down">-</span>
                             </div>
                         </div>
-                        <button id="addCart" onclick="addProductToCart({$detail_product.id})" class="add-to-cart-btn" value="{$detail_product.id}"><i class="fa fa-shopping-cart"></i></button>
+                        <button id="addCart" onclick="addProductToCart({$detail_product.id}, {$type_product})" class="add-to-cart-btn"
+                                value="{$detail_product.id}"><i class="fa fa-shopping-cart"></i></button>
                     </div>
 
                     <ul class="product-links">
@@ -91,7 +96,8 @@
                         <ul class="product-links">
                             {foreach $list_type_product as $type}
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="product_type_id" id="{$type.id}" value="{$type.id}">
+                                    <input class="form-check-input product_type_id" type="radio" name="product_type_id"
+                                           id="{$type.id}" value="{$type.id}">
                                     <label class="form-check-label" for="{$type.id}">
                                         {$type.color}
                                     </label>
@@ -235,39 +241,65 @@
 </div>
 <!-- /Section -->*}
 
-<div id="modalWarning" class="modal">
-
-  <!-- Modal content -->
-  <div class="modal-content">
-    <span class="close" id="closeWarning">&times;</span>
-    <p>Some text in the Modal..</p>
-  </div>
-
-</div>
-
 <script>
     var list_image_type_product = {$list_image_type_product|@json_encode};
 
     var a = '';
 
+    var type_product = {$type_product};
 
-    function changeImage(type_id){
+    $(document).ready(function () {
+        if ($('#number_product').val() == 0) {
+            $('#addCart').attr("disabled", true);
+        }
+        if (type_product > 0) {
+            if ($('input[name="product_type_id"]:checked').val() === undefined) {
+                $('#addCart').attr("disabled", true);
+            }
+            $('.product_type_id').change(function () {
+                if (($('input[name="product_type_id"]:checked').val() !== undefined) && ($('#number_product').val() > 0)) {
+                    $('#addCart').attr("disabled", false);
+                } else {
+                    $('#addCart').attr("disabled", true);
+                }
+            });
+
+            $('#number_product').change(function () {
+                if (($('input[name="product_type_id"]:checked').val() !== undefined) && ($('#number_product').val() > 0)) {
+                    $('#addCart').attr("disabled", false);
+                } else {
+                    $('#addCart').attr("disabled", true);
+                }
+            });
+
+        }else {
+            $('#number_product').change(function () {
+                if ($('#number_product').val() > 0) {
+                    $('#addCart').attr("disabled", false);
+                } else {
+                    $('#addCart').attr("disabled", true);
+                }
+            });
+        }
+    });
+
+    function changeImage(type_id) {
         var list_image_replace = [];
         $.each(list_image_type_product, function (key, value) {
-            if((value.product_detail_id == type_id) && (value.image !== '')){
+            if ((value.product_detail_id == type_id) && (value.image !== '')) {
                 list_image_replace.push(value.image);
             }
         });
         console.log(list_image_replace)
-        if(list_image_replace !== ''){
+        if (list_image_replace !== '') {
             $('#product-imgs').children('.product-preview').remove();
             $('#product-main-img').children('.product-preview').remove();
-            $.each(list_image_replace, function (k, v){
+            $.each(list_image_replace, function (k, v) {
                 //$('#product-preview').append('<div class="product-preview"><img src="../../asset/images/products/'+v+'" alt=""></div>');
-                $('#product-imgs').append('<div class="product-preview"><img src="../../asset/images/products/'+v+'" alt=""></div>');
+                $('#product-imgs').append('<div class="product-preview"><img src="../../asset/images/products/' + v + '" alt=""></div>');
 
-                $('#product-main-img').append('<div class="product-preview" id="changeimg">'+
-                '<img src="../../asset/images/products/'+v+'" alt="">'+'</div>');
+                $('#product-main-img').append('<div class="product-preview" id="changeimg">' +
+                    '<img src="../../asset/images/products/' + v + '" alt="">' + '</div>');
             });
         }
     }
@@ -277,5 +309,6 @@
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
     {/literal}
+
 
 </script>

@@ -21,28 +21,18 @@
 
     .modal {
         display: none;
-        /* Hidden by default */
         position: fixed;
-        /* Stay in place */
         z-index: 1;
-        /* Sit on top */
         padding-top: 100px;
-        /* Location of the box */
         left: 0;
         top: 0;
         width: 100%;
-        /* Full width */
         height: 100%;
-        /* Full height */
         overflow: auto;
-        /* Enable scroll if needed */
         background-color: rgb(0, 0, 0);
-        /* Fallback color */
         background-color: rgba(0, 0, 0, 0.4);
-        /* Black w/ opacity */
     }
 
-    /* Modal Content */
     .modal-content {
         background-color: #fefefe;
         margin: auto;
@@ -51,7 +41,6 @@
         width: 80%;
     }
 
-    /* The Close Button */
     .close {
         color: #aaaaaa;
         float: right;
@@ -65,6 +54,7 @@
         text-decoration: none;
         cursor: pointer;
     }
+
 </style>
 
 <div class="container">
@@ -73,12 +63,12 @@
         <div class="form-group">
             <label>Họ:</label>
             <input class="input" type="text" id="first_name" name="first_name" placeholder="Họ" maxlength="50"
-                minlength="2">
+                   minlength="2">
         </div>
         <div class="form-group">
             <label>Tên:</label>
             <input class="input" type="text" id="last_name" name="last_name" placeholder="Tên" maxlength="50"
-                minlength="2">
+                   minlength="2">
         </div>
         <div class="form-group">
             <label>Email:</label>
@@ -91,133 +81,109 @@
             </div>
             <div class="col-sm-8">
                 <label>Số điện thoại:</label>
-                <input class="input" type="phone" name="phone" id="phone" placeholder="Số điện thoại" maxlength="11"
-                    minlength="10">
+                <input class="input" type="phone" name="phone" id="phone" placeholder="Số điện thoại">
             </div>
 
         </div>
         <div class="form-group">
             <label>Quốc gia:</label>
             <input class="input" type="text" name="country" id="country" placeholder="Country" value="Việt Nam"
-                readonly>
+                   readonly>
         </div>
         <div class="form-group">
             <label>Thành phố:</label>
-            <select class="input" id="city_code" name="city_code" required>
+            <select class="input" id="city_code" name="city_code">
                 <option value="">Chọn thành phố</option>
             </select>
         </div>
         <div class="form-group">
             <label>Quận/Huyện:</label>
-            <select class="input" id="district_code" name="district_code" required>
+            <select class="input" id="district_code" name="district_code">
                 <option value="">Chọn quận/huyện</option>
             </select>
         </div>
         <div class="form-group">
             <label>Phường/xã:</label>
-            <select class="input" id="ward_code" name="ward_code" required>
+            <select class="input" id="ward_code" name="ward_code">
                 <option value="">Chọn phường/xã</option>
             </select>
         </div>
         <div class="form-group">
             <label>Địa chỉ:</label>
-            <input class="input" type="text" id="address" name="address" placeholder="Địa chỉ" required>
+            <input class="input" type="text" id="address" name="address" placeholder="Địa chỉ">
         </div>
         <div class="form-group">
             <label>Nhập mật khẩu:</label>
-            <input class="input" type="password" name="password" id="password" placeholder="Mật khẩu" maxlength="20"
-                minlength="5" required>
+            <input class="input" type="password" name="password" id="password" placeholder="Mật khẩu">
         </div>
         <div class="form-group">
             <label>Nhập lại mật khẩu:</label>
-            <input class="input" type="password" id="confirm_password" name="confirm_password"
-                placeholder="Nhập lại mật khẩu" required>
+            <input class="input" type="password" id="confirm_password" name="confirm_password" placeholder="Nhập lại mật khẩu">
         </div>
         <div class="form-group text-center">
             <button type="submit" class="btn btn-registration">Đăng ký</button>
         </div>
     </form>
 </div>
-<button id="myBtn">Open Modal</button>
 
-<div id="myModal" class="modal">
+<div id="registerModal" class="modal">
 
-  <!-- Modal content -->
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <p>Some text in the Modal..</p>
-  </div>
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <p>Dang ky thanh cong</p>
+        <a href="{$this->url(['controller' => 'index', 'action' => 'index'])}"><button type="button" class="btn btn-primary">OK</button></a>
+    </div>
 
 </div>
-
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         var link_city = 'https://api.mysupership.vn/v1/partner/areas/province';
-        $.getJSON(link_city, function(data) {
-            $.each(data.results, function(key, val) {
+        $.getJSON(link_city, function (data) {
+            $.each(data.results, function (key, val) {
                 $('#city_code').append(new Option(val.name, val.code))
             });
         });
 
 
-        $('#city_code').change(function() {
+        $('#city_code').change(function () {
             var city_code = $(this).children("option:selected").val();
             var link_district = 'https://api.mysupership.vn/v1/partner/areas/district?province=' +
                 city_code;
-            $('#district_code').not(':first').remove();
-            $.getJSON(link_district, function(data) {
-                $.each(data.results, function(key, val) {
+            $('#district_code').find('option').not(':first').remove();
+            $.getJSON(link_district, function (data) {
+                $.each(data.results, function (key, val) {
                     $('#district_code').append(new Option(val.name, val.code))
                 });
             });
         });
 
-        $('#district_code').change(function() {
+        $('#district_code').change(function () {
             var district_code = $(this).children("option:selected").val();
             var link_ward = 'https://api.mysupership.vn/v1/partner/areas/commune?district=' +
                 district_code;
-            $('#ward_code').not(':first').remove();
-            $.getJSON(link_ward, function(data) {
-                $.each(data.results, function(key, val) {
+            $('#ward_code').find('option').not(':first').remove();
+            $.getJSON(link_ward, function (data) {
+                $.each(data.results, function (key, val) {
                     $('#ward_code').append(new Option(val.name, val.code))
                 });
             });
         });
+
+        $('.input').each(function () {
+            $(this).change(function (){
+                console.log($(this).next('span'));
+                $(this).next('br').remove();
+                $(this).next('span').remove();
+                $(this).removeClass('input_error');
+            })
+        });
+
+
     });
 
 
-    /* submit formmmmm
-    function onSubmitFormRegister(url) {
-        var pw = $("#password").val();
-        var cf_pw = $("#confirm_password").val();
-        if (pw == cf_pw) {
-            $("<input />").attr("type", "hidden")
-                .attr("name", "city_name")
-                .attr("value", $("#city_code option:selected").text())
-                .appendTo("#formRegister");
-
-            $("<input />").attr("type", "hidden")
-                .attr("name", "district_name")
-                .attr("value", $("#district_code option:selected").text())
-                .appendTo("#formRegister");
-
-            $("<input />").attr("type", "hidden")
-                .attr("name", "ward_name")
-                .attr("value", $("#ward_code option:selected").text())
-                .appendTo("#formRegister");
-
-            document.getElementById("formRegister").action = url;
-            document.getElementById("formRegister").submit();
-            return true;
-        } else {
-            alert('sai mk');
-            return false;
-        }
-    }
-end submit formmmmmm*/
-
-
-    $('#confirm_password').change(function() {
+    $('#confirm_password').change(function () {
         var pw = $('#password').val();
         $('#confirm_password').next('span').remove();
         if ($('#confirm_password').val() !== pw) {
@@ -251,78 +217,42 @@ end submit formmmmmm*/
             dataType: 'json',
             data: fdata,
 
-            success: function(data) {
-                if (data.result == true) {
-                    window.location = '/index';
-                }
-                if (data.result == false) {
-                    if (data.message_email != undefined) {
-                        $('#email').nextAll('span').remove();
-                        $('#email').focus();
-                        $('#email').after('<span class="text-danger font-weight-bold">' + data
-                            .message_email + '</span>');
-                    }
-                    if (data.message_phone != undefined) {
-                        $('#phone').nextAll('span').remove();
-                        $('#phone').focus();
-                        $('#phone').after('<span class="text-danger font-weight-bold">' + data
-                            .message_phone + '</span>');
-                    }
+            success: function (data) {
+                if (data.status == false) {
                     if (data.message_pw != undefined) {
                         $('#password').nextAll('span').remove();
                         $('#password').focus();
                         $('#password').after('<span class="text-danger font-weight-bold">' + data
                             .message_pw + '</span>');
                     }
-                } else {
-                    if (data.result.status === undefined) {
-                        $('.input').nextAll('span').remove();
-                        $('.input').nextAll('br').remove();
-                        $('.input').removeClass('input_error');
-                        $.each(data.result, function(key, input_error) {
-                            $('.input').each(function() {
-                                if ($(this).prop('id') == key) {
-                                    var id_div_input = '#' + key;
-                                    $(id_div_input).addClass('input_error');
-                                    $.each(input_error, function(k, v) {
-                                        console.log(k + ':' + v);
-                                        $(id_div_input).after(
-                                            '<br><span class="text-danger font-weight-bold">' +
-                                            v + '</span>');
-                                    })
-                                }
-                            });
+                } else if (data.result.status === undefined) {
+                    $('.input').nextAll('span').remove();
+                    $('.input').nextAll('br').remove();
+                    $('.input').removeClass('input_error');
+                    $.each(data.result, function (key, input_error) {
+                        $('.input').each(function () {
+                            if ($(this).prop('id') == key) {
+                                var id_div_input = '#' + key;
+                                $(id_div_input).addClass('input_error');
+                                $.each(input_error, function (k, v) {
+                                    $(id_div_input).after(
+                                        '<br><span class="text-danger font-weight-bold">' +
+                                        v + '</span>');
+                                })
+                            }
                         });
-                    }
+                    });
+                } else {
+                    $('#registerModal').show();
+                    $('#closeModal').click(function () {
+                        $('#registerModal').toggle();
+
+                    });
                 }
             },
-            error: function(status) {
+            error: function (status) {
                 console.log(status);
             }
         });
-    }
-    var modal = document.getElementById("myModal");
-
-    // Get the button that opens the modal
-    var btn = document.getElementById("myBtn");
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks the button, open the modal 
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
     }
 </script>

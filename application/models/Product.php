@@ -75,7 +75,11 @@ class Model_Product extends Zend_Db_Table
 
             'price' => array(
                 new Zend_Validate_NotEmpty(),
-                new Zend_Validate_GreaterThan(array('min' => 0)),
+                new Zend_Validate_GreaterThan(
+                    array(
+                        'min' => 0
+                    )
+                ),
                 new Zend_Validate_Digits(),
                 Zend_Filter_Input::MESSAGES => array(
                     array(
@@ -149,7 +153,7 @@ class Model_Product extends Zend_Db_Table
         if (!empty($arrParam['category_id'])) {
             $where = $where . ' AND category_id = ' . $arrParam['category_id'];
         }
-        if(!empty($arrParam['order_by'])){
+        if (!empty($arrParam['order_by'])) {
             $order = $arrParam['order_by'];
         }
         $list_result = $this->fetchAll($where, $order)->toArray();

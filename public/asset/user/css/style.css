@@ -1593,7 +1593,9 @@ textarea.input {
   position: relative;
   border: 2px solid transparent;
   height: 40px;
-  padding: 0 30px;
+  padding-top: 10px ;
+  padding-left: 30px;
+  padding-right: 30px;
   background-color: #ef233c;
   color: #fff;
   text-transform: uppercase;
@@ -1613,6 +1615,10 @@ textarea.input {
   /*color: #D10024;
   opacity: 0;
   visibility: hidden;*/
+}
+.product-details .add-to-cart .add-to-cart-btn:disabled{
+  opacity: 50%;
+  pointer-events: none;
 }
 
 .product-details .add-to-cart .add-to-cart-btn:hover {

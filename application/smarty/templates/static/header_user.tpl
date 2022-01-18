@@ -10,14 +10,24 @@
             </ul>
             <ul class="header-links pull-right">
                 {if empty($customer) }
-                    <li><a href="{$this->url(['controller' => 'index', 'action' => 'register'])}"><i
-                                    class="fa fa-user-plus"></i> Đăng Ký</a></li>
-                    <li><a href="{$this->url(['controller' => 'index', 'action' => 'login'])}"><i
-                                    class="fa fa-user-o"></i>
-                            Đăng Nhập</a></li>
+                    <li>
+                        <a href="{$this->url(['controller' => 'index', 'action' => 'register'])}">
+                            <i class="fa fa-user-plus"></i>Đăng Ký</a>
+                    </li>
+                    <li>
+                        <a href="{$this->url(['controller' => 'index', 'action' => 'login'])}">
+                            <i class="fa fa-user-o"></i>Đăng Nhập</a>
+                    </li>
                 {else}
-                    <li><a href="{$this->url(['controller' => 'index', 'action' => 'logout'])}"><i
-                                    class="fa fa-sign-out"></i>Đăng Xuất</a></li>
+                    <li>
+                        <a href="#">
+                            Hello, {$customer.last_name} <i class="fa fa-user"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{$this->url(['controller' => 'index', 'action' => 'logout'])}">
+                            <i class="fa fa-sign-out"></i>Đăng Xuất</a>
+                    </li>
                 {/if}
             </ul>
         </div>
@@ -71,7 +81,7 @@
                                     {if empty($cart)}
                                         0
                                     {else}
-                                        {$cart|@count}    
+                                        {$cart|@count}
                                     {/if}
                                 </div>
                             </a>
@@ -91,27 +101,35 @@
                                                 <div class="product-body">
                                                     <h3 class="product-name"><a href="#">{$item.name}</a></h3>
                                                     <small><b>{$item.type_product_color}</b></small>
-                                                    <h4 class="product-price"><small style="font-weight: 600">{$item.number_product} x </small>{$item.price|number_format:0:".":"."} VNĐ</h4>
+                                                    <h4 class="product-price"><small
+                                                                style="font-weight: 600">{$item.number_product}
+                                                            x </small>{$item.price|number_format:0:".":"."} VNĐ</h4>
                                                 </div>
-                                                <button onclick="deleteProductCart({$key})" class="delete"><i class="fa fa-close" style="font-size: 18px"></i></button>
+                                                <button onclick="deleteProductCart({$key})" class="delete"><i
+                                                            class="fa fa-close" style="font-size: 18px"></i></button>
                                                 {$total=$total+($item.price * $item.number_product)}
                                             </div>
                                         {/foreach}
                                     {/if}
                                 </div>
                                 <div class="cart-summary" id="cart-summary">
-                                {if !empty($cart)}                               
+                                    {if !empty($cart)}
                                         <small><b>Có {$cart|@count} sản phẩm trong giỏ hàng</b></small>
                                         <h5>Tổng cộng: {$total|number_format:0:".":"."} VNĐ</h5>
-                                {/if}
+                                    {/if}
                                 </div>
                                 <div class="cart-btns">
                                     {if empty($customer) }
-                                        <a href="{$this->url(['controller' => 'index', 'action' => 'login'])}">Đặt hàng
-                                            <i class="fa fa-arrow-circle-right"></i></a>
+
+                                            <a href="{$this->url(['controller' => 'index', 'action' => 'login'])}">Đặt
+                                                hàng
+                                                <i class="fa fa-arrow-circle-right"></i></a>
+
                                     {else}
-                                        <a href="{$this->url(['controller' => 'index', 'action' => 'checkout'])}">Đặt hàng
-                                            <i class="fa fa-arrow-circle-right"></i></a>
+
+                                            <a href="{$this->url(['controller' => 'index', 'action' => 'checkout'])}">Đặt hàng
+                                                <i class="fa fa-arrow-circle-right"></i></a>
+
                                     {/if}
                                 </div>
                             </div>
@@ -127,11 +145,13 @@
     <div class="container">
         <div id="responsive-nav">
             <ul class="main-nav nav navbar-nav">
-                <li><a href="{$this->url(['controller' => 'index', 'action' => 'index'])}">Trang chủ</a>
+                <li>
+                    <a href="{$this->url(['controller' => 'index', 'action' => 'index'])}">Trang chủ</a>
                 </li>
                 {foreach $list_brand as $brand}
                     {if $brand.id < 10}
-                        <li><a href="{{$this->url(['controller' => 'index', 'action' => 'view'])}}?brand_id={$brand.id}">{$brand.brand_name}</a>
+                        <li>
+                            <a href="{{$this->url(['controller' => 'index', 'action' => 'view'])}}?brand_id={$brand.id}">{$brand.brand_name}</a>
                         </li>
                     {/if}
                 {/foreach}
@@ -143,6 +163,7 @@
 <div id="search_result_div">
 
 </div>
+
 
 <script>
     {literal}
@@ -160,25 +181,24 @@
             data: fdata,
 
             success: function (data) {
-                //console.log(data.result)
-                if(data.result.length > 0){
-                    $.each(data.result, function(key, value) {
-                        $('#search_result_div').append('<div class="col-md-4 col-xs-6">'+
-                            '<div class="product">'+
-                            '<div class="product-img">'+
+                if (data.result.length > 0) {
+                    $.each(data.result, function (key, value) {
+                        $('#search_result_div').append('<div class="col-md-4 col-xs-6">' +
+                            '<div class="product">' +
+                            '<div class="product-img">' +
 
-                            '</div>'+
-                        '<div class="product-body">'+
-                            '<h3 class="product-name name_product_fix">'+
-                        '<a href="index/detail?id='+value.id+'">'+value.name+'</a>'+
-                            '</h3>'+
-                            '<h4 class="product-price">'+numberWithCommas(value.price) +' VNĐ</h4>'+
-                        '</div>'+
-                        '<div class="add-to-cart">' +
-                            '<a href="index/detail?id='+value.id+'">'+
-                                '<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i></button>'+
-                            '</a>'+
-                       '</div></div></div>');
+                            '</div>' +
+                            '<div class="product-body">' +
+                            '<h3 class="product-name name_product_fix">' +
+                            '<a href="index/detail?id=' + value.id + '">' + value.name + '</a>' +
+                            '</h3>' +
+                            '<h4 class="product-price">' + numberWithCommas(value.price) + ' VNĐ</h4>' +
+                            '</div>' +
+                            '<div class="add-to-cart">' +
+                            '<a href="index/detail?id=' + value.id + '">' +
+                            '<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i></button>' +
+                            '</a>' +
+                            '</div></div></div>');
                     })
                 }
             },

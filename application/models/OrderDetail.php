@@ -89,8 +89,6 @@ class Model_OrderDetail extends Zend_Db_Table
             if ($input->isValid()) {
                 $row = $this->createRow($arr_param_add);
                 $row->save();
-                $product_in_cart_model = new Model_ProductInCart();
-                $product_in_cart = $product_in_cart_model->deleteProductInCartUser($product_in_cart);
                 $result['status'] = true;
                 $result[] = $row['id'];
             } else {
