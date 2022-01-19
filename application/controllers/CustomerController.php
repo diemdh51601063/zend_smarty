@@ -25,7 +25,6 @@ class CustomerController extends Zend_Controller_Action
                         $order_id = $new_order['order_id'];
                         $order_detail_model = new Model_OrderDetail();
                         $order_detail_model->addDetailOrder($order_id, $cart_data);
-
                         unset($_SESSION['userSessionNamespace']['cart']);
                         $data = array(
                             'status' => 'true'
@@ -70,7 +69,7 @@ class CustomerController extends Zend_Controller_Action
 
                 $this->_helper->json($data);
             } catch (Exception $e) {
-                var_dump($e->getMessage());
+                // var_dump($e->getMessage());
             }
         }
     }
@@ -122,6 +121,61 @@ class CustomerController extends Zend_Controller_Action
             'name' => $product_detail['name'],
             'number_product' => $number_product
         );
+    }
+
+    public function changeAction()
+    {
+        $customer_model = new Model_Customer();
+        if ($this->_request->isPost()) {
+            try {
+                $check_account = $customer_model->checkCustomerExist($this->_arrParam);
+                if (!empty($check_account['error_input'])) {
+                    $data = array(
+                        'result' => $check_account['error_input']
+                    );
+                } else {
+                    $data = array(
+                        'customer_id' => $check_account['id_exist']
+                    );
+                }
+                $this->_helper->json($data);
+            } catch (Exception $e) {
+                var_dump($e->getMessage());
+            }
+        }
+    }
+
+    public function repassAction()
+    {
+        $customer_model = new Model_Customer();
+        if ($this->_request->isPost()) {
+            $update_password = $customer_model->updateItem($this->_arrParam);
+            $data = array(
+                'result' => $update_password
+            );
+            $this->_helper->json($data);
+        }
+    }
+
+    public function searchAction()
+    {
+        $product_model = new Model_Product();
+        if ($this->_request->isPost()) {
+            try {
+                $search_result = $product_model->searchItem($this->_arrParam);
+                foreach ($search_result as $key => $product) {
+                    $product_image_model = new Model_ProductImage();
+                    $list_image = $product_image_model->getListImageOfProduct($product['id']);
+                    if (count($list_image) > 0) {
+                        $search_result[$key]['image'] = $list_image[0]['image'];
+                    }
+                }
+                $data = $search_result;
+                $this->_helper->json($data);
+            } catch (Exception $e) {
+                var_dump($e->getMessage());
+            }
+        }
     }
 
 }

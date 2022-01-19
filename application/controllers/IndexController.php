@@ -145,21 +145,24 @@ class IndexController extends Zend_Controller_Action
     public function loginAction()
     {
         if ($this->_request->isPost()) {
-            $login_name = $this->_arrParam['email'];
-            $encode = new Ext_Encode();
-            $password = $encode->encode_md5($this->_arrParam['password']);
             try {
                 $model = new Model_Customer();
-                $login = $model->logIn($login_name, $password);
-                if ($login != '') {
+                $login = $model->logIn($this->_arrParam);
+                if($login === false){
+                    $message_error = 'Sai thông tin đăng nhập !!!!';
+                    $this->view->assign('message_error', $message_error);
+                    unset($this->_arrParam['password']);
+                    $this->view->assign('error_value', $this->_arrParam);
+                }else if (!empty($login['customer_id'])) {
                     $this->_userSessionNamespace->customer = $login;
                     $this->redirect($this->_actionMain);
                 } else {
-                    $message_error = 'Sai thông tin đăng nhập !!!!';
-                    $this->view->assign('message_error', $message_error);
+                    unset($this->_arrParam['password']);
+                    $this->view->assign('error_value', $this->_arrParam);
+                    $this->view->assign('error_input', $login);
                 }
             } catch (Exception $e) {
-                var_dump($e->getMessage());
+                //var_dump($e->getMessage());
             }
         }
     }

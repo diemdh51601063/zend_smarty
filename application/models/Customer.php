@@ -60,12 +60,12 @@ class Model_Customer extends Zend_Db_Table
             'email' => array(
                 new Zend_Validate_NotEmpty(),
                 new Zend_Validate_EmailAddress(),
-                new Zend_Validate_Db_NoRecordExists(
+                /*new Zend_Validate_Db_NoRecordExists(
                     array(
                         'table' => 'customers',
                         'field' => 'email'
                     )
-                ),
+                ),*/
                 Zend_Filter_Input::MESSAGES => array(
                     array(
                         Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng nhập email !!!'
@@ -74,21 +74,21 @@ class Model_Customer extends Zend_Db_Table
                         Zend_Validate_EmailAddress::INVALID => '* Không nhận dạng được email !!!!',
                         Zend_Validate_EmailAddress::INVALID_FORMAT => '* Sai định dạng email !!!!',
                     ),
-                    array(
+                   /* array(
                         Zend_Validate_Db_NoRecordExists::ERROR_RECORD_FOUND => '* Email đã được đăng ký !!!!'
-                    )
+                    )*/
                 )
             ),
 
             'phone' => array(
                 new Zend_Validate_Digits,
                 new Zend_Validate_NotEmpty(),
-                new Zend_Validate_Db_NoRecordExists(
+                /*new Zend_Validate_Db_NoRecordExists(
                     array(
                         'table' => 'customers',
                         'field' => 'phone'
                     )
-                ),
+                ),*/
                 new Zend_Validate_StringLength(
                     array(
                         'min' => 10,
@@ -102,9 +102,9 @@ class Model_Customer extends Zend_Db_Table
                     array(
                         Zend_Validate_NotEmpty::IS_EMPTY => '* Vui lòng nhập số điện thoại !!!'
                     ),
-                    array(
+                    /*array(
                         Zend_Validate_Db_NoRecordExists::ERROR_RECORD_FOUND => '* Số điện thoại đã được đăng ký !!!!'
-                    ),
+                    ),*/
                     array(
                         Zend_Validate_StringLength::TOO_LONG => '* Số điện thoại có tối đa 11 kí tự !!!',
                         Zend_Validate_StringLength::TOO_SHORT => '* Số điện thoại có tối thiểu 10 kí tự !!!'
@@ -206,15 +206,28 @@ class Model_Customer extends Zend_Db_Table
     }
 
 
-    public function logIn($email, $password)
+    public function logIn($arrParam)
     {
-        $result_login = null;
-        $where = "email = '" . $email . "' AND password ='" . $password . "'";
-        $customer = $this->fetchRow($where);
-        if (!empty($customer)) {
-            $result_login['customer_id'] = $customer['id'];
-            $result_login['first_name'] = $customer['first_name'];
-            $result_login['last_name'] = $customer['last_name'];
+        $input = new Zend_Filter_Input($this->_filter, $this->_validate, $arrParam, $this->_option);
+
+        if ($input->isValid()) {
+            $result_login = null;
+            $encode = new Ext_Encode();
+            $arrParam['password'] = $encode->encode_md5($arrParam['password']);
+            $where = "email = '" . $arrParam['email'] . "' AND password ='" . $arrParam['password'] . "'";
+            $customer = $this->fetchRow($where);
+            if (!empty($customer)) {
+                $result_login['customer_id'] = $customer['id'];
+                $result_login['first_name'] = $customer['first_name'];
+                $result_login['last_name'] = $customer['last_name'];
+            }else{
+                $result_login = false;
+            }
+        } else {
+            if ($input->hasInvalid() || $input->hasMissing()) {
+                $messages = $input->getMessages();
+                $result_login = $messages;
+            }
         }
         return $result_login;
     }
@@ -225,13 +238,25 @@ class Model_Customer extends Zend_Db_Table
         return $list_result;
     }
 
-    public function checkCustomerExist($email, $phone)
+    public function checkCustomerExist($arrParam)
     {
-        $id_exist = null;
-        $where = " email =  '" . $email . "' AND phone = '" . $phone . "'";
-        $row = $this->fetchRow($where);
-        $id_exist = $row['id'];
-        return $id_exist;
+        $input = new Zend_Filter_Input($this->_filter, $this->_validate, $arrParam, $this->_option);
+        $check_result = null;
+        if ($input->isValid()) {
+            try {
+                $where = " email =  '" . $arrParam['email'] . "' AND phone = '" . $arrParam['phone'] . "'";
+                $row = $this->fetchRow($where);
+                $check_result['id_exist'] = $row['id'];
+            } catch (Exception $e) {
+                var_dump($e->getMessage());
+            }
+        } else {
+            if ($input->hasInvalid() || $input->hasMissing()) {
+                $messages = $input->getMessages();
+                $check_result['error_input'] = $messages;
+            }
+        }
+        return $check_result;
     }
 
 
@@ -270,5 +295,37 @@ class Model_Customer extends Zend_Db_Table
         $result = $this->fetchRow($where);
         unset($result['password']);
         return $result;
+    }
+
+    public function updateItem($arrParam)
+    {
+        try {
+            $input = new Zend_Filter_Input($this->_filter, $this->_validate, $arrParam, $this->_option);
+            $result = null;
+            if ($input->isValid()) {
+                $where = " id = " . $arrParam['customer_id'];
+                $customer = $this->fetchRow($where);
+                if (!empty($arrParam['password'])) {
+                    $encode = new Ext_Encode();
+                    $arrParam['password'] = $encode->encode_md5($arrParam['password']);
+                }
+                foreach ($customer as $key => $value) {
+                    if (isset($arrParam[$key])) {
+                        $customer->$key = $arrParam[$key];
+                    }
+                }
+                $customer->update_date = date('Y-m-d H:i:s');
+                $customer->save();
+                $result = true;
+            } else {
+                if ($input->hasInvalid() || $input->hasMissing()) {
+                    $messages = $input->getMessages();
+                    $result = $messages;
+                }
+            }
+            return $result;
+        } catch (Exception $e) {
+            //var_dump($e->getMessage());
+        }
     }
 }

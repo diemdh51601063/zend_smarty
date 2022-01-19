@@ -1,6 +1,47 @@
-<!-- HEADER -->
+<style>
+    .list-group-item {
+        margin: 0 10px;
+
+    }
+
+    .list-result-search {
+        margin: 10px 65px 10px 30px;
+    }
+
+    .list-group {
+        margin: 10px;
+        max-height: 150px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .image_search {
+        margin: 5px;
+        height: 30px;
+        width: 30px;
+    }
+
+    .product_name {
+        max-width: 90%;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    #top-header .container ul li .dropdown-menu-right .dropdown-item{
+        color: #0c0c0c;
+    }
+    .dropdown-item {
+        margin: 10px;
+    }
+
+
+
+
+</style>
+
+
 <header>
-    <!-- TOP HEADER -->
     <div id="top-header">
         <div class="container">
             <ul class="header-links pull-left">
@@ -20,15 +61,23 @@
                     </li>
                 {else}
                     <li>
-                        <a href="#">
-                            Hello, {$customer.last_name} <i class="fa fa-user"></i>
-                        </a>
+                        <div class="dropdown dropdown-menu-right">
+                            <a href="#" class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Hello, {$customer.last_name} <i class="fa fa-user"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+                                <a href="#" class="dropdown-item" data-toggle="modal" data-target="#myModal">Cập nhật thông tin</a>
+                                <a href="#" class="dropdown-item">Đổi mật khẩu</a>
+                            </div>
+                        </div>
                     </li>
                     <li>
                         <a href="{$this->url(['controller' => 'index', 'action' => 'logout'])}">
                             <i class="fa fa-sign-out"></i>Đăng Xuất</a>
                     </li>
                 {/if}
+
             </ul>
         </div>
     </div>
@@ -36,11 +85,8 @@
 
     <!-- MAIN HEADER -->
     <div id="header">
-        <!-- container -->
         <div class="container">
-            <!-- row -->
             <div class="row">
-                <!-- LOGO -->
                 <div class="col-md-3">
                     <div class="header-logo">
                         <a href="#" class="logo">
@@ -48,7 +94,6 @@
                         </a>
                     </div>
                 </div>
-                <!-- /LOGO -->
 
                 <!-- SEARCH BAR -->
                 <div class="col-md-6">
@@ -58,13 +103,20 @@
                             text-overflow: ellipsis;
                             white-space: nowrap;
                             overflow: hidden;">
+                                <option value="">Tất cả danh mục</option>
                                 {foreach $list_category as $category}
                                     <option value="{$category.id}">{$category.category_name}</option>
                                 {/foreach}
                             </select>
-                            <input type="text" class="input" placeholder="Tìm kiếm" name="name">
+                            <input type="text" class="input" placeholder="Tìm kiếm" name="name" autocomplete="off">
                             <button class="search-btn"><i class="fa fa-search"></i></button>
                         </form>
+                        <div class="list-result-search">
+                            <ul id="resultSearch" class="list-group">
+
+                            </ul>
+                        </div>
+
                     </div>
                 </div>
                 <!-- /SEARCH BAR -->
@@ -72,7 +124,7 @@
                 <!-- ACCOUNT -->
                 <div class="col-md-3 clearfix">
                     <div class="header-ctn">
-                        <!-- Cart -->
+
                         <div class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                 <i class="fa fa-shopping-cart"></i>
@@ -120,16 +172,12 @@
                                 </div>
                                 <div class="cart-btns">
                                     {if empty($customer) }
-
-                                            <a href="{$this->url(['controller' => 'index', 'action' => 'login'])}">Đặt
-                                                hàng
-                                                <i class="fa fa-arrow-circle-right"></i></a>
-
+                                        <a href="{$this->url(['controller' => 'index', 'action' => 'login'])}">Đặt hàng
+                                            <i class="fa fa-arrow-circle-right"></i></a>
                                     {else}
-
-                                            <a href="{$this->url(['controller' => 'index', 'action' => 'checkout'])}">Đặt hàng
-                                                <i class="fa fa-arrow-circle-right"></i></a>
-
+                                        <a href="{$this->url(['controller' => 'index', 'action' => 'checkout'])}">Đặt
+                                            hàng
+                                            <i class="fa fa-arrow-circle-right"></i></a>
                                     {/if}
                                 </div>
                             </div>
@@ -160,12 +208,53 @@
     </div>
 </nav>
 
-<div id="search_result_div">
+<div id="myModal" aria-hidden="true" aria-labelledby="myLargeModalLabel" class="modal" role="dialog" style="background-color: #000; opacity:1; z-index:1000;">
+    <div class="modal-content">
+        <span class="close" id="closeUpdateNewPassword">&times;</span>
+        <form class="form_margin" method="post"  >
+            <h4 class="text-center">Đổi Mật Khẩu</h4>
 
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <label>Mật khẩu cũ : <span class="text-danger">*</span></label>
+                </div>
+                <div class="col-sm-9">
+                    <input class="input" type="password" name="old_password" id="old_password"
+                           placeholder="Mật khẩu">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <label>Mật khẩu mới : <span class="text-danger">*</span></label>
+                </div>
+                <div class="col-sm-9">
+                    <input class="input update" type="password" name="new_password" id="new_password"
+                           placeholder="Mật khẩu">
+                </div>
+            </div>
+
+            <div class="form-group row" id="input_confirm_update_pasword">
+                <div class="col-sm-3">
+                    <label>Nhập lại mật khẩu mới: <span class="text-danger">*</span></label>
+                </div>
+                <div class="col-sm-9">
+                    <input class="input update" type="password" name="confirm_new_pasword" id="confirm_new_pasword"
+                           placeholder="Nhập lại mật khẩu">
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 
+
 <script>
+
     {literal}
     function numberWithCommas(x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -181,25 +270,21 @@
             data: fdata,
 
             success: function (data) {
-                if (data.result.length > 0) {
-                    $.each(data.result, function (key, value) {
-                        $('#search_result_div').append('<div class="col-md-4 col-xs-6">' +
-                            '<div class="product">' +
-                            '<div class="product-img">' +
-
+                $('#resultSearch').empty();
+                if (data.length > 0) {
+                    $.each(data, function (key, value) {
+                        $('#resultSearch').append('<li class="list-group-item">' +
+                            '<div class="row">' +
+                            '<div class="col-sm-2">' +
+                            '<img class="image_search" src="../../asset/images/products/' + value.image + '" alt="" >' +
                             '</div>' +
-                            '<div class="product-body">' +
-                            '<h3 class="product-name name_product_fix">' +
-                            '<a href="index/detail?id=' + value.id + '">' + value.name + '</a>' +
-                            '</h3>' +
-                            '<h4 class="product-price">' + numberWithCommas(value.price) + ' VNĐ</h4>' +
-                            '</div>' +
-                            '<div class="add-to-cart">' +
-                            '<a href="index/detail?id=' + value.id + '">' +
-                            '<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i></button>' +
-                            '</a>' +
-                            '</div></div></div>');
+                            '<div class="col-sm-10  product_name">' +
+                            '<a href="{{$this->url(['controller' => 'index', 'action' => 'detail'])}}?id=' + value.id + '" ><span>' + value.name + '</span></a>' +
+                            '<br><span>' + numberWithCommas(value.price) + ' VNĐ</span>' +
+                            '</div></div></li>');
                     })
+                } else {
+                    $('#resultSearch').append('<li class="list-group-item">Không tìm thấy sản phẩm</li>')
                 }
             },
             error: function (status) {
