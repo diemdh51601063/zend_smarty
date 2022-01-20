@@ -73,6 +73,16 @@ function renderCart(cart_data){
     var length_cart = Object.keys(cart_data).length;
     var num_product = 0;
 
+    if(length_cart === 0){
+       $('#add_cart_btn').css('display','none');
+    }else{
+        if($('#data-user-id').val() === undefined){
+            $('#add_cart_btn').append('<a href="/index/login"> Đặt hàng<i className="fa fa-arrow-circle-right"></i></a>');
+        }else{
+            $('#add_cart_btn').append('<a href="/index/checkout">Đặt hàng<i className="fa fa-arrow-circle-right"></i></a>');
+        }
+    }
+
     $('#card_quantily').replaceWith('<div class="qty" id="card_quantily">'+ length_cart +'</div>')
 
     $.each(cart_data, function (k, v) {
@@ -91,6 +101,7 @@ function renderCart(cart_data){
     $('#cart-summary').replaceWith('<div class="cart-summary" id="cart-summary">'+
         '<small><b>Có ' + num_product + ' sản phẩm trong giỏ hàng</b></small>'+
         '<h5>Tổng cộng: '+ numberWithCommas(total) + ' VNĐ</h5></div>');
+
 }
 
 

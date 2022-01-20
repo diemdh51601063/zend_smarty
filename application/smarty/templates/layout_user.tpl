@@ -40,13 +40,16 @@
 
 <body>
 
+    {if !empty($customer) }
+        <input type="hidden" id="data-user-id" value="{$customer.customer_id}">
+    {/if}
     <div id="header">
         {include file="header_user.tpl"}
     </div>
 
     {* <script type="text/javascript" src="../../asset/user/js/jquery.min.js"></script> *}
     <script type="text/javascript" charset="UTF-8" src="../../asset/jquery/jquery-3.5.1.min.js"></script>
-    
+
     <div id="content">
         {$this->layout()->content}
     </div>
@@ -56,7 +59,7 @@
     </div>
 
     <!-- jQuery Plugins -->
-   
+
     <script type="text/javascript" src="../../asset/user/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../asset/user/js/slick.min.js"></script>
     <script type="text/javascript" src="../../asset/user/js/nouislider.min.js"></script>

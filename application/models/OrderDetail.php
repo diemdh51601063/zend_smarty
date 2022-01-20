@@ -1,4 +1,5 @@
 <?php
+
 class Model_OrderDetail extends Zend_Db_Table
 {
     protected $_name = 'order_details';
@@ -84,8 +85,8 @@ class Model_OrderDetail extends Zend_Db_Table
                 'product_id' => $product_in_cart['product_id'],
                 'quantily' => $product_in_cart['number_product'],
                 'price' => $product_in_cart['price'],
-                'detail_product_id' => $product_in_cart['type_product_id'],
-                'detail_product_color' => $product_in_cart['type_product_color']
+                'detail_product_id' => (!empty($product_in_cart['type_product_id'])) ? $product_in_cart['type_product_id'] : null,
+                'detail_product_color' => (!empty($product_in_cart['type_product_color'])) ? $product_in_cart['type_product_color'] : null
             );
             $input = new Zend_Filter_Input($this->_filter, $this->_validate, $arr_param_add, $this->_option);
             if ($input->isValid()) {
@@ -106,7 +107,7 @@ class Model_OrderDetail extends Zend_Db_Table
     public function getListItem($order_id)
     {
         $where = " id > 0";
-        if(!empty($arrParam['order_id'])){
+        if (!empty($arrParam['order_id'])) {
             $where = $where . " order_id = " . $order_id;
         }
         $list_result = $this->fetchAll($where)->toArray();

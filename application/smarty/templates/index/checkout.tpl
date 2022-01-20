@@ -219,19 +219,12 @@
                 $(this).removeClass('input_error');
             })
         })
-
-        console.log($('#term:checkbox:checked').length);
-        $('#term').change(function () {
-            //$('#term').prop());
-            console.log($('#term:checkbox:checked').length);
-        });
-
     })
 
     function checkout(e) {
         e.preventDefault();
         if ($('#term:checkbox:checked').length < 1) {
-            $('#input_term).after('<span class="text-danger font-weight-bold"> add term</span>');
+            $('#input_term').after('<span class="text-danger font-weight-bold"> Bạn chưa check team !!!! </span>');
         } else {
             $("<input />").attr("type", "hidden")
                 .attr("name", "city_name")
@@ -265,7 +258,7 @@
                 data: fdata,
 
                 success: function (data) {
-                    if (data.status === undefined) {
+                    if (data.message === undefined) {
                         $('.input').nextAll('span').remove();
                         $('.input').nextAll('br').remove();
                         $('.input').removeClass('input_error');
@@ -281,7 +274,8 @@
                             });
                         });
                     } else {
-
+                        renderCart('');
+                        window.location.href = '/index';
                     }
                 },
                 error: function (status) {

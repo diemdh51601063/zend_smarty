@@ -55,7 +55,6 @@
 </style>
 
 
-
 <header>
     <div id="top-header">
         <div class="container">
@@ -78,19 +77,18 @@
                     <li>
                         <div class="dropdown dropdown-menu-right">
                             <a href="#" class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Hello, {$customer.last_name} <i class="fa fa-user"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right mr-5" aria-labelledby="dropdownMenu2">
                                 <a href="{{$this->url(['controller' => 'index', 'action' => 'update'])}}?customer_id={$customer.customer_id}"
-                                    class="dropdown-item" id="updateInfo">Cập nhật thông tin</a>
+                                   class="dropdown-item" id="updateInfo">Cập nhật thông tin</a>
                                 <div class="divider"></div>
                                 <a href="#" class="dropdown-item" id="updatePassword">Đổi mật khẩu</a>
                             </div>
 
                         </div>
                     </li>
-
                     <li>
                         <a href="{$this->url(['controller' => 'index', 'action' => 'logout'])}">
                             <i class="fa fa-sign-out"></i>Đăng Xuất</a>
@@ -173,11 +171,11 @@
                                                     <h3 class="product-name"><a href="#">{$item.name}</a></h3>
                                                     <small><b>{$item.type_product_color}</b></small>
                                                     <h4 class="product-price"><small
-                                                            style="font-weight: 600">{$item.number_product}
+                                                                style="font-weight: 600">{$item.number_product}
                                                             x </small>{$item.price|number_format:0:".":"."} VNĐ</h4>
                                                 </div>
                                                 <button onclick="deleteProductCart({$key})" class="delete"><i
-                                                        class="fa fa-close" style="font-size: 18px"></i></button>
+                                                            class="fa fa-close" style="font-size: 18px"></i></button>
                                                 {$total=$total+($item.price * $item.number_product)}
                                             </div>
                                         {/foreach}
@@ -189,13 +187,17 @@
                                         <h5>Tổng cộng: {$total|number_format:0:".":"."} VNĐ</h5>
                                     {/if}
                                 </div>
-                                <div class="cart-btns">
-                                    {if empty($customer) }
-                                        <a href="{$this->url(['controller' => 'index', 'action' => 'login'])}">Đặt hàng
-                                            <i class="fa fa-arrow-circle-right"></i></a>
-                                    {else}
-                                        <a href="{$this->url(['controller' => 'index', 'action' => 'checkout'])}">Đặt hàng
-                                            <i class="fa fa-arrow-circle-right"></i></a>
+                                <div class="cart-btns" id="add_cart_btn">
+                                    {if !empty($cart)}
+                                        {if empty($customer) }
+                                            <a href="{$this->url(['controller' => 'index', 'action' => 'login'])}">Đặt
+                                                hàng
+                                                <i class="fa fa-arrow-circle-right"></i></a>
+                                        {else}
+                                            <a href="{$this->url(['controller' => 'index', 'action' => 'checkout'])}">Đặt
+                                                hàng
+                                                <i class="fa fa-arrow-circle-right"></i></a>
+                                        {/if}
                                     {/if}
                                 </div>
                             </div>
@@ -217,7 +219,7 @@
                     {if $brand.id < 10}
                         <li>
                             <a
-                                href="{{$this->url(['controller' => 'index', 'action' => 'view'])}}?brand_id={$brand.id}">{$brand.brand_name}</a>
+                                    href="{{$this->url(['controller' => 'index', 'action' => 'view'])}}?brand_id={$brand.id}">{$brand.brand_name}</a>
                         </li>
                     {/if}
                 {/foreach}
@@ -226,7 +228,7 @@
     </div>
 </nav>
 
-<div id="updatePasswordModal" class="modal">
+<div id="updatePasswordModal" class="modal disabled">
     <div class="modal-content">
         <span class="close" id="closeUpdateNewPassword">&times;</span>
         <form id="formUpdatePassword" class="form_margin" method="post" onsubmit="updatePassword(event)">
@@ -237,8 +239,8 @@
                     <label>Mật khẩu cũ : <span class="text-danger">*</span></label>
                 </div>
                 <div class="col-sm-9">
-                    <input class="input" type="password" name="password" id="password" placeholder="Mật khẩu cũ"
-                        required>
+                    <input class="input" type="password" name="old_password" id="old_password" placeholder="Mật khẩu cũ"
+                           required>
                 </div>
             </div>
 
@@ -248,7 +250,7 @@
                 </div>
                 <div class="col-sm-9">
                     <input class="input update" type="password" name="new_password" id="new_password"
-                        placeholder="Mật khẩu mới" required>
+                           placeholder="Mật khẩu mới" required>
                 </div>
             </div>
 
@@ -258,7 +260,7 @@
                 </div>
                 <div class="col-sm-9">
                     <input class="input update" type="password" name="confirm_new_password" id="confirm_new_password"
-                        placeholder="Nhập lại mật khẩu mới" required>
+                           placeholder="Nhập lại mật khẩu mới" required>
                 </div>
             </div>
 
@@ -271,16 +273,16 @@
 
 <script type="text/javascript" charset="UTF-8" src="../../asset/jquery/jquery-3.5.1.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('#updatePassword').click(function() {
+    $(document).ready(function () {
+        $('#updatePassword').click(function () {
             $('#updatePasswordModal').show();
         });
-        $('#closeUpdateNewPassword').click(function() {
+        $('#closeUpdateNewPassword').click(function () {
             $('#updatePasswordModal').toggle();
         });
 
 
-        $('#confirm_new_password').change(function() {
+        $('#confirm_new_password').change(function () {
             var new_pw = $('#new_password').val();
             if ($('#confirm_new_password').val() != new_pw) {
                 $('#confirm_new_password').next('span').remove();
@@ -293,9 +295,9 @@
     });
 
     {literal}
-        function numberWithCommas(x) {
-            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        }
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
     {/literal}
 
     function searchProduct(e) {
@@ -307,10 +309,10 @@
             dataType: 'json',
             data: fdata,
 
-            success: function(data) {
+            success: function (data) {
                 $('#resultSearch').empty();
                 if (data.length > 0) {
-                    $.each(data, function(key, value) {
+                    $.each(data, function (key, value) {
                         $('#resultSearch').append('<li class="list-group-item">' +
                             '<div class="row">' +
                             '<div class="col-sm-2">' +
@@ -326,7 +328,7 @@
                     $('#resultSearch').append('<li class="list-group-item">Không tìm thấy sản phẩm</li>')
                 }
             },
-            error: function(status) {
+            error: function (status) {
                 console.log(status);
             }
         });
@@ -340,7 +342,7 @@
             url: "/customer/uppass",
             dataType: 'json',
             data: fdata,
-            success: function(data) {
+            success: function (data) {
                 if (data.status !== undefined) {
                     if (data.message_pw_not_match !== undefined) {
                         $('#password').next('span').remove();
@@ -352,7 +354,8 @@
                         $('#confirm_new_password').after('<span class="text-danger font-weight-bold">' +
                             data.message_pw + '</span>');
                     }
-                } else if ((data.result.status !== undefined)&&data.result.status === true) {
+                } else if ((data.result.status !== undefined) && data.result.status === true) {
+                    $('#formUpdatePassword').find("input[type=email], input[type=password]").val("");
                     $('#updatePasswordModal').toggle();
                     $('#updatePasswordModal').attr("disabled", true);
                     alert('thanh cong !!!!');
@@ -360,7 +363,7 @@
                     showErrInput('update', data.result);
                 }
             },
-            error: function(status) {
+            error: function (status) {
                 console.log(status);
             }
         });
@@ -371,12 +374,12 @@
         $(class_input).nextAll('span').remove();
         $(class_input).nextAll('br').remove();
         $(class_input).removeClass('input_error');
-        $.each(error_input, function(key, input_error) {
-            $(class_input).each(function() {
+        $.each(error_input, function (key, input_error) {
+            $(class_input).each(function () {
                 if ($(this).prop('id') == class_name + '-' + key) {
                     var id_div_input = '#' + class_name + '-' + key;
                     $(id_div_input).addClass('input_error');
-                    $.each(input_error, function(k, v) {
+                    $.each(input_error, function (k, v) {
                         $(id_div_input).after(
                             '<br><span class="text-danger font-weight-bold">' + v +
                             '</span>');

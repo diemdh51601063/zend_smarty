@@ -14,6 +14,8 @@ class ProductController extends Zend_Controller_Action
         $this->_currentController = '/' . $this->_arrParam['controller'];
         $this->_actionMain = '/' . $this->_arrParam['controller'] . '/index';
 
+        $this->_arrParam = $this->filterInput($this->_arrParam);
+
         $this->view->arrParam = $this->_arrParam;
         $this->view->currentController = $this->_currentController;
         $this->view->actionMain = $this->_actionMain;

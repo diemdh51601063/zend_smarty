@@ -27,7 +27,7 @@ class CustomerController extends Zend_Controller_Action
                         $order_detail_model->addDetailOrder($order_id, $cart_data);
                         unset($_SESSION['userSessionNamespace']['cart']);
                         $data = array(
-                            'status' => 'true'
+                            'message' => 'true'
                         );
                     } else {
                         $data = array(
@@ -37,7 +37,7 @@ class CustomerController extends Zend_Controller_Action
                     $this->_helper->json($data);
                 }
             } catch (Exception $e) {
-                //var_dump($e->getMessage());
+                var_dump($e->getMessage());
             }
         }
     }
@@ -197,6 +197,7 @@ class CustomerController extends Zend_Controller_Action
     {
         $customer_model = new Model_Customer();
         if ($this->_request->isPost()) {
+            $this->_arrParam['password'] = $this->_arrParam['old_password'];
             if ($this->_arrParam['new_password'] === $this->_arrParam['confirm_new_password']) {
                 $update_customer = $customer_model->updatePassword($this->_arrParam);
                 $data = array(

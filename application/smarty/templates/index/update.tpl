@@ -257,6 +257,7 @@
                         $('#registerModal').toggle();
 
                     });
+                    window.location.href = '/index';
                 }
             },
             error: function(status) {

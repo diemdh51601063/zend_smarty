@@ -322,9 +322,10 @@
                     };
                     filereader.readAsDataURL(this.files[i]);
                 }
-            }else{
-                $('.filearray').append('<span class="err_input err_img">Chỉ được chọn tối đa 5 hình !!!</span>')
             }
+            //else{
+            //     $('.filearray').append('<span class="err_input err_img">Chỉ được chọn tối đa 5 hình !!!</span>')
+            // }
         });
 
 

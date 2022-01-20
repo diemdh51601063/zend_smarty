@@ -126,16 +126,6 @@
     </form>
 </div>
 
-<div id="registerModal" class="modal">
-
-    <!-- Modal content -->
-    <div class="modal-content">
-        <span class="close" id="closeModal">&times;</span>
-        <p>Dang ky thanh cong</p>
-        <a href="{$this->url(['controller' => 'index', 'action' => 'index'])}"><button type="button" class="btn btn-primary">OK</button></a>
-    </div>
-
-</div>
 <script>
     $(document).ready(function () {
         var link_city = 'https://api.mysupership.vn/v1/partner/areas/province';
@@ -144,7 +134,6 @@
                 $('#city_code').append(new Option(val.name, val.code))
             });
         });
-
 
         $('#city_code').change(function () {
             var city_code = $(this).children("option:selected").val();
@@ -172,7 +161,6 @@
 
         $('.input').each(function () {
             $(this).change(function (){
-                console.log($(this).next('span'));
                 $(this).next('br').remove();
                 $(this).next('span').remove();
                 $(this).removeClass('input_error');
