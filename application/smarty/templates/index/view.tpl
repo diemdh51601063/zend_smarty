@@ -82,7 +82,7 @@
                     <div class="store-sort">
                         <label>
                             Sắp xếp theo:
-                            <select class="input-select" name="sort">
+                            <select class="input-select" name="sort" id="sort_product">
                                 <option value="asc">Giá thấp</option>
                                 <option value="desc">Giá cao</option>
                             </select>
@@ -90,7 +90,7 @@
 
                         <label>
                             Hiển thị:
-                            <select class="input-select" name="quantily_product">
+                            <select class="input-select" name="quantily_product" id="quantily_product">
                                 <option value="18">18</option>
                                 <option value="36">36</option>
                             </select>
@@ -133,3 +133,10 @@
     <!-- /container -->
 </div>
 <!-- /SECTION -->
+
+<script>
+
+
+
+
+</script>

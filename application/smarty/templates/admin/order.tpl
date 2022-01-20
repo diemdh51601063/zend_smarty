@@ -83,7 +83,7 @@
 
 
     function acceptOrder(order_id) {
-
+        
     }
 
     function cancelOrder(e) {
@@ -95,7 +95,7 @@
             dataType: 'json',
             data: fdata,
             success: function (data) {
-               
+                $('#table_order').DataTable().row($('#delete_brand').parents('tr')).remove().draw();
             },
             error: function (status) {
                 console.log(status);
