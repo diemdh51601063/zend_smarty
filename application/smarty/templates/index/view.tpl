@@ -22,7 +22,7 @@
 
                         {foreach $list_category as $category}
                             <div class="input-checkbox">
-                                <input type="checkbox" id="category" name="category">
+                                <input type="checkbox" id="category" name="category[]">
                                 <label for="category-1">
                                     <span></span>
                                     {$category.category_name}
@@ -39,7 +39,7 @@
                     <div class="checkbox-filter">
                         {foreach $list_brand as $brand}
                             <div class="input-checkbox">
-                                <input type="checkbox" id="brand" name="brand">
+                                <input type="checkbox" id="brand" name="brand[]">
                                 <label for="brand">
                                     <span></span>
                                     {$brand.brand_name}
@@ -83,8 +83,8 @@
                         <label>
                             Sắp xếp theo:
                             <select class="input-select" name="sort">
-                                <option value="0">Giá thấp</option>
-                                <option value="1">Giá cao</option>
+                                <option value="asc">Giá thấp</option>
+                                <option value="desc">Giá cao</option>
                             </select>
                         </label>
 
@@ -118,7 +118,7 @@
                                     <div class="add-to-cart">
                                         <a
                                             href="{{$this->url(['controller' => 'index', 'action' => 'detail'])}}?id={$product.id}">
-                                            <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i></button>
+                                            <button class="add-to-cart-btn"><i class="fa fa-list-ul"></i></button>
                                         </a>
                                     </div>
                                 </div>

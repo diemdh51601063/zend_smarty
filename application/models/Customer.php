@@ -74,7 +74,7 @@ class Model_Customer extends Zend_Db_Table
                         Zend_Validate_EmailAddress::INVALID => '* Không nhận dạng được email !!!!',
                         Zend_Validate_EmailAddress::INVALID_FORMAT => '* Sai định dạng email !!!!',
                     ),
-                   /* array(
+                    /* array(
                         Zend_Validate_Db_NoRecordExists::ERROR_RECORD_FOUND => '* Email đã được đăng ký !!!!'
                     )*/
                 )
@@ -220,7 +220,7 @@ class Model_Customer extends Zend_Db_Table
                 $result_login['customer_id'] = $customer['id'];
                 $result_login['first_name'] = $customer['first_name'];
                 $result_login['last_name'] = $customer['last_name'];
-            }else{
+            } else {
                 $result_login = false;
             }
         } else {
@@ -316,7 +316,50 @@ class Model_Customer extends Zend_Db_Table
                 }
                 $customer->update_date = date('Y-m-d H:i:s');
                 $customer->save();
-                $result = true;
+                $tmp['customer_id'] = $customer['id'];
+                $tmp['first_name'] = $customer['first_name'];
+                $tmp['last_name'] = $customer['last_name'];
+
+                $result['status'] = true;
+                $result['customer'] = $tmp;
+            } else {
+                if ($input->hasInvalid() || $input->hasMissing()) {
+                    $messages = $input->getMessages();
+                    $result = $messages;
+                }
+            }
+            return $result;
+        } catch (Exception $e) {
+            //var_dump($e->getMessage());
+        }
+    }
+
+    public function updatePassword($arrParam)
+    {
+        try {
+            $input = new Zend_Filter_Input($this->_filter, $this->_validate, $arrParam, $this->_option);
+            $result = null;
+            if ($input->isValid()) {
+                $where = " id = " . $arrParam['customer_id'];
+                $customer = $this->fetchRow($where);
+                if ((!empty($arrParam['password'])) &&(!empty($arrParam['new_password'])) ) {
+                    $encode = new Ext_Encode();
+                    $arrParam['password'] = $encode->encode_md5($arrParam['password']);
+                    if ($arrParam['password'] === $customer->password) {
+                        $customer->password = $encode->encode_md5($arrParam['new_password']);
+                        $customer->update_date = date('Y-m-d H:i:s');
+                        $customer->save();
+                        $tmp['customer_id'] = $customer['id'];
+                        $tmp['first_name'] = $customer['first_name'];
+                        $tmp['last_name'] = $customer['last_name'];
+
+                        $result['status'] = true;
+                        $result['customer'] = $tmp;
+                    } else {
+                        $result['status'] = false;
+                        $result['message_pw_not_match'] = "* Mật khẩu không đúng !!!!";
+                    }
+                }
             } else {
                 if ($input->hasInvalid() || $input->hasMissing()) {
                     $messages = $input->getMessages();

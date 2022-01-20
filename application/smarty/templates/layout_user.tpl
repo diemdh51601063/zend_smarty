@@ -44,7 +44,9 @@
         {include file="header_user.tpl"}
     </div>
 
-    <script src="../../asset/user/js/jquery.min.js"></script>
+    {* <script type="text/javascript" src="../../asset/user/js/jquery.min.js"></script> *}
+    <script type="text/javascript" charset="UTF-8" src="../../asset/jquery/jquery-3.5.1.min.js"></script>
+    
     <div id="content">
         {$this->layout()->content}
     </div>
@@ -55,12 +57,12 @@
 
     <!-- jQuery Plugins -->
    
-    <script src="../../asset/user/js/bootstrap.min.js"></script>
-    <script src="../../asset/user/js/slick.min.js"></script>
-    <script src="../../asset/user/js/nouislider.min.js"></script>
-    <script src="../../asset/user/js/jquery.zoom.min.js"></script>
-    <script src="../../asset/user/js/main.js"></script>
-    <script src="../../asset/user/js/script.js"></script>
+    <script type="text/javascript" src="../../asset/user/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../asset/user/js/slick.min.js"></script>
+    <script type="text/javascript" src="../../asset/user/js/nouislider.min.js"></script>
+    <script type="text/javascript" src="../../asset/user/js/jquery.zoom.min.js"></script>
+    <script type="text/javascript" src="../../asset/user/js/main.js"></script>
+    <script type="text/javascript" src="../../asset/user/js/script.js"></script>
 
 </body>
 

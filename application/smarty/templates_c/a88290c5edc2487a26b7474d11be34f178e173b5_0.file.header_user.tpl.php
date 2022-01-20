@@ -1,4 +1,27 @@
-<style>
+<?php
+/* Smarty version 4.0.0, created on 2022-01-20 04:33:10
+  from 'C:\laragon\www\zend_smarty\application\smarty\templates\static\header_user.tpl' */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '4.0.0',
+  'unifunc' => 'content_61e883963ab980_51388214',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    'a88290c5edc2487a26b7474d11be34f178e173b5' => 
+    array (
+      0 => 'C:\\laragon\\www\\zend_smarty\\application\\smarty\\templates\\static\\header_user.tpl',
+      1 => 1642627986,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_61e883963ab980_51388214 (Smarty_Internal_Template $_smarty_tpl) {
+?><style>
     .list-group-item {
         margin: 0 10px;
 
@@ -65,24 +88,32 @@
                 <li><a href="#"><i class="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li>
             </ul>
             <ul class="header-links pull-right">
-                {if empty($customer) }
+                <?php if (empty($_smarty_tpl->tpl_vars['customer']->value)) {?>
                     <li>
-                        <a href="{$this->url(['controller' => 'index', 'action' => 'register'])}">
+                        <a href="<?php echo $_smarty_tpl->tpl_vars['this']->value->url(array('controller'=>'index','action'=>'register'));?>
+">
                             <i class="fa fa-user-plus"></i>Đăng Ký</a>
                     </li>
                     <li>
-                        <a href="{$this->url(['controller' => 'index', 'action' => 'login'])}">
+                        <a href="<?php echo $_smarty_tpl->tpl_vars['this']->value->url(array('controller'=>'index','action'=>'login'));?>
+">
                             <i class="fa fa-user-o"></i>Đăng Nhập</a>
                     </li>
-                {else}
+                <?php } else { ?>
                     <li>
                         <div class="dropdown dropdown-menu-right">
                             <a href="#" class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Hello, {$customer.last_name} <i class="fa fa-user"></i>
+                                Hello, <?php echo $_smarty_tpl->tpl_vars['customer']->value['last_name'];?>
+ <i class="fa fa-user"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right mr-5" aria-labelledby="dropdownMenu2">
-                                <a href="{{$this->url(['controller' => 'index', 'action' => 'update'])}}?customer_id={$customer.customer_id}"
+                                <a href="<?php ob_start();
+echo $_smarty_tpl->tpl_vars['this']->value->url(array('controller'=>'index','action'=>'update'));
+$_prefixVariable1 = ob_get_clean();
+echo $_prefixVariable1;?>
+?customer_id=<?php echo $_smarty_tpl->tpl_vars['customer']->value['customer_id'];?>
+"
                                     class="dropdown-item" id="updateInfo">Cập nhật thông tin</a>
                                 <div class="divider"></div>
                                 <a href="#" class="dropdown-item" id="updatePassword">Đổi mật khẩu</a>
@@ -92,10 +123,11 @@
                     </li>
 
                     <li>
-                        <a href="{$this->url(['controller' => 'index', 'action' => 'logout'])}">
+                        <a href="<?php echo $_smarty_tpl->tpl_vars['this']->value->url(array('controller'=>'index','action'=>'logout'));?>
+">
                             <i class="fa fa-sign-out"></i>Đăng Xuất</a>
                     </li>
-                {/if}
+                <?php }?>
 
             </ul>
         </div>
@@ -123,9 +155,18 @@
                             white-space: nowrap;
                             overflow: hidden;">
                                 <option value="">Tất cả danh mục</option>
-                                {foreach $list_category as $category}
-                                    <option value="{$category.id}">{$category.category_name}</option>
-                                {/foreach}
+                                <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['list_category']->value, 'category');
+$_smarty_tpl->tpl_vars['category']->do_else = true;
+if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['category']->value) {
+$_smarty_tpl->tpl_vars['category']->do_else = false;
+?>
+                                    <option value="<?php echo $_smarty_tpl->tpl_vars['category']->value['id'];?>
+"><?php echo $_smarty_tpl->tpl_vars['category']->value['category_name'];?>
+</option>
+                                <?php
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
                             </select>
                             <input type="text" class="input" placeholder="Tìm kiếm" name="name" autocomplete="off">
                             <button class="search-btn"><i class="fa fa-search"></i></button>
@@ -149,54 +190,73 @@
                                 <i class="fa fa-shopping-cart"></i>
                                 <span>Giỏ hàng</span>
                                 <div class="qty" id="card_quantily">
-                                    {if empty($cart)}
+                                    <?php if (empty($_smarty_tpl->tpl_vars['cart']->value)) {?>
                                         0
-                                    {else}
-                                        {$cart|@count}
-                                    {/if}
+                                    <?php } else { ?>
+                                        <?php echo count($_smarty_tpl->tpl_vars['cart']->value);?>
+
+                                    <?php }?>
                                 </div>
                             </a>
                             <div class="cart-dropdown">
                                 <div class="cart-list">
-                                    {if empty($cart)}
+                                    <?php if (empty($_smarty_tpl->tpl_vars['cart']->value)) {?>
                                         <div class="product-widget">
                                             <p>Không có sản phẩm !!!!</p>
                                         </div>
-                                    {else}
-                                        {assign var="total" value="0"}
-                                        {foreach from=$cart key=key item=item}
-                                            <div class="product-widget cartList" id="{$key}">
+                                    <?php } else { ?>
+                                        <?php $_smarty_tpl->_assignInScope('total', "0");?>
+                                        <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['cart']->value, 'item', false, 'key');
+$_smarty_tpl->tpl_vars['item']->do_else = true;
+if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['key']->value => $_smarty_tpl->tpl_vars['item']->value) {
+$_smarty_tpl->tpl_vars['item']->do_else = false;
+?>
+                                            <div class="product-widget cartList" id="<?php echo $_smarty_tpl->tpl_vars['key']->value;?>
+">
                                                 <div class="product-img">
-                                                    <img src="../../asset/images/products/{$item.image}" alt="">
+                                                    <img src="../../asset/images/products/<?php echo $_smarty_tpl->tpl_vars['item']->value['image'];?>
+" alt="">
                                                 </div>
                                                 <div class="product-body">
-                                                    <h3 class="product-name"><a href="#">{$item.name}</a></h3>
-                                                    <small><b>{$item.type_product_color}</b></small>
+                                                    <h3 class="product-name"><a href="#"><?php echo $_smarty_tpl->tpl_vars['item']->value['name'];?>
+</a></h3>
+                                                    <small><b><?php echo $_smarty_tpl->tpl_vars['item']->value['type_product_color'];?>
+</b></small>
                                                     <h4 class="product-price"><small
-                                                            style="font-weight: 600">{$item.number_product}
-                                                            x </small>{$item.price|number_format:0:".":"."} VNĐ</h4>
+                                                            style="font-weight: 600"><?php echo $_smarty_tpl->tpl_vars['item']->value['number_product'];?>
+
+                                                            x </small><?php echo number_format($_smarty_tpl->tpl_vars['item']->value['price'],0,".",".");?>
+ VNĐ</h4>
                                                 </div>
-                                                <button onclick="deleteProductCart({$key})" class="delete"><i
+                                                <button onclick="deleteProductCart(<?php echo $_smarty_tpl->tpl_vars['key']->value;?>
+)" class="delete"><i
                                                         class="fa fa-close" style="font-size: 18px"></i></button>
-                                                {$total=$total+($item.price * $item.number_product)}
+                                                <?php $_smarty_tpl->_assignInScope('total', $_smarty_tpl->tpl_vars['total']->value+($_smarty_tpl->tpl_vars['item']->value['price']*$_smarty_tpl->tpl_vars['item']->value['number_product']));?>
                                             </div>
-                                        {/foreach}
-                                    {/if}
+                                        <?php
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
+                                    <?php }?>
                                 </div>
                                 <div class="cart-summary" id="cart-summary">
-                                    {if !empty($cart)}
-                                        <small><b>Có {$cart|@count} sản phẩm trong giỏ hàng</b></small>
-                                        <h5>Tổng cộng: {$total|number_format:0:".":"."} VNĐ</h5>
-                                    {/if}
+                                    <?php if (!empty($_smarty_tpl->tpl_vars['cart']->value)) {?>
+                                        <small><b>Có <?php echo count($_smarty_tpl->tpl_vars['cart']->value);?>
+ sản phẩm trong giỏ hàng</b></small>
+                                        <h5>Tổng cộng: <?php echo number_format($_smarty_tpl->tpl_vars['total']->value,0,".",".");?>
+ VNĐ</h5>
+                                    <?php }?>
                                 </div>
                                 <div class="cart-btns">
-                                    {if empty($customer) }
-                                        <a href="{$this->url(['controller' => 'index', 'action' => 'login'])}">Đặt hàng
+                                    <?php if (empty($_smarty_tpl->tpl_vars['customer']->value)) {?>
+                                        <a href="<?php echo $_smarty_tpl->tpl_vars['this']->value->url(array('controller'=>'index','action'=>'login'));?>
+">Đặt hàng
                                             <i class="fa fa-arrow-circle-right"></i></a>
-                                    {else}
-                                        <a href="{$this->url(['controller' => 'index', 'action' => 'checkout'])}">Đặt hàng
+                                    <?php } else { ?>
+                                        <a href="<?php echo $_smarty_tpl->tpl_vars['this']->value->url(array('controller'=>'index','action'=>'checkout'));?>
+">Đặt hàng
                                             <i class="fa fa-arrow-circle-right"></i></a>
-                                    {/if}
+                                    <?php }?>
                                 </div>
                             </div>
                         </div>
@@ -211,16 +271,30 @@
         <div id="responsive-nav">
             <ul class="main-nav nav navbar-nav">
                 <li>
-                    <a href="{$this->url(['controller' => 'index', 'action' => 'index'])}">Trang chủ</a>
+                    <a href="<?php echo $_smarty_tpl->tpl_vars['this']->value->url(array('controller'=>'index','action'=>'index'));?>
+">Trang chủ</a>
                 </li>
-                {foreach $list_brand as $brand}
-                    {if $brand.id < 10}
+                <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['list_brand']->value, 'brand');
+$_smarty_tpl->tpl_vars['brand']->do_else = true;
+if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['brand']->value) {
+$_smarty_tpl->tpl_vars['brand']->do_else = false;
+?>
+                    <?php if ($_smarty_tpl->tpl_vars['brand']->value['id'] < 10) {?>
                         <li>
                             <a
-                                href="{{$this->url(['controller' => 'index', 'action' => 'view'])}}?brand_id={$brand.id}">{$brand.brand_name}</a>
+                                href="<?php ob_start();
+echo $_smarty_tpl->tpl_vars['this']->value->url(array('controller'=>'index','action'=>'view'));
+$_prefixVariable2 = ob_get_clean();
+echo $_prefixVariable2;?>
+?brand_id=<?php echo $_smarty_tpl->tpl_vars['brand']->value['id'];?>
+"><?php echo $_smarty_tpl->tpl_vars['brand']->value['brand_name'];?>
+</a>
                         </li>
-                    {/if}
-                {/foreach}
+                    <?php }?>
+                <?php
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
             </ul>
         </div>
     </div>
@@ -231,7 +305,8 @@
         <span class="close" id="closeUpdateNewPassword">&times;</span>
         <form id="formUpdatePassword" class="form_margin" method="post" onsubmit="updatePassword(event)">
             <h4 class="text-center">Đổi Mật Khẩu</h4>
-            <input class="input" type="hidden" id="customer_id" name="customer_id" value="{$customer.customer_id}">
+            <input class="input" type="hidden" id="customer_id" name="customer_id" value="<?php echo $_smarty_tpl->tpl_vars['customer']->value['customer_id'];?>
+">
             <div class="form-group row">
                 <div class="col-sm-3">
                     <label>Mật khẩu cũ : <span class="text-danger">*</span></label>
@@ -269,8 +344,11 @@
     </div>
 </div>
 
-<script type="text/javascript" charset="UTF-8" src="../../asset/jquery/jquery-3.5.1.min.js"></script>
-<script>
+<?php echo '<script'; ?>
+ type="text/javascript" charset="UTF-8" src="../../asset/jquery/jquery-3.5.1.min.js"><?php echo '</script'; ?>
+>
+<?php echo '<script'; ?>
+>
     $(document).ready(function() {
         $('#updatePassword').click(function() {
             $('#updatePasswordModal').show();
@@ -292,11 +370,11 @@
         });
     });
 
-    {literal}
+    
         function numberWithCommas(x) {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
-    {/literal}
+    
 
     function searchProduct(e) {
         e.preventDefault();
@@ -318,7 +396,11 @@
                             value.image + '" alt="" >' +
                             '</div>' +
                             '<div class="col-sm-10  product_name">' +
-                            '<a href="{{$this->url(['controller' => 'index', 'action' => 'detail'])}}?id=' + value.id + '" ><span>' + value.name + '</span></a>' +
+                            '<a href="<?php ob_start();
+echo $_smarty_tpl->tpl_vars['this']->value->url(array('controller'=>'index','action'=>'detail'));
+$_prefixVariable3 = ob_get_clean();
+echo $_prefixVariable3;?>
+?id=' + value.id + '" ><span>' + value.name + '</span></a>' +
                             '<br><span>' + numberWithCommas(value.price) + ' VNĐ</span>' +
                             '</div></div></li>');
                     })
@@ -385,4 +467,6 @@
             });
         });
     }
-</script>
+<?php echo '</script'; ?>
+><?php }
+}

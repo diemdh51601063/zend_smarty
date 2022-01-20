@@ -18,7 +18,7 @@
 </head>
 
 <body>
-<script type="text/javascript" charset="UTF-8" src="../../asset/admin/jquery/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" charset="UTF-8" src="../../asset/jquery/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" charset="UTF-8" src="../../asset/admin/js/script.js"></script>
 {if $this->admin != ''}
     {if $this->arrParam['action'] != 'login'}

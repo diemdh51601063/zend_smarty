@@ -14,6 +14,9 @@
             <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Đơn Hàng</a>
             <ul class="collapse list-unstyled " id="homeSubmenu">
                 <li>
+                    <a href="{$this->url(['controller' => 'admin', 'action' => 'order'])}">Tất cả đơn hàng</a>
+                </li>
+                <li>
                     <a href="{$this->url(['controller' => 'admin', 'action' => 'order'])}?type=1">Chưa
                         xác nhận</a>
                 </li>
@@ -74,17 +77,16 @@
 </nav>
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         var full_href = window.location.pathname;
         var url = window.location.search;
         var active_url = full_href + url;
 
-        $('#sidebar ul li').each(function () {
+        $('#sidebar ul li').each(function() {
             //console.log($(this).children('a').attr('href') == active_url);
-            if(active_url == '/admin/customer'){
-                
-            }
-            else if ($(this).children('a').attr('href') == active_url) {
+            if (active_url == '/admin/customer') {
+
+            } else if ($(this).children('a').attr('href') == active_url) {
                 $(this).children('a').addClass('menu_active');
                 var this_parent = $(this).parent('ul').parent().find('a');
                 this_parent[0].click();

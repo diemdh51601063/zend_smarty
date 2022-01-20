@@ -101,9 +101,11 @@ class CartController extends Zend_Controller_Action
         $product_type_detail_model = new Model_ProductDetail();
         $product_detail = $product_model->getItemDetail($product_id);
         $type_product_color = '';
+        $price = $product_detail['price'];
         if (!empty($type_product_id)) {
             $type_product_detail = $product_type_detail_model->getItemDetail(array('id' => $type_product_id));
             $type_product_color = $type_product_detail['color'];
+            $price = $type_product_detail['price'];
         }
         $image_product = null;
         $list_image = $product_image_model->getListImageOfProduct($product_id);
@@ -112,7 +114,7 @@ class CartController extends Zend_Controller_Action
         }
         return array(
             'product_id' => $product_id,
-            'price' => $product_detail['price'],
+            'price' => $price,
             'image' => $image_product,
             'type_product_id' => $type_product_id,
             'type_product_color' => $type_product_color,

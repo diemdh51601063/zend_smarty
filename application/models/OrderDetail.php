@@ -83,7 +83,9 @@ class Model_OrderDetail extends Zend_Db_Table
                 'order_id' => $order_id,
                 'product_id' => $product_in_cart['product_id'],
                 'quantily' => $product_in_cart['number_product'],
-                'price' => $product_in_cart['price']
+                'price' => $product_in_cart['price'],
+                'detail_product_id' => $product_in_cart['type_product_id'],
+                'detail_product_color' => $product_in_cart['type_product_color']
             );
             $input = new Zend_Filter_Input($this->_filter, $this->_validate, $arr_param_add, $this->_option);
             if ($input->isValid()) {
@@ -101,9 +103,13 @@ class Model_OrderDetail extends Zend_Db_Table
         return $result;
     }
 
-    public function getListItem()
+    public function getListItem($order_id)
     {
-        $list_result = $this->fetchAll()->toArray();
+        $where = " id > 0";
+        if(!empty($arrParam['order_id'])){
+            $where = $where . " order_id = " . $order_id;
+        }
+        $list_result = $this->fetchAll($where)->toArray();
         return $list_result;
     }
 

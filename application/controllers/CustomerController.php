@@ -123,7 +123,7 @@ class CustomerController extends Zend_Controller_Action
         );
     }
 
-    public function changeAction()
+    public function getexistAction()
     {
         $customer_model = new Model_Customer();
         if ($this->_request->isPost()) {
@@ -178,4 +178,37 @@ class CustomerController extends Zend_Controller_Action
         }
     }
 
+    public function updateAction()
+    {
+        $customer_model = new Model_Customer();
+        if ($this->_request->isPost()) {
+            $update_customer = $customer_model->updateItem($this->_arrParam);
+            if (isset($update_customer['status']) && ($update_customer['status'] === true)) {
+                $_SESSION['userSessionNamespace']['customer'] = $update_customer['customer'];
+            }
+            $data = array(
+                'result' => $update_customer
+            );
+            $this->_helper->json($data);
+        }
+    }
+
+    public function uppassAction()
+    {
+        $customer_model = new Model_Customer();
+        if ($this->_request->isPost()) {
+            if ($this->_arrParam['new_password'] === $this->_arrParam['confirm_new_password']) {
+                $update_customer = $customer_model->updatePassword($this->_arrParam);
+                $data = array(
+                    'result' => $update_customer
+                );
+            } else {
+                $data = array(
+                    'status' => false,
+                    'message_pw' => "* Mật khẩu mới và xác nhận mật khẩu mới không trùng khớp !!!!"
+                );
+            }
+            $this->_helper->json($data);
+        }
+    }
 }

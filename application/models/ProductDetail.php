@@ -134,9 +134,13 @@ class Model_ProductDetail extends Zend_Db_Table
     {
         $where = 'id = ' . $arrParam['id'];
         $row = $this->fetchRow($where);
-        $row->color = $arrParam['color'];
-        $row->price = $arrParam['price'];
-        $row->quantily = $arrParam['quantily'];
+        if (!empty($arrParam['reduce'])) {
+            $row->quantily = $row->quantily - $arrParam['reduce'];
+        } else {
+            $row->color = $arrParam['color'];
+            $row->price = $arrParam['price'];
+            $row->quantily = $arrParam['quantily'];
+        }
         $row->update_date = date('Y-m-d H:i:s');
         $row->save();
     }

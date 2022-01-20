@@ -124,8 +124,13 @@ class AdminController extends Zend_Controller_Action
 
     public function customerAction()
     {
+        $order_model = new Model_Order();
         $customer_model = new Model_Customer();
         $list_customer = $customer_model->getListItem();
+        foreach ($list_customer as $key => $customer) {
+            $count_order_of_user = $order_model->getcountOrderOfCustomer($customer['id']);
+            $list_customer[$key]['count_order'] = $count_order_of_user;
+        }
         $this_section = 'Danh sách khách hàng';
         $this->view->assign('title', $this_section);
         $this->view->assign('list_customer', $list_customer);
@@ -135,18 +140,54 @@ class AdminController extends Zend_Controller_Action
     {
         $this_section = 'Danh sách đơn hàng';
         $order_model = new Model_Order();
-        $list_order = $order_model->getListItem();
-        $this->view->assign('title', $this_section);
-        $this->view->assign('list_order', $list_order);
+        try {
+            $list_order = $order_model->getListItem($this->_arrParam);
+            $this->view->assign('title', $this_section);
+            $this->view->assign('list_order', $list_order);
+        } catch (Exception $e) {
+            //var_dump($e->getMessage());
+        }
+    }
+
+    public function confirmorderAction()
+    {
+        if ($this->_request->isPost()) {
+            $order_model = new Model_Order();
+            $product_model = new Model_Product();
+            $product_detail_model = new Model_ProductDetail();
+            $order_detail_model = new Model_OrderDetail();
+            $this->_arrParam['admin_id'] = $this->_adminSessionNamespace->admin['id'];
+
+            $order = $order_model->confirmOrder($this->_arrParam);
+            if (!empty($order['id'])) {
+                $list_detail = $order_detail_model->getListItem($order['id']);
+                if (!empty($list_detail)) {
+                    foreach ($list_detail as $detail) {
+                        $order_detail_model->editItem(
+                            array(
+                                'id' => $detail['id'],
+                                'status' => 2
+                            )
+                        );
+                        if (!empty($detail['product_id'])  && !empty($detail['detail_product_id'])) {
+                            $product_model->editItem(array('reduce' => $detail['quantily']));
+                            $product_detail_model->editItem(array('reduce' => $detail['quantily']));
+                        } else if (!empty($detail['product_id'])  && empty($detail['detail_product_id'])) {
+                            $product_model->editItem(array('reduce' => $detail['quantily']));
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public function cancelorderAction()
     {
         if ($this->_request->isPost()) {
             $order_model = new Model_Order();
-            
+
             $this->_arrParam['admin_id'] = $this->_adminSessionNamespace->admin['id'];
-            
+
             $list_order = $order_model->cancelOrder($this->_arrParam);
         }
     }

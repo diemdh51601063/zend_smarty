@@ -203,10 +203,14 @@ class Model_Order extends Zend_Db_Table
         return $result;
     }
 
-    public function getListItem()
+    public function getListItem($arrParam)
     {
+        $where = '';
+        if(!empty($arrParam['customer_id'])){
+            $where = ' WHERE customer_id = ' . $arrParam['customer_id'];
+        }
         $db = $this->getDefaultAdapter();
-        $sql = " SELECT id, order_name, order_phone, order_email, DATE(regist_date) as regist_date, lpad(extract(hour from regist_date)::text, 2, '0') as hour, extract(minute from regist_date) as minute FROM orders ; ";
+        $sql = " SELECT id, order_name, order_phone, order_email, DATE(regist_date) as regist_date, lpad(extract(hour from regist_date)::text, 2, '0') as hour, extract(minute from regist_date) as minute FROM orders " . $where . " ; ";
         $list_result = $db->query($sql);
         return $list_result;
     }
@@ -227,6 +231,7 @@ class Model_Order extends Zend_Db_Table
         $row->confirm_date = date('Y-m-d H:i:s');
         $row->update_date = date('Y-m-d H:i:s');
         $row->save();
+        return $row['id'];
     }
 
     public function cancelOrder($arrParam)
@@ -240,5 +245,16 @@ class Model_Order extends Zend_Db_Table
         $row->status = 0;
         $row->cancel_reason = $arrParam['cancel_reason'];
         $row->save();
+        return $row['id'];
+    }
+
+    public function getcountOrderOfCustomer($customer_id){
+        try{
+            $where = 'customer_id = ' . $customer_id;
+            $list_order = $this->fetchAll($where)->toArray();
+            return count($list_order);
+        }catch(Exception $e){
+            var_dump($e);
+        }
     }
 }

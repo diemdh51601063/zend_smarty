@@ -1,4 +1,27 @@
-<style>
+<?php
+/* Smarty version 4.0.0, created on 2022-01-20 03:00:14
+  from 'C:\laragon\www\zend_smarty\application\smarty\templates\index\login.tpl' */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '4.0.0',
+  'unifunc' => 'content_61e86dce8fc0a4_45266413',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    '56c741d2d9b73c0793c508189c870f0bfdbca7cc' => 
+    array (
+      0 => 'C:\\laragon\\www\\zend_smarty\\application\\smarty\\templates\\index\\login.tpl',
+      1 => 1642622394,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+  ),
+),false)) {
+function content_61e86dce8fc0a4_45266413 (Smarty_Internal_Template $_smarty_tpl) {
+?><style>
     .login-container {
         position: relative;
         width: 600px;
@@ -30,7 +53,11 @@
 </style>
 <div class="container" >
     <h4 id="titleformLogin" class="text-center"></h4>
-    <form class="login-container" onsubmit="onSubmitForm('{{$this->url(['controller' => 'index', 'action' => 'login'])}}') " method="post" id="formAdd">
+    <form class="login-container" onsubmit="onSubmitForm('<?php ob_start();
+echo $_smarty_tpl->tpl_vars['this']->value->url(array('controller'=>'index','action'=>'login'));
+$_prefixVariable1 = ob_get_clean();
+echo $_prefixVariable1;?>
+') " method="post" id="formAdd">
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Email</label>
             <div class="col-sm-10">
@@ -43,9 +70,10 @@
                 <input type="password" class="input" id="password" name="password">
             </div>
         </div>
-        {if isset($message_error)}
-            <span class="text-danger"><b>{$message_error}</b></span>
-        {/if}
+        <?php if ((isset($_smarty_tpl->tpl_vars['message_error']->value))) {?>
+            <span class="text-danger"><b><?php echo $_smarty_tpl->tpl_vars['message_error']->value;?>
+</b></span>
+        <?php }?>
         <div class="form-group row text-right">
             <div class="col-sm-12">
                 <a id="forgotPass" href="#" class="text-primary font-weight-bold">Quên mật khẩu ?</a>
@@ -121,7 +149,8 @@
     </div>
 </div>
 
-<script>
+<?php echo '<script'; ?>
+>
 
     $('#forgotPass').click(function () {
         $('#forgotPassModal').show();
@@ -135,8 +164,9 @@
         $('#updateNewPassword').toggle();
     });
 
-    {if isset($error_value) }
-    var err_value = {$error_value|json_encode};
+    <?php if ((isset($_smarty_tpl->tpl_vars['error_value']->value))) {?>
+    var err_value = <?php echo json_encode($_smarty_tpl->tpl_vars['error_value']->value);?>
+;
     $.each( err_value, function(key, value) {
         $('.input').each(function () {
             if($(this).prop('id') == key){
@@ -145,10 +175,11 @@
             }
         });
     });
-    {/if}
+    <?php }?>
 
-    {if isset($error_input) }
-    var err_input = {$error_input|json_encode};
+    <?php if ((isset($_smarty_tpl->tpl_vars['error_input']->value))) {?>
+    var err_input = <?php echo json_encode($_smarty_tpl->tpl_vars['error_input']->value);?>
+;
     $.each(err_input, function (key, value) {
         $('.input').each(function () {
             if ($(this).prop('id') == key) {
@@ -160,7 +191,7 @@
             }
         });
     });
-    {/if}
+    <?php }?>
 
     var customer_id = '';
 
@@ -201,7 +232,7 @@
             dataType: 'json',
             data: fdata,
             success: function (data) {
-                if (data.result.status !== undefined) {
+                if (data.result === true) {
                     $('#updateNewPassword').toggle();
                     $('#updateNewPassword').attr("disabled", true);
                     $('#forgotPassModal').attr("disabled", true);
@@ -237,4 +268,6 @@
             });
         });
     }
-</script>
+<?php echo '</script'; ?>
+><?php }
+}

@@ -79,8 +79,8 @@ class IndexController extends Zend_Controller_Action
         } catch (Exception $e) {
             var_dump($e->getMessage());
         }
-        
-        if(!empty($this->_arrParam['brand_id'])){
+
+        if (!empty($this->_arrParam['brand_id'])) {
             $this->view->assign('active_brand', $this->_arrParam['brand_id']);
         }
         $this->view->assign('list_product', $list_product);
@@ -148,12 +148,12 @@ class IndexController extends Zend_Controller_Action
             try {
                 $model = new Model_Customer();
                 $login = $model->logIn($this->_arrParam);
-                if($login === false){
+                if ($login === false) {
                     $message_error = 'Sai thông tin đăng nhập !!!!';
                     $this->view->assign('message_error', $message_error);
                     unset($this->_arrParam['password']);
                     $this->view->assign('error_value', $this->_arrParam);
-                }else if (!empty($login['customer_id'])) {
+                } else if (!empty($login['customer_id'])) {
                     $this->_userSessionNamespace->customer = $login;
                     $this->redirect($this->_actionMain);
                 } else {
@@ -164,6 +164,20 @@ class IndexController extends Zend_Controller_Action
             } catch (Exception $e) {
                 //var_dump($e->getMessage());
             }
+        }
+    }
+
+    public function updateAction()
+    {
+        try {
+            if (!empty($this->_userSessionNamespace->customer)) {
+                $customer_id = $this->_userSessionNamespace->customer['customer_id'];
+                $customer_model = new Model_Customer();
+                $customer_info = $customer_model->getCustomer($customer_id);
+                $this->view->assign('customer_info', $customer_info);
+            }
+        } catch (Exception $e) {
+            //var_dump($e->getMessage());
         }
     }
 }
